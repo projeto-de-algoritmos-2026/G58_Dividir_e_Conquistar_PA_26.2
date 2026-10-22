@@ -5,28 +5,25 @@
 
 #include "modelo/geometria/Edge.hpp"
 
-namespace modelo
-{
-namespace geometria
-{
-class DelaunayGraph
-{
+namespace modelo::geometria {
+
+class DelaunayGraph {
+
 private:
 	std::vector<std::vector<int>> adj;
 
 public:
-	const std::vector<int>& neighbors(int v) const;
+	const std::vector<int>& neighbors(int v)const;
 
 	std::vector<Edge> edges() const;
 
 	int size() const;
 
-	DelaunayGraph(int n);
+	DelaunayGraph(int n) : adj(n) {};
 
 	void addEdge(int u, int v);
 
 };
 
-}  // namespace geometria
-}  // namespace modelo
+}  // namespace modelo::geometria
 #endif
