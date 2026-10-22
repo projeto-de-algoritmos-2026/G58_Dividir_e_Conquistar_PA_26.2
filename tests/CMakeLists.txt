@@ -8,6 +8,7 @@ FetchContent_MakeAvailable(googletest)
 add_executable(rhyme_tests
         test_unionfind.cpp
         test_delaunaygraph.cpp
+        test_structs.cpp
 )
 target_link_libraries(rhyme_tests PRIVATE rhyme_core GTest::gtest_main)
 
