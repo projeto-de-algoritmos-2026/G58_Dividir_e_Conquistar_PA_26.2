@@ -2,13 +2,10 @@
 #define MODELO_GEOMETRIA_UNION_FIND_H
 
 #include <vector>
+#include <numeric>
 
-namespace modelo
-{
-namespace geometria
-{
-class UnionFind
-{
+namespace modelo::geometria {
+class UnionFind {
 private:
 	std::vector<int> parent;
 
@@ -17,7 +14,10 @@ private:
 	int components;
 
 public:
-	UnionFind(int n);
+	UnionFind(int components)
+		: parent(components), rank(components, 0), components(components) {
+		std::iota(parent.begin(), parent.end(), 0);
+	}
 
 	int find(int x);
 
@@ -27,6 +27,5 @@ public:
 
 };
 
-}  // namespace geometria
-}  // namespace modelo
+}  // namespace modelo::geometria
 #endif
