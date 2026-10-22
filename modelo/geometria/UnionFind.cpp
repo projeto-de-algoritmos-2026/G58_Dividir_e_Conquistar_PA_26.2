@@ -22,10 +22,10 @@ bool UnionFind::unite(int a, int b) {
 	// O nó com maior rank vira pai do nó com menor rank
 	if (rank[ra] > rank[rb]) {
 		parent[rb] = ra;
-	} else if (rank[rb] < rank[ra]) {
+	} else if (rank[rb] > rank[ra]) {
 		parent[ra] = rb;
 	} else if (rank[ra] == rank[rb]) {
-		parent[ra] = rb;
+		parent[rb] = ra;
 		rank[ra]++;
 	}
 
