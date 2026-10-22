@@ -7,6 +7,7 @@ FetchContent_MakeAvailable(googletest)
 # Acrescente aqui cada arquivo de teste novo (test_graph.cpp, test_kruskal.cpp, ...)
 add_executable(rhyme_tests
         test_unionfind.cpp
+        test_delaunaygraph.cpp
 )
 target_link_libraries(rhyme_tests PRIVATE rhyme_core GTest::gtest_main)
 
