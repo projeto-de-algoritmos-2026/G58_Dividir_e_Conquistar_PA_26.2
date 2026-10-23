@@ -10,14 +10,10 @@
 #include "modelo/geometria/QuadEdge.hpp"
 #include "modelo/geometria/DelaunayGraph.hpp"
 
-namespace modelo
-{
-namespace geometria
-{
+namespace modelo::geometria {
 using EdgePair = std::pair<QuadEdge*, QuadEdge*>;
 
-class DivideConquerDelaunay : public ITriangulator
-{
+class DivideConquerDelaunay : public ITriangulator {
 private:
 	std::vector<Point2D> pts;
 
@@ -49,6 +45,5 @@ public:
 
 };
 
-}  // namespace geometria
-}  // namespace modelo
+}  // namespace modelo::geometria
 #endif
