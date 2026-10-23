@@ -1,42 +1,44 @@
 #ifndef MODELO_GEOMETRIA_QUAD_EDGE_H
 #define MODELO_GEOMETRIA_QUAD_EDGE_H
 
-namespace modelo
-{
-namespace geometria
-{
-struct QuadEdge
-{
-public:
-	int org;
+#include <deque>
+
+namespace modelo::geometria {
+struct QuadEdge {
+
+private:
+	QuadEdge* next = nullptr;
+	QuadEdge* r = nullptr;
 
 public:
-	QuadEdge* rot();
+	int org = -1;
 
-	QuadEdge* sym();
+public:
+	QuadEdge* rot() { return r; }
 
-	QuadEdge* onext();
+	QuadEdge* sym() { return r->r; }
 
-	int dest();
+	QuadEdge* onext() { return next; }
 
-	static QuadEdge* makeEdge();
+	int dest() { return sym()->org; }
+
+	static QuadEdge* makeEdge(std::deque<QuadEdge>& pool);
 
 	static void splice(QuadEdge* a, QuadEdge* b);
 
-	static QuadEdge* connect(QuadEdge* a, QuadEdge* b);
+	static QuadEdge* connect(QuadEdge* a, QuadEdge* b, std::deque<QuadEdge>& pool);
 
 	static void deleteEdge(QuadEdge* e);
 
-	QuadEdge* invRot();
+	QuadEdge* invRot() { return r->r->r; }
 
-	QuadEdge* lnext();
+	QuadEdge* lnext() { return invRot()->onext()->rot(); }
 
-	QuadEdge* oprev();
+	QuadEdge* oprev() {return rot()->onext()->rot();  }
 
-	QuadEdge* rprev();
+	QuadEdge* rprev() { return sym()->onext(); }
 
 };
 
-}  // namespace geometria
-}  // namespace modelo
+}  // namespace modelo::geometria
 #endif
