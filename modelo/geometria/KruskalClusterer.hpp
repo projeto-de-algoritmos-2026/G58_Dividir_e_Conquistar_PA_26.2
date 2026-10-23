@@ -8,12 +8,10 @@
 #include "modelo/geometria/Point2D.hpp"
 #include "modelo/geometria/DelaunayGraph.hpp"
 
-namespace modelo
-{
-namespace geometria
-{
-class KruskalClusterer : public IClusterer
-{
+namespace modelo::geometria {
+
+class KruskalClusterer : public IClusterer {
+
 private:
 	std::vector<Edge> sortedEdges(const std::vector<Point2D>& points, const DelaunayGraph& graph);
 
@@ -22,6 +20,5 @@ public:
 
 };
 
-}  // namespace geometria
-}  // namespace modelo
+}  // namespace modelo::geometria
 #endif
