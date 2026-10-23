@@ -9,6 +9,10 @@ add_executable(rhyme_tests
         test_unionfind.cpp
         test_delaunaygraph.cpp
         test_structs.cpp
+        test_kruskal.cpp
+        test_quadedge.cpp
+        test_predicates.cpp
+        test_delaunay.cpp
 )
 target_link_libraries(rhyme_tests PRIVATE rhyme_core GTest::gtest_main)
 

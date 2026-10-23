@@ -17,6 +17,9 @@ add_library(rhyme_core STATIC
         modelo/nucleo/RhymeEngine.cpp
         modelo/nucleo/RhymeIndex.cpp
         modelo/terminal/TerminalUI.cpp
+        modelo/geometria/QuadEdge.cpp
+        modelo/geometria/predicates.c
+        modelo/geometria/predicates.h
 )
 # Os includes partem da raiz: #include "modelo/nucleo/RhymeEngine.hpp"
 target_include_directories(rhyme_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -33,3 +36,5 @@ if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/tests/CMakeLists.txt)
     enable_testing()
     add_subdirectory(tests)
 endif ()
+
+set_source_files_properties(modelo/geometria/predicates.c PROPERTIES COMPILE_OPTIONS "-w")
