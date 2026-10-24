@@ -47,3 +47,10 @@ TEST(DivideConquerDelaunayTest, TresPontosTest) {
 
     EXPECT_EQ(arestasDe({{2.0, 2.0}, {0.0, 0.0}, {1.0, 1.0}}), (Arestas{{0.0, 2.0}, {1.0, 2.0}}));
 }
+
+TEST(DivideConquerDelaunayTest, InferiorTangent) {
+    EXPECT_EQ(arestasDe({{0.0, 0.0}, {1.0, 3.0}, {2.0, 0.0}, {1.0, -3.0}}).count({2, 3}), 1u);
+
+
+
+}
