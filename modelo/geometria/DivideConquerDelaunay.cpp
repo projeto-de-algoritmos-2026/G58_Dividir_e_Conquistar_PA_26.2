@@ -76,13 +76,11 @@ EdgePair DivideConquerDelaunay::divide(int lo, int hi) {
 
 	} else {
 
-		int mid = n / 2;
+		int mid = (lo + hi) / 2;
 
 		return merge(divide(lo, mid), divide(mid, hi));
 
 	}
-
-	return {};
 }
 
 EdgePair DivideConquerDelaunay::merge(EdgePair left, EdgePair right) {
@@ -100,12 +98,32 @@ EdgePair DivideConquerDelaunay::merge(EdgePair left, EdgePair right) {
 		rdo = basel;
 	}
 
+	while (true) {
+
+		QuadEdge* lcand = basel->sym()->onext();
+		QuadEdge* rcand = basel->oprev();
+
+		bool lv = valid(lcand, basel);
+		bool rv = valid(rcand, basel);
+
+		if (!lv && !rv) {
+			break;
+		}
+
+		if (!lv || (rv && inCircle(lcand->dest(), lcand->org, rcand->org, rcand->dest()))) {
+			basel = QuadEdge::connect(rcand, basel->sym(), pool);
+		} else {
+			basel = QuadEdge::connect(basel->sym(), lcand->sym(), pool);
+		}
+
+	}
+
 	return {ldo, rdo};
 }
 
 QuadEdge* DivideConquerDelaunay::lowerTangent(QuadEdge* ldi, QuadEdge* rdi) {
 
-	do {
+	while (true) {
 
 		if (leftOf(rdi->org, ldi)) {
 			ldi = ldi->lnext();
@@ -114,7 +132,7 @@ QuadEdge* DivideConquerDelaunay::lowerTangent(QuadEdge* ldi, QuadEdge* rdi) {
 		} else {
 			break;
 		}
-	} while (leftOf(rdi->org, ldi) || rightOf(rdi->org, ldi));
+	}
 
 	return QuadEdge::connect(rdi->sym(), ldi, pool);
 }
