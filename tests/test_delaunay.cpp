@@ -50,7 +50,24 @@ TEST(DivideConquerDelaunayTest, TresPontosTest) {
 
 TEST(DivideConquerDelaunayTest, InferiorTangent) {
     EXPECT_EQ(arestasDe({{0.0, 0.0}, {1.0, 3.0}, {2.0, 0.0}, {1.0, -3.0}}).count({2, 3}), 1u);
+}
 
+TEST(DivideConquerDelaunayTest, Pipa) {
+    EXPECT_EQ(arestasDe({{0, 0}, {1, 3}, {2, 0}, {1, -3}}),
+        (Arestas{{0, 1}, {1, 2}, {2, 3}, {0, 3}, {0,2}}));
+}
 
+TEST(DivideConquerDelaunayTest, PontoDentro) {
+    EXPECT_EQ(arestasDe({{0, 0}, {4, 0}, {2, 4}, {2, 1}}),
+        (Arestas{{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}, {2, 3}}));
+}
+
+TEST(DivideConquerDelaunayTest, Quadrado) {
+    Arestas a = arestasDe({{0, 0}, {1, 0}, {1, 1}, {0, 1}});
+    EXPECT_EQ(a.size(), 5u);
+    EXPECT_EQ(a.count({0, 1}), 1u);
+    EXPECT_EQ(a.count({1, 2}), 1u);
+    EXPECT_EQ(a.count({2, 3}), 1u);
+    EXPECT_EQ(a.count({0, 3}), 1u);
 
 }
