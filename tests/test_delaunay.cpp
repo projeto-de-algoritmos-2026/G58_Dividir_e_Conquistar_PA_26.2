@@ -35,7 +35,15 @@ static Arestas arestasDe(const std::vector<Point2D>& pontos) {
 
 
 TEST(DivideConquerDelaunayTest, DoisPontosTest) {
-
     EXPECT_EQ(arestasDe({{0.0, 0.0}, {1.0, 0.0}}), (Arestas{{0, 1}}));
+}
 
+TEST(DivideConquerDelaunayTest, TresPontosTest) {
+    EXPECT_EQ(arestasDe({{0.0, 0.0}, {1.0, -1.0}, {2.0, 0.0}}), (Arestas{{0.0, 1.0}, {0.0, 2.0}, {1.0, 2.0}}));
+
+    EXPECT_EQ(arestasDe({{0.0, 0.0}, {1.0, 1.0}, {2.0, 0.0}}), (Arestas{{0.0, 1.0}, {0.0, 2.0}, {1.0, 2.0}}));
+
+    EXPECT_EQ(arestasDe({{0.0, 0.0}, {1.0, 1.0}, {2.0, 2.0}}), (Arestas{{0.0, 1.0}, {1.0, 2.0}}));
+
+    EXPECT_EQ(arestasDe({{2.0, 2.0}, {0.0, 0.0}, {1.0, 1.0}}), (Arestas{{0.0, 2.0}, {1.0, 2.0}}));
 }
