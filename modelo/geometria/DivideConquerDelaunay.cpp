@@ -94,7 +94,9 @@ EdgePair DivideConquerDelaunay::merge(EdgePair left, EdgePair right) {
 
 	if (basel->dest() == ldo->org) {
 		ldo = basel->sym();
-	} else if (basel->org == rdo->org) {
+	}
+
+	if (basel->org == rdo->org) {
 		rdo = basel;
 	}
 
