@@ -74,19 +74,49 @@ EdgePair DivideConquerDelaunay::divide(int lo, int hi) {
 			return {a, b->sym()};
 		}
 
+	} else {
+
+		int mid = n / 2;
+
+		return merge(divide(lo, mid), divide(mid, hi));
+
 	}
 
 	return {};
 }
 
-EdgePair DivideConquerDelaunay::merge(EdgePair left, EdgePair right)
-{
-	return {};
+EdgePair DivideConquerDelaunay::merge(EdgePair left, EdgePair right) {
+
+	QuadEdge* ldo = left.first;
+	QuadEdge* ldi = left.second;
+	QuadEdge* rdi = right.first;
+	QuadEdge* rdo = right.second;
+
+	QuadEdge* basel = lowerTangent(ldi, rdi);
+
+	if (basel->dest() == ldo->org) {
+		ldo = basel->sym();
+	} else if (basel->org == rdo->org) {
+		rdo = basel;
+	}
+
+	return {ldo, rdo};
 }
 
-QuadEdge* DivideConquerDelaunay::lowerTangent(QuadEdge* ldi, QuadEdge* rdi)
-{
-	return nullptr;
+QuadEdge* DivideConquerDelaunay::lowerTangent(QuadEdge* ldi, QuadEdge* rdi) {
+
+	do {
+
+		if (leftOf(rdi->org, ldi)) {
+			ldi = ldi->lnext();
+		} else if (rightOf(ldi->org, rdi)) {
+			rdi = rdi->rprev();
+		} else {
+			break;
+		}
+	} while (leftOf(rdi->org, ldi) || rightOf(rdi->org, ldi));
+
+	return QuadEdge::connect(rdi->sym(), ldi, pool);
 }
 
 bool DivideConquerDelaunay::ccw(int a, int b, int c) {
