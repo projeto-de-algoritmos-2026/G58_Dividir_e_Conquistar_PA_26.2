@@ -92,3 +92,7 @@ TEST(DivideConquerDelaunayTest, Grade10x10) {
 
     EXPECT_EQ(arestasDe(pontos).size(), 261u);
 }
+
+TEST(DivideConquerDelaunayTest, PontoRepetido) {
+    EXPECT_THROW(arestasDe({{1, 1}, {0, 0}, {1, 1}}), std::invalid_argument);
+}
