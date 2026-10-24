@@ -101,6 +101,18 @@ EdgePair DivideConquerDelaunay::merge(EdgePair left, EdgePair right) {
 	while (true) {
 
 		QuadEdge* lcand = basel->sym()->onext();
+
+		if (valid(lcand, basel)) {
+			while (true) {
+				if (!(inCircle(basel->dest(), basel->org, lcand->dest(), lcand->onext()->dest()))) {
+				break;
+				}
+				QuadEdge* t = lcand->onext();
+				QuadEdge::deleteEdge(lcand);
+				lcand = t;
+			}
+		}
+
 		QuadEdge* rcand = basel->oprev();
 
 		if (valid(rcand, basel)) {
