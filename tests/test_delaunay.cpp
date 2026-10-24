@@ -5,6 +5,8 @@
 #include <set>
 #include <stdexcept>
 #include <utility>
+#include <random>
+#include <numeric>
 
 #include "modelo/geometria/DivideConquerDelaunay.hpp"
 #include "modelo/geometria/DelaunayGraph.hpp"
@@ -121,4 +123,36 @@ TEST(DivideConquerDelaunayTest, AlinhadosVertical) {
         }
     }
     EXPECT_EQ(arestasDe(pontos), esperado);
+}
+
+TEST(DivideConquerDelaunayTest, PontosEmbaralhados) {
+    std::mt19937 gerador(42);
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
+
+    std::vector<Point2D> pontos;
+
+    for (int i = 0; i < 50; i++) {
+        pontos.push_back({dist(gerador), dist(gerador)});
+    }
+
+    std::vector<int> perm(50);
+    std::iota(perm.begin(), perm.end(), 0);
+    std::shuffle(perm.begin(), perm.end(), gerador);
+
+    std::vector<Point2D> embaralhados;
+
+    for (int i = 0; i < 50; i++) {
+        embaralhados.push_back(pontos[perm[i]]);
+    }
+
+    Arestas traduzidas;
+
+    for (const std::pair<int, int>& par :arestasDe(embaralhados)) {
+        int a = perm[par.first];
+        int b = perm[par.second];
+        traduzidas.insert({std::min(a, b), std::max(a, b)});
+    }
+
+    EXPECT_EQ(traduzidas, arestasDe(pontos));
+
 }
