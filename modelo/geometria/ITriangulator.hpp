@@ -15,6 +15,7 @@ class ITriangulator
 public:
 	virtual ~ITriangulator() = default;
 
+	// Os pontos presentes no vetor points não devem ser repetidos
 	virtual DelaunayGraph triangulate(const std::vector<Point2D>& points) = 0;
 
 };
