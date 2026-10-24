@@ -50,6 +50,30 @@ EdgePair DivideConquerDelaunay::divide(int lo, int hi) {
 		a->org = lo;
 		a->sym()->org = lo + 1;
 		return {a, a->sym()};
+
+	} else if (n == 3) {
+
+		QuadEdge* a = QuadEdge::makeEdge(pool);
+		QuadEdge* b = QuadEdge::makeEdge(pool);
+
+		QuadEdge::splice(a->sym(), b);
+
+		a->org = lo;
+		a->sym()->org = lo + 1;
+
+		b->org = lo + 1;
+		b->sym()->org = lo + 2;
+
+		if (ccw(lo, lo + 1, lo + 2)) {
+			QuadEdge::connect(b, a, pool);
+			return {a, b->sym()};
+		} else if (ccw(lo, lo+2, lo+1)) {
+			QuadEdge* c = QuadEdge::connect(b ,a, pool);
+			return {c->sym(), c};
+		} else {
+			return {a, b->sym()};
+		}
+
 	}
 
 	return {};
