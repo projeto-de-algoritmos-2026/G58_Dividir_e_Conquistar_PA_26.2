@@ -96,3 +96,29 @@ TEST(DivideConquerDelaunayTest, Grade10x10) {
 TEST(DivideConquerDelaunayTest, PontoRepetido) {
     EXPECT_THROW(arestasDe({{1, 1}, {0, 0}, {1, 1}}), std::invalid_argument);
 }
+
+TEST(DivideConquerDelaunayTest, AlinhadosHorizontal) {
+    std::vector<Point2D> pontos;
+    Arestas esperado;
+
+    for (int i = 0; i < 10; i++) {
+        pontos.push_back({static_cast<double>(i), 0});
+        if (i > 0) {
+            esperado.insert({i -1, i});
+        }
+    }
+    EXPECT_EQ(arestasDe(pontos), esperado);
+}
+
+TEST(DivideConquerDelaunayTest, AlinhadosVertical) {
+    std::vector<Point2D> pontos;
+    Arestas esperado;
+
+    for (int i = 0; i < 10; i++) {
+        pontos.push_back({0, static_cast<double>(i)});
+        if (i > 0) {
+            esperado.insert({i -1, i});
+        }
+    }
+    EXPECT_EQ(arestasDe(pontos), esperado);
+}
