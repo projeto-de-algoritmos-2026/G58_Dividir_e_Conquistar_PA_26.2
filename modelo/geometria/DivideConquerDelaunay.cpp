@@ -103,6 +103,17 @@ EdgePair DivideConquerDelaunay::merge(EdgePair left, EdgePair right) {
 		QuadEdge* lcand = basel->sym()->onext();
 		QuadEdge* rcand = basel->oprev();
 
+		if (valid(rcand, basel)) {
+			while (true) {
+				if (!(inCircle(basel->dest(), basel->org, rcand->dest(), rcand->oprev()->dest()))) {
+					break;
+				}
+				QuadEdge* t = rcand->oprev();
+				QuadEdge::deleteEdge(rcand);
+				rcand = t;
+			}
+		}
+
 		bool lv = valid(lcand, basel);
 		bool rv = valid(rcand, basel);
 
