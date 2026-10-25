@@ -40,8 +40,30 @@ const std::vector<int>& RhymeIndex::familiesAtVertex(int v) const
 	return familiesAt.at(v);
 }
 
-std::vector<Phoneme> RhymeIndex::rhymePart(const std::vector<Phoneme>& phonemes)
-{
-	return {};
+std::vector<Phoneme> RhymeIndex::rhymePart(const std::vector<Phoneme>& phonemes) {
+
+	int pos = -1;
+
+	for (int i = static_cast<int>(phonemes.size()) - 1; i >= 0; i--) {
+		if (phonemes[i].isVowel && phonemes[i].stress >= 1) {
+			pos = i;
+			break;
+		}
+	}
+
+	if (pos == -1) {
+		for (int i = static_cast<int>(phonemes.size()) - 1; i >= 0; i--) {
+			if (phonemes[i].isVowel) {
+				pos = i;
+				break;
+			}
+		}
+	}
+
+	if (pos == -1) {
+		return {};
+	}
+
+	return std::vector<Phoneme>(phonemes.begin() + pos, phonemes.end());
 }
 }  // namespace modelo::nucleo
