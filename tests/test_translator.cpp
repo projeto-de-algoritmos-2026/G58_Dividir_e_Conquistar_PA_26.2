@@ -59,3 +59,10 @@ TEST(AcousticTranslatorTest, SimboloDesconhecidoNaVogal) {
     EXPECT_THROW(conversor.toPoint({vogal("XX", 1)}),
         std::invalid_argument);
 }
+
+TEST(AcousticTranslatorTest, SimboloDesconhecidoNoResto) {
+    AcousticTranslator tradutor(0.5);
+    IPhoneticConverter& conversor = tradutor;
+    EXPECT_THROW(conversor.toPoint({vogal("AO", 1), consoante("QQ")}),
+        std::invalid_argument);
+}
