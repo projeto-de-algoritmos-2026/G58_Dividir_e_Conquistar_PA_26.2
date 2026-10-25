@@ -1,5 +1,7 @@
 #include "RhymeIndex.hpp"
 
+#include <algorithm>
+
 namespace modelo::nucleo {
 
 void RhymeIndex::add(const std::string& word, const std::string& key, const modelo::geometria::Point2D& point) {
@@ -7,7 +9,12 @@ void RhymeIndex::add(const std::string& word, const std::string& key, const mode
 	auto it = byKey.find(key);
 
 	if (it != byKey.end()) {
-		families[it->second].words.push_back(word);
+		std::vector<std::string>& palavras = families[it->second].words;
+
+		if (std::find(palavras.begin(), palavras.end(), word) == palavras.end()) {
+			palavras.push_back(word);
+		}
+
 		return;
 	}
 
