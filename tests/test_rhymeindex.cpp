@@ -107,3 +107,22 @@ TEST(RhymeIndexTest, MesmaPalavraNaoRepete) {
     index.add("dog", "AO G", {0.89, 0.375});
     EXPECT_EQ(index.family(index.findFamily("AO G")).words,(std::vector<std::string>{"dog"}));
 }
+
+TEST(RhymeIndexTest, MesmoPontoMesmoVertice) {
+    RhymeIndex index;
+    index.add("dog", "AO G", {0.89, 0.375});
+    index.add("cat", "AE T", {0.89, 0.375});
+    EXPECT_EQ(index.points().size(),
+        1);
+
+    int id1 = index.findFamily("AO G");
+    int id2 = index.findFamily("AE T");
+
+    EXPECT_EQ(index.family(id1).vertex,
+        0);
+    EXPECT_EQ(index.family(id2).vertex,
+    0);
+
+    EXPECT_EQ(index.familiesAtVertex(0),
+        std::vector({id1, id2}));
+}
