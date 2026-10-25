@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <stdexcept>
 
 #include "modelo/geometria/Point2D.hpp"
 #include "modelo/adaptadores/AcousticTranslator.hpp"
@@ -50,4 +51,11 @@ TEST(AcousticTranslatorTest, PesoDiferente) {
     Point2D p = conversor.toPoint({vogal("AO", 1), consoante("G")});
     EXPECT_NEAR(p.x, 0.85, 1e-12);
     EXPECT_NEAR(p.y, 0.275, 1e-12);
+}
+
+TEST(AcousticTranslatorTest, SimboloDesconhecidoNaVogal) {
+    AcousticTranslator tradutor(0.5);
+    IPhoneticConverter& conversor = tradutor;
+    EXPECT_THROW(conversor.toPoint({vogal("XX", 1)}),
+        std::invalid_argument);
 }
