@@ -44,3 +44,32 @@ TEST(RhymeIndexTest, RhymeKeyVetorVazio) {
     EXPECT_EQ(RhymeIndex::rhymeKey({}),
         "");
 }
+
+TEST(RhymeIndexTest, RhymePartDog) {
+    EXPECT_EQ(simbolos(RhymeIndex::rhymePart({consoante("D"), vogal("AO", 1), consoante("G")})),
+        (std::vector<std::string>{"AO", "G"}));
+}
+
+TEST(RhymeIndexTest, RhymePartUltimaTonica) {
+    EXPECT_EQ(simbolos(RhymeIndex::rhymePart({consoante("B"), vogal("AH", 0), consoante("N"), vogal("AE", 1), consoante("N"), vogal("AH", 0)})),
+        (std::vector<std::string>{"AE", "N", "AH"}));
+}
+
+TEST(RhymeIndexTest, RhymePartTonicaSecundaria) {
+    EXPECT_EQ(simbolos(RhymeIndex::rhymePart({consoante("N"), vogal("OW", 1), consoante("T"), consoante("B"), vogal("UH", 2), consoante("K")})),
+        (std::vector<std::string>{"UH", "K"}));
+}
+
+TEST(RhymeIndexTest, RhymePartSemTonica) {
+    EXPECT_EQ(simbolos(RhymeIndex::rhymePart({consoante("DH"), vogal("AH", 0)})),
+        (std::vector<std::string>{"AH"}));
+}
+
+TEST(RhymeIndexTest, RhymePartDuasVogausAtonas) {
+    EXPECT_EQ(simbolos(RhymeIndex::rhymePart({consoante("B"), vogal("AH", 0), consoante("N"), vogal("AH", 0)})),
+        (std::vector<std::string>{"AH"}));
+}
+
+TEST(RhymeIndexTest, RhymePartSemVogal) {
+    EXPECT_TRUE(RhymeIndex::rhymePart({consoante("HM"), consoante("M")}).empty());
+}
