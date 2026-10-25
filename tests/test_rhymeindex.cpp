@@ -78,3 +78,15 @@ TEST(RhymeIndexTest, ChaveDesconhecida) {
     RhymeIndex index;
     EXPECT_EQ(index.findFamily("AO G"), -1);
 }
+
+TEST(RhymeIndexTest, PrimeiraPalavra) {
+    RhymeIndex index;
+    index.add("dog", "AO G", {0.89, 0.375});
+    int id = index.findFamily("AO G");
+    ASSERT_NE(id, -1);
+    EXPECT_EQ(index.family(id).key, "AO G");
+    EXPECT_EQ(index.family(id).words, std::vector<std::string>{"dog"});
+    EXPECT_EQ(index.points().size(), 1);
+    EXPECT_EQ(index.family(id).vertex, 0);
+    EXPECT_EQ(index.familiesAtVertex(0), std::vector{id});
+}
