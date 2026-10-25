@@ -6,9 +6,9 @@ void RhymeIndex::add(const std::string& word, const std::string& key, const mode
 {
 }
 
-int RhymeIndex::findFamily(const std::string& key) const
-{
-	return 0;
+int RhymeIndex::findFamily(const std::string& key) const {
+	auto it = byKey.find(key);
+	return it == byKey.end() ? -1 : it->second;
 }
 
 const std::vector<modelo::geometria::Point2D>& RhymeIndex::points() const
