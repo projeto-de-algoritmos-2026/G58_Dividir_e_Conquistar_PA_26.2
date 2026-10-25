@@ -73,3 +73,8 @@ TEST(RhymeIndexTest, RhymePartDuasVogausAtonas) {
 TEST(RhymeIndexTest, RhymePartSemVogal) {
     EXPECT_TRUE(RhymeIndex::rhymePart({consoante("HM"), consoante("M")}).empty());
 }
+
+TEST(RhymeIndexTest, ChaveDesconhecida) {
+    RhymeIndex index;
+    EXPECT_EQ(index.findFamily("AO G"), -1);
+}
