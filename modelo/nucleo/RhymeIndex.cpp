@@ -4,6 +4,13 @@ namespace modelo::nucleo {
 
 void RhymeIndex::add(const std::string& word, const std::string& key, const modelo::geometria::Point2D& point) {
 
+	auto it = byKey.find(key);
+
+	if (it != byKey.end()) {
+		families[it->second].words.push_back(word);
+		return;
+	}
+
 	int v = static_cast<int>(points_.size());
 
 	points_.push_back(point);
