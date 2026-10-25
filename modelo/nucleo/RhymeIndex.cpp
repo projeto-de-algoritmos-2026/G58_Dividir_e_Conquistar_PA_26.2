@@ -2,8 +2,23 @@
 
 namespace modelo::nucleo {
 
-void RhymeIndex::add(const std::string& word, const std::string& key, const modelo::geometria::Point2D& point)
-{
+void RhymeIndex::add(const std::string& word, const std::string& key, const modelo::geometria::Point2D& point) {
+
+	int v = static_cast<int>(points_.size());
+
+	points_.push_back(point);
+	familiesAt.push_back({});
+
+	byPoint[{point.x, point.y}] = v;
+
+	int f = static_cast<int>(families.size());
+
+	families.push_back({key, {word}, v});
+
+	byKey[key] = f;
+
+	familiesAt[v].push_back(f);
+
 }
 
 int RhymeIndex::findFamily(const std::string& key) const {
