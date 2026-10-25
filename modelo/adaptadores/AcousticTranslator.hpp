@@ -10,12 +10,8 @@
 #include "modelo/nucleo/Phoneme.hpp"
 #include "modelo/geometria/Point2D.hpp"
 
-namespace modelo
-{
-namespace adaptadores
-{
-class AcousticTranslator : public modelo::nucleo::IPhoneticConverter
-{
+namespace modelo::adaptadores {
+class AcousticTranslator : public modelo::nucleo::IPhoneticConverter {
 private:
 	std::unordered_map<std::string,std::pair<double,double>> phonemeMap;
 
@@ -31,6 +27,5 @@ public:
 
 };
 
-}  // namespace adaptadores
-}  // namespace modelo
+}  // namespace modelo::adaptadores
 #endif
