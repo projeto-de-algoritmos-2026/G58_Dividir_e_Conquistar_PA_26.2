@@ -18,12 +18,17 @@ void RhymeIndex::add(const std::string& word, const std::string& key, const mode
 		return;
 	}
 
-	int v = static_cast<int>(points_.size());
+	int v;
+	auto itPonto = byPoint.find({point.x, point.y});
 
-	points_.push_back(point);
-	familiesAt.push_back({});
-
-	byPoint[{point.x, point.y}] = v;
+	if (itPonto != byPoint.end()) {
+		v = itPonto->second;
+	} else {
+		v = static_cast<int>(points_.size());
+		points_.push_back(point);
+		familiesAt.push_back({});
+		byPoint[{point.x, point.y}] = v;
+	}
 
 	int f = static_cast<int>(families.size());
 
