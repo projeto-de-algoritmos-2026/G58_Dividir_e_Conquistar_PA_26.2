@@ -14,6 +14,7 @@ add_executable(rhyme_tests
         test_predicates.cpp
         test_delaunay.cpp
         test_rhymeindex.cpp
+        test_translator.cpp
 )
 target_link_libraries(rhyme_tests PRIVATE rhyme_core GTest::gtest_main)
 
