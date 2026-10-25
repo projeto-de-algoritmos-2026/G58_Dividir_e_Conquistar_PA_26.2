@@ -90,3 +90,13 @@ TEST(RhymeIndexTest, PrimeiraPalavra) {
     EXPECT_EQ(index.family(id).vertex, 0);
     EXPECT_EQ(index.familiesAtVertex(0), std::vector{id});
 }
+
+TEST(RhymeIndexTest, MesmaChaveMesmaFamilia) {
+    RhymeIndex index;
+    index.add("dog", "AO G", {0.89, 0.375});
+    index.add("fog", "AO G", {0.89, 0.375});
+    EXPECT_EQ(index.family(index.findFamily("AO G")).words,
+       ( std::vector<std::string>{"dog", "fog"}));
+    EXPECT_EQ(index.points().size(),
+        1);
+}
