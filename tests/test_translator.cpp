@@ -66,3 +66,17 @@ TEST(AcousticTranslatorTest, SimboloDesconhecidoNoResto) {
     EXPECT_THROW(conversor.toPoint({vogal("AO", 1), consoante("QQ")}),
         std::invalid_argument);
 }
+
+TEST(AcousticTranslatorTest, TodosOsFonemasDoCmu) {
+    AcousticTranslator tradutor(0.5);
+    IPhoneticConverter& conversor = tradutor;
+    std::vector<std::string> simbolosCmu {"AA", "AE", "AH", "AO", "AW", "AY", "EH", "ER", "EY", "IH", "IY", "OW", "OY", "UH", "UW",
+    "B", "CH", "D", "DH", "F", "G", "HH", "JH", "K", "L", "M", "N", "NG", "P", "R", "S", "SH", "T", "TH", "V", "W", "Y", "Z", "ZH"};
+
+    EXPECT_EQ(simbolosCmu.size(), 39u);
+
+    for (const std::string& s : simbolosCmu) {
+        EXPECT_NO_THROW(conversor.toPoint({vogal(s, 1)})) << "símbolo: " << s;
+    }
+
+}
