@@ -126,3 +126,16 @@ TEST(RhymeIndexTest, MesmoPontoMesmoVertice) {
     EXPECT_EQ(index.familiesAtVertex(0),
         std::vector({id1, id2}));
 }
+
+TEST(RhymeIndexTest, PontosDiferentes) {
+    RhymeIndex index;
+    index.add("dog", "AO G", {0.89, 0.375});
+    index.add("cat", "AE T", {0.79, 0.475});
+    EXPECT_EQ(index.points().size(),
+        2);
+
+    EXPECT_EQ(index.familiesAtVertex(0),
+        std::vector({0}));
+    EXPECT_EQ(index.familiesAtVertex(1),
+    std::vector({1}));
+}
