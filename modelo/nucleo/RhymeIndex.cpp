@@ -1,9 +1,6 @@
 #include "RhymeIndex.hpp"
 
-namespace modelo
-{
-namespace nucleo
-{
+namespace modelo::nucleo {
 
 void RhymeIndex::add(const std::string& word, const std::string& key, const modelo::geometria::Point2D& point)
 {
@@ -19,9 +16,18 @@ const std::vector<modelo::geometria::Point2D>& RhymeIndex::points() const
 	return points_;
 }
 
-std::string RhymeIndex::rhymeKey(const std::vector<Phoneme>& rhymePart)
-{
-	return {};
+std::string RhymeIndex::rhymeKey(const std::vector<Phoneme>& rhymePart) {
+
+	std::string resultado;
+
+	for (size_t i = 0; i < rhymePart.size(); i++) {
+		if (i > 0) {
+			resultado += ' ';
+		}
+		resultado += rhymePart[i].symbol;
+	}
+
+	return resultado;
 }
 
 const RhymeFamily& RhymeIndex::family(int id) const
@@ -38,5 +44,4 @@ std::vector<Phoneme> RhymeIndex::rhymePart(const std::vector<Phoneme>& phonemes)
 {
 	return {};
 }
-}  // namespace nucleo
-}  // namespace modelo
+}  // namespace modelo::nucleo

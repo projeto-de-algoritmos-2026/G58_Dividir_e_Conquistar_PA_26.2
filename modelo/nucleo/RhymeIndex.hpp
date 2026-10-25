@@ -11,12 +11,8 @@
 #include "modelo/nucleo/Phoneme.hpp"
 #include "modelo/geometria/Point2D.hpp"
 
-namespace modelo
-{
-namespace nucleo
-{
-class RhymeIndex
-{
+namespace modelo::nucleo {
+class RhymeIndex {
 private:
 	std::vector<RhymeFamily> families;
 
@@ -45,6 +41,5 @@ public:
 
 };
 
-}  // namespace nucleo
-}  // namespace modelo
+}  // namespace modelo::nucleo
 #endif
