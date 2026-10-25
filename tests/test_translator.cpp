@@ -80,3 +80,10 @@ TEST(AcousticTranslatorTest, TodosOsFonemasDoCmu) {
     }
 
 }
+
+TEST(AcousticTranslatorTest, RimaVazia) {
+    AcousticTranslator tradutor(0.5);
+    IPhoneticConverter& conversor = tradutor;
+    EXPECT_THROW(conversor.toPoint({}),
+        std::invalid_argument);
+}
