@@ -43,3 +43,11 @@ TEST(AcousticTranslatorTest, MediaDoResto) {
     EXPECT_NEAR(p.x, 0.135, 1e-12);
     EXPECT_NEAR(p.y, 0.145, 1e-12);
 }
+
+TEST(AcousticTranslatorTest, PesoDiferente) {
+    AcousticTranslator tradutor(0.5);
+    IPhoneticConverter& conversor = tradutor;
+    Point2D p = conversor.toPoint({vogal("AO", 1), consoante("G")});
+    EXPECT_NEAR(p.x, 0.85, 1e-12);
+    EXPECT_NEAR(p.y, 0.275, 1e-12);
+}
