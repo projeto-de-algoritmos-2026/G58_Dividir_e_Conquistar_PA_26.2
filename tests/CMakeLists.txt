@@ -13,6 +13,7 @@ add_executable(rhyme_tests
         test_quadedge.cpp
         test_predicates.cpp
         test_delaunay.cpp
+        test_rhymeindex.cpp
 )
 target_link_libraries(rhyme_tests PRIVATE rhyme_core GTest::gtest_main)
 
