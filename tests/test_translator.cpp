@@ -27,10 +27,19 @@ TEST(AcousticTranslatorTest, UmaVogal) {
     EXPECT_DOUBLE_EQ(p.x, 0.90);
     EXPECT_DOUBLE_EQ(p.y, 0.40);
 }
+
 TEST(AcousticTranslatorTest, VogalEConsoante) {
     AcousticTranslator tradutor(0.9);
     IPhoneticConverter& conversor = tradutor;
     Point2D p = conversor.toPoint({vogal("AO", 1), consoante("G")});
     EXPECT_NEAR(p.x, 0.89, 1e-12);
     EXPECT_NEAR(p.y, 0.375, 1e-12);
+}
+
+TEST(AcousticTranslatorTest, MediaDoResto) {
+    AcousticTranslator tradutor(0.9);
+    IPhoneticConverter& conversor = tradutor;
+    Point2D p = conversor.toPoint({vogal("AE", 1), consoante("N"), vogal("AH", 0)});
+    EXPECT_NEAR(p.x, 0.135, 1e-12);
+    EXPECT_NEAR(p.y, 0.145, 1e-12);
 }
