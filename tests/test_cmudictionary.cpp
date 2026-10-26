@@ -61,3 +61,9 @@ TEST(CmuDictionaryTest, IgnoraComentarios) {
     IDictionaryLookUp& dic = dicionario;
     EXPECT_EQ(dic.entries().size(), 7u);
 }
+
+TEST(CmuDictionaryTest, ComentarioNoFimDaLinha) {
+    CmuDictionary dicionario(MINI);
+    IDictionaryLookUp& dic = dicionario;
+    EXPECT_EQ(simbolos(dic.lookUp("d'artagnan")), std::vector<std::string>({"D", "AH", "R", "T", "AE", "NG", "Y", "AH", "N"}));
+}
