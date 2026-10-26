@@ -1,5 +1,9 @@
 #include <gtest/gtest.h>
 
+#include <algorithm>
+#include <string>
+#include <vector>
+
 #include "modelo/nucleo/RhymeEngine.hpp"
 #include "modelo/adaptadores/CmuDictionary.hpp"
 #include "modelo/adaptadores/AcousticTranslator.hpp"
@@ -37,4 +41,17 @@ TEST_F(RhymeEngineTest, ClusterDeUmaFamilia) {
         std::vector<std::string>({ "AO G"}));
     EXPECT_EQ(engine.clusterOf("dog").words,
         std::vector<std::string>({"dog", "log"}));
+}
+
+TEST_F(RhymeEngineTest, ClusterComKDois) {
+    engine.build(2);
+
+    auto dog = engine.clusterOf("dog");
+    auto dartagnan = engine.clusterOf("d'artagnan");
+
+    EXPECT_EQ(dog.keys.size(), 4u);
+    EXPECT_NE(std::find(dog.keys.begin(), dog.keys.end(), "AO G"), dog.keys.end());
+
+    EXPECT_EQ(dartagnan.keys, (std::vector<std::string>{"AE NG Y AH N"}));
+    EXPECT_NE(dog.id, dartagnan.id);
 }
