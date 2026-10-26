@@ -30,3 +30,11 @@ TEST_F(RhymeEngineTest, ClusterPalavraDesconhecida) {
     EXPECT_TRUE(c.keys.empty());
     EXPECT_TRUE(c.words.empty());
 }
+
+TEST_F(RhymeEngineTest, ClusterDeUmaFamilia) {
+    engine.build(5);
+    EXPECT_EQ(engine.clusterOf("dog").keys,
+        std::vector<std::string>({ "AO G"}));
+    EXPECT_EQ(engine.clusterOf("dog").words,
+        std::vector<std::string>({"dog", "log"}));
+}
