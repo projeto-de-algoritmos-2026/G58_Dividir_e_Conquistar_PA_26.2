@@ -29,10 +29,15 @@ CmuDictionary::CmuDictionary(const std::string& path) {
 			continue;
 		}
 
-		std::istringstream partes(linha);
+		auto pos = linha.find('#');
 
+		if (pos != std::string::npos) {
+			linha.erase(pos);
+		}
+
+		std::istringstream partes(linha);
 		std::string palavra;
-		partes >> palavra;
+		if (!(partes >> palavra)) continue;
 
 		std::vector<modelo::nucleo::Phoneme> fonemas;
 		std::string token;
