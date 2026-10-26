@@ -39,8 +39,18 @@ void RhymeEngine::build(int k) {
 
 }
 
-RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear)
-{
+RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
+
+	RhymeResult r;
+	r.word = word;
+	r.found = false;
+
+	int id = familiaDaPalavra(dict, index, word);
+
+	if (id == -1) {
+		return r;
+	}
+
 	return {};
 }
 
