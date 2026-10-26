@@ -55,3 +55,9 @@ TEST(CmuDictionaryTest, PalavraDesconhecida) {
     IDictionaryLookUp& dic = dicionario;
     EXPECT_TRUE(dic.lookUp("xyzzy").empty());
 }
+
+TEST(CmuDictionaryTest, IgnoraComentarios) {
+    CmuDictionary dicionario(MINI);
+    IDictionaryLookUp& dic = dicionario;
+    EXPECT_EQ(dic.entries().size(), 7u);
+}
