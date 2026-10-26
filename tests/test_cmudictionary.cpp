@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <stdexcept>
+#include <algorithm>
 
 #include "modelo/adaptadores/CmuDictionary.hpp"
 #include "modelo/nucleo/IDictionaryLookUp.hpp"
@@ -7,6 +8,7 @@
 using modelo::nucleo::Phoneme;
 using modelo::adaptadores::CmuDictionary;
 using modelo::nucleo::IDictionaryLookUp;
+using modelo::nucleo::DictionaryEntry;
 
 static const std::string MINI = std::string(FIXTURES_DIR) + "/mini.dict";
 
@@ -66,4 +68,16 @@ TEST(CmuDictionaryTest, ComentarioNoFimDaLinha) {
     CmuDictionary dicionario(MINI);
     IDictionaryLookUp& dic = dicionario;
     EXPECT_EQ(simbolos(dic.lookUp("d'artagnan")), std::vector<std::string>({"D", "AH", "R", "T", "AE", "NG", "Y", "AH", "N"}));
+}
+
+TEST(CmuDictionaryTest, Variantes) {
+    CmuDictionary dicionario(MINI);
+    IDictionaryLookUp& dic = dicionario;
+    EXPECT_EQ(simbolos(dic.lookUp("log")), std::vector<std::string>({"L", "AO", "G"}));
+    EXPECT_EQ(simbolos(dic.lookUp("log(2)")), std::vector<std::string>({}));
+
+    auto quantidade = std::count_if(dic.entries().begin(), dic.entries().end(),
+    [](const DictionaryEntry& entrada) { return entrada.word == "log"; });
+
+    EXPECT_EQ(quantidade, 2);
 }
