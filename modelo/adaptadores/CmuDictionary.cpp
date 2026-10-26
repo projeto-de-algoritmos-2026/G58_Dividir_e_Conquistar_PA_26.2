@@ -25,6 +25,10 @@ CmuDictionary::CmuDictionary(const std::string& path) {
 
 	while (std::getline(arquivo, linha)) {
 
+		if (linha.empty() || linha.substr(0, 3) == ";;;") {
+			continue;
+		}
+
 		std::istringstream partes(linha);
 
 		std::string palavra;
@@ -55,8 +59,7 @@ std::vector<modelo::nucleo::Phoneme> CmuDictionary::lookUp(const std::string& wo
 	}
 }
 
-const std::vector<modelo::nucleo::DictionaryEntry>& CmuDictionary::entries() const
-{
+const std::vector<modelo::nucleo::DictionaryEntry>& CmuDictionary::entries() const {
 	return entries_;
 }
 }  // namespace modelo::adaptadores
