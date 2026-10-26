@@ -66,3 +66,14 @@ TEST_F(RhymeEngineTest, RimasPalavraDesconhecida) {
     EXPECT_TRUE(r.perfect.empty());
     EXPECT_TRUE(r.near.empty());
 }
+
+TEST_F(RhymeEngineTest, RimasPerfeitas) {
+    engine.build(5);
+
+    auto r = engine.findRhymes("dog", 0);
+
+    EXPECT_TRUE(r.found);
+    EXPECT_EQ(r.perfect, std::vector<std::string>{"log"});
+    EXPECT_TRUE(r.near.empty());
+
+}
