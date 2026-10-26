@@ -1,12 +1,15 @@
 #include "CmuDictionary.hpp"
 
-namespace modelo
-{
-namespace adaptadores
-{
+#include <stdexcept>
+#include <fstream>
 
-CmuDictionary::CmuDictionary(const std::string& path)
-{
+namespace modelo::adaptadores {
+
+CmuDictionary::CmuDictionary(const std::string& path) {
+	std::ifstream arquivo(path);
+	if (!arquivo) {
+		throw std::runtime_error("Não foi possível abrir o dicionário: " + path);
+	}
 }
 
 std::vector<modelo::nucleo::Phoneme> CmuDictionary::lookUp(const std::string& word) const
@@ -18,5 +21,4 @@ const std::vector<modelo::nucleo::DictionaryEntry>& CmuDictionary::entries() con
 {
 	return entries_;
 }
-}  // namespace adaptadores
-}  // namespace modelo
+}  // namespace modelo::adaptadores

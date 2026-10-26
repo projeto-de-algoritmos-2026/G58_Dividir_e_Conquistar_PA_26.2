@@ -9,12 +9,8 @@
 #include "modelo/nucleo/DictionaryEntry.hpp"
 #include "modelo/nucleo/Phoneme.hpp"
 
-namespace modelo
-{
-namespace adaptadores
-{
-class CmuDictionary : public modelo::nucleo::IDictionaryLookUp
-{
+namespace modelo::adaptadores {
+class CmuDictionary : public modelo::nucleo::IDictionaryLookUp {
 private:
 	std::vector<modelo::nucleo::DictionaryEntry> entries_;
 
@@ -29,6 +25,5 @@ public:
 
 };
 
-}  // namespace adaptadores
-}  // namespace modelo
+}  // namespace modelo::adaptadores
 #endif
