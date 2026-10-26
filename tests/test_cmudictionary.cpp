@@ -49,3 +49,9 @@ TEST(CmuDictionaryTest, TonicaEVogal) {
     EXPECT_EQ(f[0].isVowel, false);
     EXPECT_EQ(f[0].stress, -1);
 }
+
+TEST(CmuDictionaryTest, PalavraDesconhecida) {
+    CmuDictionary dicionario(MINI);
+    IDictionaryLookUp& dic = dicionario;
+    EXPECT_TRUE(dic.lookUp("xyzzy").empty());
+}
