@@ -27,3 +27,10 @@ TEST(CmuDictionaryTest, ArquivoInexistente) {
 
     EXPECT_THROW(CmuDictionary("nao/existe.dict"), std::runtime_error);
 }
+
+TEST(CmuDictionaryTest, LeUmaPalavra) {
+    CmuDictionary dicionario(MINI);
+    IDictionaryLookUp& dic = dicionario;
+
+    EXPECT_EQ(simbolos(dic.lookUp("dog")), std::vector<std::string>({"D", "AO", "G"}));
+}

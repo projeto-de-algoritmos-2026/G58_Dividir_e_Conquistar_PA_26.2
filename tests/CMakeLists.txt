@@ -15,7 +15,7 @@ add_executable(rhyme_tests
         test_delaunay.cpp
         test_rhymeindex.cpp
         test_translator.cpp
-        test_cmudictinary.cpp
+        test_cmudictionary.cpp
 )
 
 target_compile_definitions(rhyme_tests PRIVATE FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/fixtures")
