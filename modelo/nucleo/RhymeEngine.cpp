@@ -51,7 +51,17 @@ RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 		return r;
 	}
 
-	return {};
+	r.found = true;
+
+	const RhymeFamily& fam = index.family(id);
+
+	for (const std::string& w : fam.words) {
+		if (w != word) {
+			r.perfect.push_back(w);
+		}
+	}
+
+	return r;
 }
 
 RhymeCluster RhymeEngine::clusterOf(const std::string& word) {
