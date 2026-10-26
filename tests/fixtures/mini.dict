@@ -1,8 +1,8 @@
-   ;;; mini dicionário de teste:
-   dog D AO1 G
-   fog F AA1 G
-   log L AO1 G
-   log(2) L AA1 G
-   the DH AH0
-   d'artagnan D AH0 R T AE1 NG Y AH0 N # foreign french
-   HELLO HH AH0 L OW1
+;;; mini dicionário de teste:
+dog D AO1 G
+fog F AA1 G
+log L AO1 G
+log(2) L AA1 G
+the DH AH0
+d'artagnan D AH0 R T AE1 NG Y AH0 N # foreign french
+HELLO HH AH0 L OW1
