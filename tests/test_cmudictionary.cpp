@@ -34,3 +34,18 @@ TEST(CmuDictionaryTest, LeUmaPalavra) {
 
     EXPECT_EQ(simbolos(dic.lookUp("dog")), std::vector<std::string>({"D", "AO", "G"}));
 }
+
+TEST(CmuDictionaryTest, TonicaEVogal) {
+    CmuDictionary dicionario(MINI);
+    IDictionaryLookUp& dic = dicionario;
+
+    auto f = dic.lookUp("dog");
+    ASSERT_EQ(f.size(), 3u);
+
+    EXPECT_EQ(f[1].symbol, "AO");
+    EXPECT_EQ(f[1].isVowel, true);
+    EXPECT_EQ(f[1].stress, 1);
+
+    EXPECT_EQ(f[0].isVowel, false);
+    EXPECT_EQ(f[0].stress, -1);
+}
