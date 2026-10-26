@@ -55,3 +55,14 @@ TEST_F(RhymeEngineTest, ClusterComKDois) {
     EXPECT_EQ(dartagnan.keys, (std::vector<std::string>{"AE NG Y AH N"}));
     EXPECT_NE(dog.id, dartagnan.id);
 }
+
+TEST_F(RhymeEngineTest, RimasPalavraDesconhecida) {
+    engine.build(5);
+
+    auto r = engine.findRhymes("xyzzy", 5);
+
+    EXPECT_EQ(r.word, "xyzzy");
+    EXPECT_FALSE(r.found);
+    EXPECT_TRUE(r.perfect.empty());
+    EXPECT_TRUE(r.near.empty());
+}
