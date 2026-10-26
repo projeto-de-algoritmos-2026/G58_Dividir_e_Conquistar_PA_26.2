@@ -39,6 +39,9 @@ CmuDictionary::CmuDictionary(const std::string& path) {
 		std::string palavra;
 		if (!(partes >> palavra)) continue;
 
+		auto par = palavra.find('(');
+		if (par != std::string::npos) palavra.erase(par);
+
 		std::vector<modelo::nucleo::Phoneme> fonemas;
 		std::string token;
 
