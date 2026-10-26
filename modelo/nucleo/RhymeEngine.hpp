@@ -14,12 +14,8 @@
 #include "modelo/geometria/IClusterer.hpp"
 #include "modelo/geometria/DelaunayGraph.hpp"
 
-namespace modelo
-{
-namespace nucleo
-{
-class RhymeEngine : public IRhymeFinder
-{
+namespace modelo:: nucleo {
+class RhymeEngine : public IRhymeFinder {
 private:
 	IDictionaryLookUp& dict;
 
@@ -49,6 +45,5 @@ public:
 
 };
 
-}  // namespace nucleo
-}  // namespace modelo
+}  // namespace modelo::nucleo
 #endif
