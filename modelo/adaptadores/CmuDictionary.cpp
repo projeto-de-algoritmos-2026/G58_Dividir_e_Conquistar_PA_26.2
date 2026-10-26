@@ -13,6 +13,11 @@ static modelo::nucleo::Phoneme lerFonema(const std::string& token) {
 	}
 }
 
+static std::string minusculas(std::string s) {
+	for (char& c : s) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+	return s;
+}
+
 namespace modelo::adaptadores {
 
 CmuDictionary::CmuDictionary(const std::string& path) {
@@ -49,16 +54,18 @@ CmuDictionary::CmuDictionary(const std::string& path) {
 			fonemas.push_back(lerFonema(token));
 		}
 
+		std::string palavraEmMinusculas = minusculas(palavra);
+
 		int indice = static_cast<int>(entries_.size());
-		entries_.push_back({palavra, fonemas});
-		byWord.insert({palavra, indice});
+		entries_.push_back({palavraEmMinusculas, fonemas});
+		byWord.insert({palavraEmMinusculas, indice});
 
 	}
 
 }
 
 std::vector<modelo::nucleo::Phoneme> CmuDictionary::lookUp(const std::string& word) const {
-	auto it = byWord.find(word);
+	auto it = byWord.find(minusculas(word));
 
 	if (it == byWord.end()) {
 		return {};
