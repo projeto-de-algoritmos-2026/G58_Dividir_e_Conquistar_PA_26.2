@@ -81,3 +81,18 @@ TEST(CmuDictionaryTest, Variantes) {
 
     EXPECT_EQ(quantidade, 2);
 }
+
+TEST(CmuDictionaryTest, MaiusculasEMinusculas) {
+    CmuDictionary dicionario(MINI);
+    IDictionaryLookUp& dic = dicionario;
+    EXPECT_FALSE(dic.lookUp("hello").empty());
+    EXPECT_FALSE(dic.lookUp("heLLo").empty());
+    EXPECT_EQ(dic.lookUp("DOG").size(), 3u);
+
+    EXPECT_TRUE(std::any_of(dic.entries().begin(), dic.entries().end(),
+    [](const DictionaryEntry& entrada) { return entrada.word == "hello"; }));
+
+    EXPECT_FALSE(std::any_of(dic.entries().begin(), dic.entries().end(),
+[](const DictionaryEntry& entrada) { return entrada.word == "HELLO"; }));
+
+}
