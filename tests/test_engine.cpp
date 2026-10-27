@@ -112,6 +112,14 @@ TEST_F(RhymeEngineTest, MaisProximasQueExistem) {
 std::vector<std::string>({"hello", "fog"}));
 }
 
+TEST_F(RhymeEngineTest, PalavraEmMaiusculas) {
+    engine.build(5);
+
+    auto r = engine.findRhymes("DOG", 0);
+
+    EXPECT_EQ(r.perfect, std::vector<std::string>{"log"});
+}
+
 class PontoFixo : public IPhoneticConverter {
 public:
     Point2D toPoint(const std::vector<Phoneme>&) override {
