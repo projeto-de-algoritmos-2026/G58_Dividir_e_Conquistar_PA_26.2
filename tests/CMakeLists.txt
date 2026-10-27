@@ -17,9 +17,13 @@ add_executable(rhyme_tests
         test_translator.cpp
         test_cmudictionary.cpp
         test_engine.cpp
+        test_oraculos.cpp
+        test_dados_reais.cpp
 )
 
 target_compile_definitions(rhyme_tests PRIVATE FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/fixtures")
+# Pasta do dicionário de verdade, usada pelo test_dados_reais.cpp
+target_compile_definitions(rhyme_tests PRIVATE DATA_DIR="${PROJECT_SOURCE_DIR}/data")
 
 
 target_link_libraries(rhyme_tests PRIVATE rhyme_core GTest::gtest_main)
