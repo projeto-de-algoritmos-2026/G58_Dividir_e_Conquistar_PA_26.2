@@ -77,3 +77,11 @@ TEST_F(RhymeEngineTest, RimasPerfeitas) {
     EXPECT_TRUE(r.near.empty());
 
 }
+
+TEST_F(RhymeEngineTest, UmaRimaProxima) {
+    engine.build(5);
+
+    auto r = engine.findRhymes("dog", 1);
+
+    EXPECT_EQ(r.near, std::vector<std::string>{"hello"});
+}
