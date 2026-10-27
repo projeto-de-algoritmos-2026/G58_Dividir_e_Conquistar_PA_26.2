@@ -65,11 +65,18 @@ RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 		}
 	}
 
+	auto contem = [](const std::vector<std::string>& lista, const std::string& w) {
+		return std::find(lista.begin(), lista.end(), w) != lista.end();
+	};
+
 	auto acrescentar = [&](int f) {
 		for (const std::string& w : index.family(f).words) {
-			if (static_cast<int>(r.near.size()) >= maxNear) {
-				return;
-			}
+			if (static_cast<int>(r.near.size()) >= maxNear) return;
+
+			if (w == word) continue;
+			if (contem(r.perfect, w)) continue;
+			if (contem(r.near, w)) continue;
+
 			r.near.push_back(w);
 		}
 	};
