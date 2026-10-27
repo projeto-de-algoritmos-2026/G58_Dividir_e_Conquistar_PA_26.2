@@ -15,6 +15,9 @@ using modelo::adaptadores::AcousticTranslator;
 using modelo::adaptadores::CmuDictionary;
 using modelo::geometria::DivideConquerDelaunay;
 using modelo::geometria::KruskalClusterer;
+using modelo::geometria::Point2D;
+using modelo::nucleo::IPhoneticConverter;
+using modelo::nucleo::Phoneme;
 
 static const std::string MINI = std::string(FIXTURES_DIR) + "/mini.dict";
 
@@ -107,4 +110,27 @@ TEST_F(RhymeEngineTest, MaisProximasQueExistem) {
 
     EXPECT_EQ(s.near,
 std::vector<std::string>({"hello", "fog"}));
+}
+
+class PontoFixo : public IPhoneticConverter {
+public:
+    Point2D toPoint(const std::vector<Phoneme>&) override {
+        return {0.5, 0.5};
+    }
+};
+
+TEST(RhymeEngineFakeTest, MesmoVerticeVemPrimeiro) {
+    CmuDictionary dicionario(MINI);
+    PontoFixo conversor;
+    DivideConquerDelaunay triangulador;
+    KruskalClusterer clusterizador;
+    RhymeEngine engine(dicionario, conversor, triangulador, clusterizador);
+
+    engine.build(1);
+
+    auto r = engine.findRhymes("dog", 10);
+
+    EXPECT_EQ(r.perfect, (std::vector<std::string>{"log"}));
+
+    EXPECT_EQ(r.near, (std::vector<std::string>{"fog", "the", "d'artagnan", "hello"}));
 }
