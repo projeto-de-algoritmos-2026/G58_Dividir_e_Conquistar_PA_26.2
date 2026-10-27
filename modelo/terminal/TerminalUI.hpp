@@ -5,12 +5,8 @@
 #include "modelo/nucleo/RhymeResult.hpp"
 #include "modelo/nucleo/RhymeCluster.hpp"
 
-namespace modelo
-{
-namespace terminal
-{
-class TerminalUI
-{
+namespace modelo::terminal {
+class TerminalUI {
 private:
 	modelo::nucleo::IRhymeFinder& finder;
 
@@ -26,6 +22,5 @@ public:
 
 };
 
-}  // namespace terminal
-}  // namespace modelo
+}  // namespace modelo::terminal
 #endif
