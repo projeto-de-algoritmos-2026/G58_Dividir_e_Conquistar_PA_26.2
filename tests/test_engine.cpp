@@ -85,3 +85,12 @@ TEST_F(RhymeEngineTest, UmaRimaProxima) {
 
     EXPECT_EQ(r.near, std::vector<std::string>{"hello"});
 }
+
+TEST_F(RhymeEngineTest, RimasProximasEmOrdem) {
+    engine.build(5);
+
+    auto r = engine.findRhymes("dog", 3);
+
+    EXPECT_EQ(r.near,
+        std::vector<std::string>({"hello", "fog", "the"}));
+}
