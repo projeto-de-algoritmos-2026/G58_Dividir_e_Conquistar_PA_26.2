@@ -1,5 +1,9 @@
 #include "RhymeEngine.hpp"
 
+#include <queue>
+#include <functional>
+#include <cmath>
+
 using modelo::nucleo::RhymeIndex;
 using modelo::nucleo::Phoneme;
 
@@ -61,6 +65,21 @@ RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 		}
 	}
 
+	auto acrescentar = [&](int f) {
+		for (const std::string& w : index.family(f).words) {
+			if (static_cast<int>(r.near.size()) >= maxNear) {
+				return;
+			}
+			r.near.push_back(w);
+		}
+	};
+
+	for (int u : nearestVertices(fam.vertex, maxNear)) {
+		for (int f : index.familiesAtVertex(u)) {
+			acrescentar(f);
+		}
+	}
+
 	return r;
 }
 
@@ -97,8 +116,37 @@ RhymeCluster RhymeEngine::clusterOf(const std::string& word) {
 	return cluster;
 }
 
-std::vector<int> RhymeEngine::nearestVertices(int v, int k)
-{
-	return {};
+std::vector<int> RhymeEngine::nearestVertices(int v, int k) {
+
+	const auto& p =index.points();
+	std::vector<int> resultado;
+	std::vector<bool> visitado(p.size(), false);
+
+	using Item = std::pair<double, int>;
+	std::priority_queue<Item, std::vector<Item>, std::greater<Item>> fila;
+	fila.push({0.0, v});
+
+	while (!fila.empty() && static_cast<int>(resultado.size()) < k) {
+		Item atual = fila.top();
+		fila.pop();
+		int u = atual.second;
+
+		if (visitado[u]) {
+			continue;
+		}
+		visitado[u] = true;
+
+		if (u != v) {
+			resultado.push_back(u);
+		}
+
+		for (int w : graph.neighbors(u)) {
+			if (!visitado[w]) {
+				double d = std::hypot(p[w].x - p[v].x, p[w].y - p[v].y);
+				fila.push({d, w});
+			}
+		}
+	}
+	return resultado;
 }
 }  // namespace modelo::nucleo
