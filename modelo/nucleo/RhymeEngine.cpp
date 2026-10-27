@@ -81,6 +81,10 @@ RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 		}
 	};
 
+	for (int f : index.familiesAtVertex(fam.vertex)) {
+		if (f != id) acrescentar(f);
+	}
+
 	for (int u : nearestVertices(fam.vertex, maxNear)) {
 		for (int f : index.familiesAtVertex(u)) {
 			acrescentar(f);
