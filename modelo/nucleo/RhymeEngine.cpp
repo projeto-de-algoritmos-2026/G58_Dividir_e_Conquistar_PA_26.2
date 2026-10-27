@@ -18,6 +18,11 @@ static int familiaDaPalavra(const modelo::nucleo::IDictionaryLookUp& dict, const
 	return index.findFamily(RhymeIndex::rhymeKey(rhymePartPhonemes));
 }
 
+static std::string minusculas(std::string s) {
+	for (char& c : s) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
+	return s;
+}
+
 namespace modelo::nucleo {
 
 RhymeEngine::RhymeEngine(IDictionaryLookUp& dict, IPhoneticConverter& conv, modelo::geometria::ITriangulator& tri, modelo::geometria::IClusterer& clusterer)
@@ -45,11 +50,13 @@ void RhymeEngine::build(int k) {
 
 RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 
+	std::string palavra = minusculas(word);
+
 	RhymeResult r;
-	r.word = word;
+	r.word = palavra;
 	r.found = false;
 
-	int id = familiaDaPalavra(dict, index, word);
+	int id = familiaDaPalavra(dict, index, palavra);
 
 	if (id == -1) {
 		return r;
@@ -60,7 +67,7 @@ RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 	const RhymeFamily& fam = index.family(id);
 
 	for (const std::string& w : fam.words) {
-		if (w != word) {
+		if (w != palavra) {
 			r.perfect.push_back(w);
 		}
 	}
@@ -73,7 +80,7 @@ RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 		for (const std::string& w : index.family(f).words) {
 			if (static_cast<int>(r.near.size()) >= maxNear) return;
 
-			if (w == word) continue;
+			if (w == palavra) continue;
 			if (contem(r.perfect, w)) continue;
 			if (contem(r.near, w)) continue;
 
