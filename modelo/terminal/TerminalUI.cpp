@@ -4,15 +4,15 @@
 #include <sstream>
 #include <string>
 
-static const int MOSTRAR = 20;
+static const int MAX_WORDS_SHOWN = 20;
 
-static void listar(const std::vector<std::string>& palavras) {
-	int total = static_cast<int>(palavras.size());
-	for (int i = 0; i < total && i < MOSTRAR; i++) {
-		std::cout << (i == 0 ? " " : ", ") << palavras[i];
+static void printWorsList(const std::vector<std::string>& words) {
+	int total = static_cast<int>(words.size());
+	for (int i = 0; i < total && i < MAX_WORDS_SHOWN; i++) {
+		std::cout << (i == 0 ? " " : ", ") << words[i];
 	}
-	if (total > MOSTRAR) {
-		std::cout << " ... (+ " << total - MOSTRAR << ")";
+	if (total > MAX_WORDS_SHOWN) {
+		std::cout << " ... (+ " << total - MAX_WORDS_SHOWN << ")";
 	}
 	std::cout <<'\n';
 }
@@ -25,19 +25,19 @@ TerminalUI::TerminalUI(modelo::nucleo::IRhymeFinder& finder)
 
 void TerminalUI::run() {
 	std::cout << "Digite 'ajuda' para ver os comandos.\n";
-	std::string texto;
+	std::string input;
 
 	while (true) {
 		std::cout << "> " << std::flush;
-		if (!std::getline(std::cin, texto)) break;
+		if (!std::getline(std::cin, input)) break;
 
-		std::istringstream linha(texto);
-		std::string comando;
-		if (!(linha >> comando)) continue;
+		std::istringstream tokens(input);
+		std::string command;
+		if (!(tokens >> command)) continue;
 
-		if (comando == "sair") break;;
+		if (command == "sair") break;
 
-		if (comando == "ajuda") {
+		if (command == "ajuda") {
 			std::cout << "	rimas <palavra> [n]    rimas perfeitas e as n próximas (padrão 10)\n"
 			          << "	cluster <palavra>      o grupo de rimas da palavra\n"
 			          << "	ajuda                  esta lista\n"
@@ -45,39 +45,39 @@ void TerminalUI::run() {
 			continue;
 		}
 
-		if (comando == "rimas") {
-			std::string palavra;
-			if (!(linha >> palavra)) {
+		if (command == "rimas") {
+			std::string word;
+			if (!(tokens >> word)) {
 				std::cout << "Usp rimas <palavra> [n]\n";
 				continue;
 			}
 
-			int n = 10;
-			std::string textoN;
-			if (linha >> textoN) {
+			int nearCount = 10;
+			std::string nearCountText;
+			if (tokens >> nearCountText) {
 				try {
-					n = std::stoi(textoN);
+					nearCount = std::stoi(nearCountText);
 				} catch (const std::exception&) {
 					std::cout << "n precisa ser um número\n";
 					continue;
 				}
 			}
 
-			printRhymes(finder.findRhymes(palavra, n));
+			printRhymes(finder.findRhymes(word, nearCount));
 			continue;
 		}
 
-		if (comando == "cluster" ) {
-			std::string palavra;
-			if (!(linha >> palavra)) {
+		if (command == "cluster" ) {
+			std::string word;
+			if (!(tokens >> word)) {
 				std::cout << "Uso: cluster <palavra>\n";
 				continue;
 			}
-			printCluster(finder.clusterOf(palavra));
+			printCluster(finder.clusterOf(word));
 			continue;
 		}
 
-		std::cout << "Comando desconhecido: " << comando << ". Digite 'ajuda'.\n";
+		std::cout << "Comando desconhecido: " << command << ". Digite 'ajuda'.\n";
 	}
 }
 
@@ -87,9 +87,9 @@ void TerminalUI::printRhymes(const modelo::nucleo::RhymeResult& result) {
 		return;
 	} else {
 		std::cout << "Rimas perfeitas (" << result.perfect.size() << "): \n";
-		listar(result.perfect);
+		printWorsList(result.perfect);
 		std::cout << "Rimas próximas (" << result.near.size() << "): \n";
-		listar(result.near);
+		printWorsList(result.near);
 	}
 }
 
@@ -99,6 +99,6 @@ void TerminalUI::printCluster(const modelo::nucleo::RhymeCluster& cluster) {
 		return;
 	}
 	std::cout << "Cluster " << cluster.id << ": " << cluster.keys.size() << "famílias, " << cluster.words.size() << " palavras\n";
-	listar(cluster.words);
+	printWorsList(cluster.words);
 }
 }  // namespace modelo::terminal

@@ -22,28 +22,31 @@ using modelo::nucleo::RhymeEngine;
 
 using modelo::terminal::TerminalUI;
 
+constexpr double VOWEL_WEIGHT = 0.9;
+constexpr int DEFAULT_CLUSTER_COUNT = 15;
+
 int main(int argc, char** argv) {
 	try {
 
-		std::string caminho = argc > 1 ? argv[1] : "../data/cmudict.dict";
+		std::string dictionaryPath = argc > 1 ? argv[1] : "../data/cmudict.dict";
 
-		int k = argc > 2 ? std::stoi(argv[2]) : 15;
+		int clusterCount = argc > 2 ? std::stoi(argv[2]) : DEFAULT_CLUSTER_COUNT;
 
-		CmuDictionary dicionario(caminho);
-		AcousticTranslator tradutor(0.9);
-		DivideConquerDelaunay triangulador;
-		KruskalClusterer clusterizador;
-		RhymeEngine engine(dicionario, tradutor, triangulador, clusterizador);
+		CmuDictionary dictionary(dictionaryPath);
+		AcousticTranslator translator(VOWEL_WEIGHT);
+		DivideConquerDelaunay triangulator;
+		KruskalClusterer clusterer;
+		RhymeEngine engine(dictionary, translator, triangulator, clusterer);
 
-		auto inicio = std::chrono::steady_clock::now();
+		auto start = std::chrono::steady_clock::now();
 
-		engine.build(k);
+		engine.build(clusterCount);
 
-		auto fim = std::chrono::steady_clock::now();
+		auto end = std::chrono::steady_clock::now();
 
-		auto diff = std::chrono::duration<double, std::milli>(fim - inicio).count();
+		auto buildMilliseconds = std::chrono::duration<double, std::milli>(end - start).count();
 
-		std::cout << "Índice pronto em " << diff << "ms (k = " << k << ")" << std::endl;
+		std::cout << "Índice pronto em " << buildMilliseconds << "ms (k = " << clusterCount << ")" << std::endl;
 
 		TerminalUI ui(engine);
 		ui.run();
