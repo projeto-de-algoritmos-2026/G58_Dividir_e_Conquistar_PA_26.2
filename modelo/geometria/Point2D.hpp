@@ -2,6 +2,7 @@
 #define MODELO_GEOMETRIA_POINT2_D_H
 
 #include <tuple>
+#include <cmath>
 
 namespace modelo::geometria {
 
@@ -16,6 +17,8 @@ public:
 	bool operator<(const Point2D& other) const { return std::tie(x, y) < std::tie(other.x, other.y); }
 
 	bool operator==(const Point2D& other) const {return std::tie(x, y) == std::tie(other.x, other.y); }
+
+	double distanceTo(const Point2D& other) const { return std::hypot(x - other.x, y - other.y); }
 
 };
 
