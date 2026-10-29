@@ -46,12 +46,7 @@ std::vector<Edge> KruskalClusterer::sortedEdges(const std::vector<Point2D>& poin
 
 	std::vector<Edge> edges = graph.edges();
 
-	for (Edge& edge : edges) {
-		double dx = points[edge.u].x - points[edge.v].x;
-		double dy = points[edge.u].y - points[edge.v].y;
-
-		edge.length = std::hypot(dx, dy);
-	}
+	for (Edge& edge : edges) edge.length = points[edge.u].distanceTo(points[edge.v]);
 
 	std::sort(edges.begin(), edges.end());
 
