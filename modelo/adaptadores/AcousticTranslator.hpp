@@ -11,17 +11,17 @@
 #include "modelo/geometria/Point2D.hpp"
 
 namespace modelo::adaptadores {
-class AcousticTranslator : public modelo::nucleo::IPhoneticConverter {
+class AcousticTranslator : public nucleo::IPhoneticConverter {
 private:
-	std::unordered_map<std::string,std::pair<double,double>> phonemeMap;
+	std::unordered_map<std::string,std::pair<double,double>> phonemeCoordinates;
 
 	double vowelWeight;
 
 private:
-	void initializeMap();
+	void initializePhonemeCoordinates();
 
 public:
-	modelo::geometria::Point2D toPoint(const std::vector<modelo::nucleo::Phoneme>& rhymePart) override;
+	geometria::Point2D toPoint(const std::vector<nucleo::Phoneme>& rhymePart) override;
 
 	AcousticTranslator(double vowelWeight);
 

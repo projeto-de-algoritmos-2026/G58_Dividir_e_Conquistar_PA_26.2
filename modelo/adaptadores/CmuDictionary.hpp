@@ -10,18 +10,18 @@
 #include "modelo/nucleo/Phoneme.hpp"
 
 namespace modelo::adaptadores {
-class CmuDictionary : public modelo::nucleo::IDictionaryLookUp {
+class CmuDictionary : public nucleo::IDictionaryLookUp {
 private:
-	std::vector<modelo::nucleo::DictionaryEntry> entries_;
+	std::vector<nucleo::DictionaryEntry> allEntries;
 
-	std::unordered_map<std::string,int> byWord;
+	std::unordered_map<std::string,int> entryByWord;
 
 public:
 	CmuDictionary(const std::string& path);
 
-	std::vector<modelo::nucleo::Phoneme> lookUp(const std::string& word) const override;
+	std::vector<nucleo::Phoneme> lookUp(const std::string& word) const override;
 
-	const std::vector<modelo::nucleo::DictionaryEntry>& entries() const override;
+	const std::vector<nucleo::DictionaryEntry>& entries() const override;
 
 };
 

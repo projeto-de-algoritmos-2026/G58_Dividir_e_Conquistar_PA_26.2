@@ -5,7 +5,7 @@
 #include <sstream>
 #include <cctype>
 
-static modelo::nucleo::Phoneme lerFonema(const std::string& token) {
+static modelo::nucleo::Phoneme parsePhoneme(const std::string& token) {
 	if (std::isdigit(static_cast<unsigned char>(token.back()))) {
 		return {token.substr(0, token.size() -1), true, token.back() - '0'};
 	} else {
@@ -13,7 +13,7 @@ static modelo::nucleo::Phoneme lerFonema(const std::string& token) {
 	}
 }
 
-static std::string minusculas(std::string s) {
+static std::string toLowerCase(std::string s) {
 	for (char& c : s) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
 	return s;
 }
@@ -21,60 +21,56 @@ static std::string minusculas(std::string s) {
 namespace modelo::adaptadores {
 
 CmuDictionary::CmuDictionary(const std::string& path) {
-	std::ifstream arquivo(path);
-	if (!arquivo) {
+	std::ifstream file(path);
+	if (!file) {
 		throw std::runtime_error("Não foi possível abrir o dicionário: " + path);
 	}
 
-	std::string linha;
+	std::string line;
 
-	while (std::getline(arquivo, linha)) {
+	while (std::getline(file, line)) {
 
-		if (linha.empty() || linha.substr(0, 3) == ";;;") {
-			continue;
-		}
+		if (line.empty() || line.substr(0, 3) == ";;;") continue;
 
-		auto pos = linha.find('#');
+		auto commentStart = line.find('#');
 
-		if (pos != std::string::npos) {
-			linha.erase(pos);
-		}
+		if (commentStart != std::string::npos) line.erase(commentStart);
 
-		std::istringstream partes(linha);
-		std::string palavra;
-		if (!(partes >> palavra)) continue;
+		std::istringstream fields(line);
+		std::string word;
+		if (!(fields >> word)) continue;
 
-		auto par = palavra.find('(');
-		if (par != std::string::npos) palavra.erase(par);
+		auto variantStart = word.find('(');
+		if (variantStart != std::string::npos) word.erase(variantStart);
 
-		std::vector<modelo::nucleo::Phoneme> fonemas;
+		std::vector<modelo::nucleo::Phoneme> phonemes;
 		std::string token;
 
-		while (partes >> token) {
-			fonemas.push_back(lerFonema(token));
+		while (fields >> token) {
+			phonemes.push_back(parsePhoneme(token));
 		}
 
-		std::string palavraEmMinusculas = minusculas(palavra);
+		std::string normalizedWord = toLowerCase(word);
 
-		int indice = static_cast<int>(entries_.size());
-		entries_.push_back({palavraEmMinusculas, fonemas});
-		byWord.insert({palavraEmMinusculas, indice});
+		int entryIndex = static_cast<int>(allEntries.size());
+		allEntries.push_back({normalizedWord, phonemes});
+		entryByWord.insert({normalizedWord, entryIndex});
 
 	}
 
 }
 
 std::vector<modelo::nucleo::Phoneme> CmuDictionary::lookUp(const std::string& word) const {
-	auto it = byWord.find(minusculas(word));
+	auto found = entryByWord.find(toLowerCase(word));
 
-	if (it == byWord.end()) {
+	if (found == entryByWord.end()) {
 		return {};
 	} else {
-		return entries_[it->second].phonemes;
+		return allEntries[found->second].phonemes;
 	}
 }
 
 const std::vector<modelo::nucleo::DictionaryEntry>& CmuDictionary::entries() const {
-	return entries_;
+	return allEntries;
 }
 }  // namespace modelo::adaptadores
