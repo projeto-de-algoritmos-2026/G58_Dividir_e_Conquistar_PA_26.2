@@ -14,30 +14,30 @@
 #include "modelo/geometria/IClusterer.hpp"
 #include "modelo/geometria/DelaunayGraph.hpp"
 
-namespace modelo:: nucleo {
+namespace modelo::nucleo {
 class RhymeEngine : public IRhymeFinder {
 private:
-	IDictionaryLookUp& dict;
+	IDictionaryLookUp& dictionary;
 
-	IPhoneticConverter& conv;
+	IPhoneticConverter& converter;
 
-	modelo::geometria::ITriangulator& tri;
+	geometria::ITriangulator& triangulator;
 
-	modelo::geometria::IClusterer& clusterer;
+	geometria::IClusterer& clusterer;
 
 	RhymeIndex index;
 
-	modelo::geometria::DelaunayGraph graph;
+	geometria::DelaunayGraph graph;
 
-	std::vector<int> labels;
+	std::vector<int> clusterOfVertex;
 
 private:
-	std::vector<int> nearestVertices(int v, int k);
+	std::vector<int> nearestVertices(int origin, int count);
 
 public:
-	RhymeEngine(IDictionaryLookUp& dict, IPhoneticConverter& conv, modelo::geometria::ITriangulator& tri, modelo::geometria::IClusterer& clusterer);
+	RhymeEngine(IDictionaryLookUp& dictionary, IPhoneticConverter& converter, geometria::ITriangulator& triangulator, geometria::IClusterer& clusterer);
 
-	void build(int k);
+	void build(int clusterCount);
 
 	RhymeResult findRhymes(const std::string& word, int maxNear) override;
 

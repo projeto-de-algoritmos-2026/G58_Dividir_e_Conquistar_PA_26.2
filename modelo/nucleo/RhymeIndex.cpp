@@ -6,98 +6,97 @@ namespace modelo::nucleo {
 
 void RhymeIndex::add(const std::string& word, const std::string& key, const modelo::geometria::Point2D& point) {
 
-	auto it = byKey.find(key);
+	auto existingFamily = familyByKey.find(key);
 
-	if (it != byKey.end()) {
-		std::vector<std::string>& palavras = families[it->second].words;
+	if (existingFamily != familyByKey.end()) {
+		std::vector<std::string>& words = families[existingFamily->second].words;
 
-		if (std::find(palavras.begin(), palavras.end(), word) == palavras.end()) {
-			palavras.push_back(word);
+		if (std::find(words.begin(), words.end(), word) == words.end()) {
+			words.push_back(word);
 		}
 
 		return;
 	}
 
-	int v;
-	auto itPonto = byPoint.find({point.x, point.y});
+	int vertex;
+	auto existingVertex = vertexByPoint.find({point.x, point.y});
 
-	if (itPonto != byPoint.end()) {
-		v = itPonto->second;
+	if (existingVertex != vertexByPoint.end()) {
+		vertex = existingVertex->second;
 	} else {
-		v = static_cast<int>(points_.size());
-		points_.push_back(point);
-		familiesAt.push_back({});
-		byPoint[{point.x, point.y}] = v;
+		vertex = static_cast<int>(vertexPoints.size());
+		vertexPoints.push_back(point);
+		familiesByVertex.push_back({});
+		vertexByPoint[{point.x, point.y}] = vertex;
 	}
 
-	int f = static_cast<int>(families.size());
+	int familyId = static_cast<int>(families.size());
 
-	families.push_back({key, {word}, v});
+	families.push_back({key, {word}, vertex});
 
-	byKey[key] = f;
+	familyByKey[key] = familyId;
 
-	familiesAt[v].push_back(f);
+	familiesByVertex[vertex].push_back(familyId);
 
 }
 
 int RhymeIndex::findFamily(const std::string& key) const {
-	auto it = byKey.find(key);
-	return it == byKey.end() ? -1 : it->second;
+	auto found = familyByKey.find(key);
+	return found == familyByKey.end() ? -1 : found->second;
 }
 
-const std::vector<modelo::geometria::Point2D>& RhymeIndex::points() const
-{
-	return points_;
+const std::vector<modelo::geometria::Point2D>& RhymeIndex::points() const {
+	return vertexPoints;
 }
 
 std::string RhymeIndex::rhymeKey(const std::vector<Phoneme>& rhymePart) {
 
-	std::string resultado;
+	std::string key;
 
 	for (size_t i = 0; i < rhymePart.size(); i++) {
 		if (i > 0) {
-			resultado += ' ';
+			key += ' ';
 		}
-		resultado += rhymePart[i].symbol;
+		key += rhymePart[i].symbol;
 	}
 
-	return resultado;
+	return key;
 }
 
-const RhymeFamily& RhymeIndex::family(int id) const
+const RhymeFamily& RhymeIndex::family(int familyId) const
 {
-	return families.at(id);
+	return families.at(familyId);
 }
 
-const std::vector<int>& RhymeIndex::familiesAtVertex(int v) const
+const std::vector<int>& RhymeIndex::familiesAtVertex(int vertex) const
 {
-	return familiesAt.at(v);
+	return familiesByVertex.at(vertex);
 }
 
 std::vector<Phoneme> RhymeIndex::rhymePart(const std::vector<Phoneme>& phonemes) {
 
-	int pos = -1;
+	int rhymeStart = -1;
 
 	for (int i = static_cast<int>(phonemes.size()) - 1; i >= 0; i--) {
 		if (phonemes[i].isVowel && phonemes[i].stress >= 1) {
-			pos = i;
+			rhymeStart = i;
 			break;
 		}
 	}
 
-	if (pos == -1) {
+	if (rhymeStart == -1) {
 		for (int i = static_cast<int>(phonemes.size()) - 1; i >= 0; i--) {
 			if (phonemes[i].isVowel) {
-				pos = i;
+				rhymeStart = i;
 				break;
 			}
 		}
 	}
 
-	if (pos == -1) {
+	if (rhymeStart == -1) {
 		return {};
 	}
 
-	return std::vector<Phoneme>(phonemes.begin() + pos, phonemes.end());
+	return std::vector<Phoneme>(phonemes.begin() + rhymeStart, phonemes.end());
 }
 }  // namespace modelo::nucleo

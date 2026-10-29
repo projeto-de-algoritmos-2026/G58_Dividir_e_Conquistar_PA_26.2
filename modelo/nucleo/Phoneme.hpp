@@ -3,12 +3,8 @@
 
 #include <string>
 
-namespace modelo
-{
-namespace nucleo
-{
-struct Phoneme
-{
+namespace modelo::nucleo {
+struct Phoneme {
 public:
 	std::string symbol;
 
@@ -18,6 +14,5 @@ public:
 
 };
 
-}  // namespace nucleo
-}  // namespace modelo
+}  // namespace modelo::nucleo
 #endif

@@ -4,12 +4,8 @@
 #include <string>
 #include <vector>
 
-namespace modelo
-{
-namespace nucleo
-{
-struct RhymeFamily
-{
+namespace modelo::nucleo {
+struct RhymeFamily {
 public:
 	std::string key;
 
@@ -19,6 +15,5 @@ public:
 
 };
 
-}  // namespace nucleo
-}  // namespace modelo
+}  // namespace modelo::nucleo
 #endif

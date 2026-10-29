@@ -16,26 +16,26 @@ class RhymeIndex {
 private:
 	std::vector<RhymeFamily> families;
 
-	std::unordered_map<std::string,int> byKey;
+	std::unordered_map<std::string,int> familyByKey;
 
-	std::vector<modelo::geometria::Point2D> points_;
+	std::vector<geometria::Point2D> vertexPoints;
 
-	std::vector<std::vector<int>> familiesAt;
+	std::vector<std::vector<int>> familiesByVertex;
 
-	std::map<std::pair<double,double>,int> byPoint;
+	std::map<std::pair<double,double>,int> vertexByPoint;
 
 public:
-	void add(const std::string& word, const std::string& key, const modelo::geometria::Point2D& point);
+	void add(const std::string& word, const std::string& key, const geometria::Point2D& point);
 
 	int findFamily(const std::string& key) const;
 
-	const std::vector<modelo::geometria::Point2D>& points() const;
+	const std::vector<geometria::Point2D>& points() const;
 
 	static std::string rhymeKey(const std::vector<Phoneme>& rhymePart);
 
-	const RhymeFamily& family(int id) const;
+	const RhymeFamily& family(int familyId) const;
 
-	const std::vector<int>& familiesAtVertex(int v) const;
+	const std::vector<int>& familiesAtVertex(int vertex) const;
 
 	static std::vector<Phoneme> rhymePart(const std::vector<Phoneme>& phonemes);
 

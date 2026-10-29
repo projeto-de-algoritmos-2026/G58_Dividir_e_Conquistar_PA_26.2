@@ -4,12 +4,8 @@
 #include <string>
 #include <vector>
 
-namespace modelo
-{
-namespace nucleo
-{
-struct RhymeCluster
-{
+namespace modelo::nucleo {
+struct RhymeCluster {
 public:
 	int id;
 
@@ -19,6 +15,5 @@ public:
 
 };
 
-}  // namespace nucleo
-}  // namespace modelo
+}  // namespace modelo::nucleo
 #endif

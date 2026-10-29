@@ -7,12 +7,8 @@
 #include "modelo/nucleo/Phoneme.hpp"
 #include "modelo/nucleo/DictionaryEntry.hpp"
 
-namespace modelo
-{
-namespace nucleo
-{
-class IDictionaryLookUp
-{
+namespace modelo::nucleo {
+class IDictionaryLookUp {
 public:
 	virtual ~IDictionaryLookUp() = default;
 
@@ -22,6 +18,5 @@ public:
 
 };
 
-}  // namespace nucleo
-}  // namespace modelo
+}  // namespace modelo::nucleo
 #endif

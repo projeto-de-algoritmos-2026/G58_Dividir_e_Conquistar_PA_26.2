@@ -6,12 +6,8 @@
 
 #include "modelo/nucleo/Phoneme.hpp"
 
-namespace modelo
-{
-namespace nucleo
-{
-struct DictionaryEntry
-{
+namespace modelo::nucleo {
+struct DictionaryEntry {
 public:
 	std::string word;
 
@@ -19,6 +15,5 @@ public:
 
 };
 
-}  // namespace nucleo
-}  // namespace modelo
+}  // namespace modelo::nucleo
 #endif

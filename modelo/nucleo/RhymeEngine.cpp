@@ -7,9 +7,9 @@
 using modelo::nucleo::RhymeIndex;
 using modelo::nucleo::Phoneme;
 
-static int familiaDaPalavra(const modelo::nucleo::IDictionaryLookUp& dict, const RhymeIndex& index, const std::string& word) {
+static int familyOfWord(const modelo::nucleo::IDictionaryLookUp& dictionary, const RhymeIndex& index, const std::string& word) {
 
-	std::vector<Phoneme> phonemes = dict.lookUp(word);
+	std::vector<Phoneme> phonemes = dictionary.lookUp(word);
 	if (phonemes.empty()) return -1;
 
 	std::vector<Phoneme> rhymePartPhonemes = RhymeIndex::rhymePart(phonemes);
@@ -18,87 +18,83 @@ static int familiaDaPalavra(const modelo::nucleo::IDictionaryLookUp& dict, const
 	return index.findFamily(RhymeIndex::rhymeKey(rhymePartPhonemes));
 }
 
-static std::string minusculas(std::string s) {
+static std::string toLowerCase(std::string s) {
 	for (char& c : s) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
 	return s;
 }
 
 namespace modelo::nucleo {
 
-RhymeEngine::RhymeEngine(IDictionaryLookUp& dict, IPhoneticConverter& conv, modelo::geometria::ITriangulator& tri, modelo::geometria::IClusterer& clusterer)
-	: dict(dict), conv(conv), tri(tri), clusterer(clusterer), graph(0)
+RhymeEngine::RhymeEngine(IDictionaryLookUp& dictionary, IPhoneticConverter& converter, modelo::geometria::ITriangulator& triangulator, modelo::geometria::IClusterer& clusterer)
+	: dictionary(dictionary), converter(converter), triangulator(triangulator), clusterer(clusterer), graph(0)
 {
 }
 
-void RhymeEngine::build(int k) {
+void RhymeEngine::build(int clusterCount) {
 
-	for (const DictionaryEntry& e : dict.entries()) {
-		auto parte = RhymeIndex::rhymePart(e.phonemes);
+	for (const DictionaryEntry& entry : dictionary.entries()) {
+		auto rhyme = RhymeIndex::rhymePart(entry.phonemes);
 
-		if (parte.empty()) {
-			continue;
-		}
+		if (rhyme.empty()) continue;
 
-		index.add(e.word, RhymeIndex::rhymeKey(parte), conv.toPoint(parte));
+		index.add(entry.word, RhymeIndex::rhymeKey(rhyme), converter.toPoint(rhyme));
 	}
 
-	graph = tri.triangulate(index.points());
+	graph = triangulator.triangulate(index.points());
 
-	labels = clusterer.cluster(index.points(), graph, k);
+	clusterOfVertex = clusterer.cluster(index.points(), graph, clusterCount);
 
 }
 
 RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 
-	std::string palavra = minusculas(word);
+	std::string normalizedWord = toLowerCase(word);
 
-	RhymeResult r;
-	r.word = palavra;
-	r.found = false;
+	RhymeResult result;
+	result.word = normalizedWord;
+	result.found = false;
 
-	int id = familiaDaPalavra(dict, index, palavra);
+	int familyId = familyOfWord(dictionary, index, normalizedWord);
 
-	if (id == -1) {
-		return r;
-	}
+	if (familyId == -1) return result;
 
-	r.found = true;
+	result.found = true;
 
-	const RhymeFamily& fam = index.family(id);
+	const RhymeFamily& family = index.family(familyId);
 
-	for (const std::string& w : fam.words) {
-		if (w != palavra) {
-			r.perfect.push_back(w);
+	for (const std::string& candidate : family.words) {
+		if (candidate != normalizedWord) {
+			result.perfect.push_back(candidate);
 		}
 	}
 
-	auto contem = [](const std::vector<std::string>& lista, const std::string& w) {
-		return std::find(lista.begin(), lista.end(), w) != lista.end();
+	auto contains = [](const std::vector<std::string>& lista, const std::string& words) {
+		return std::find(lista.begin(), lista.end(), words) != lista.end();
 	};
 
-	auto acrescentar = [&](int f) {
-		for (const std::string& w : index.family(f).words) {
-			if (static_cast<int>(r.near.size()) >= maxNear) return;
+	auto addNearRhymesFrom = [&](int familyId) {
+		for (const std::string& candidate : index.family(familyId).words) {
+			if (static_cast<int>(result.near.size()) >= maxNear) return;
 
-			if (w == palavra) continue;
-			if (contem(r.perfect, w)) continue;
-			if (contem(r.near, w)) continue;
+			if (candidate == normalizedWord) continue;
+			if (contains(result.perfect, candidate)) continue;
+			if (contains(result.near, candidate)) continue;
 
-			r.near.push_back(w);
+			result.near.push_back(candidate);
 		}
 	};
 
-	for (int f : index.familiesAtVertex(fam.vertex)) {
-		if (f != id) acrescentar(f);
+	for (int sameVertexFamily : index.familiesAtVertex(family.vertex)) {
+		if (sameVertexFamily != familyId) addNearRhymesFrom(sameVertexFamily);
 	}
 
-	for (int u : nearestVertices(fam.vertex, maxNear)) {
-		for (int f : index.familiesAtVertex(u)) {
-			acrescentar(f);
+	for (int nearbyVertex : nearestVertices(family.vertex, maxNear)) {
+		for (int nearbyFamily : index.familiesAtVertex(nearbyVertex)) {
+			addNearRhymesFrom(nearbyFamily);
 		}
 	}
 
-	return r;
+	return result;
 }
 
 RhymeCluster RhymeEngine::clusterOf(const std::string& word) {
@@ -106,27 +102,24 @@ RhymeCluster RhymeEngine::clusterOf(const std::string& word) {
 	RhymeCluster cluster;
 	cluster.id = -1;
 
-	int id = familiaDaPalavra(dict, index, word);
+	int familyId = familyOfWord(dictionary, index, word);
 
-	if (id == -1) {
-		return cluster;
-	}
+	if (familyId == -1) return cluster;
 
-	int v = index.family(id).vertex;
+	int vertex = index.family(familyId).vertex;
 
-	cluster.id = labels[v];
+	cluster.id = clusterOfVertex[vertex];
 
-	for (int u = 0; u < static_cast<int>(index.points().size()); u++) {
-		if (labels[u] != cluster.id) {
-			continue;
-		}
+	for (int otherVertex = 0; otherVertex < static_cast<int>(index.points().size()); otherVertex++) {
 
-		for (int f: index.familiesAtVertex(u)) {
-			const RhymeFamily& familia = index.family(f);
-			cluster.keys.push_back(familia.key);
+		if (clusterOfVertex[otherVertex] != cluster.id) continue;
 
-			for (const std::string& palavra : familia.words) {
-				cluster.words.push_back(palavra);
+		for (int otherFamilyId: index.familiesAtVertex(otherVertex)) {
+			const RhymeFamily& family = index.family(otherFamilyId);
+			cluster.keys.push_back(family.key);
+
+			for (const std::string& member : family.words) {
+				cluster.words.push_back(member);
 			}
 		}
 
@@ -134,37 +127,34 @@ RhymeCluster RhymeEngine::clusterOf(const std::string& word) {
 	return cluster;
 }
 
-std::vector<int> RhymeEngine::nearestVertices(int v, int k) {
+std::vector<int> RhymeEngine::nearestVertices(int origin, int count) {
 
-	const auto& p =index.points();
-	std::vector<int> resultado;
-	std::vector<bool> visitado(p.size(), false);
+	const auto& points =index.points();
+	std::vector<int> nearest;
+	std::vector<bool> visited(points.size(), false);
 
 	using Item = std::pair<double, int>;
-	std::priority_queue<Item, std::vector<Item>, std::greater<Item>> fila;
-	fila.push({0.0, v});
+	std::priority_queue<Item, std::vector<Item>, std::greater<Item>> heap;
+	heap.push({0.0, origin});
 
-	while (!fila.empty() && static_cast<int>(resultado.size()) < k) {
-		Item atual = fila.top();
-		fila.pop();
-		int u = atual.second;
+	while (!heap.empty() && static_cast<int>(nearest.size()) < count) {
+		Item candidate = heap.top();
+		heap.pop();
+		int current = candidate.second;
 
-		if (visitado[u]) {
-			continue;
-		}
-		visitado[u] = true;
+		if (visited[current]) continue;
 
-		if (u != v) {
-			resultado.push_back(u);
-		}
+		visited[current] = true;
 
-		for (int w : graph.neighbors(u)) {
-			if (!visitado[w]) {
-				double d = std::hypot(p[w].x - p[v].x, p[w].y - p[v].y);
-				fila.push({d, w});
+		if (current != origin) nearest.push_back(current);
+
+		for (int neighbor : graph.neighbors(current)) {
+			if (!visited[neighbor]) {
+				double distance = std::hypot(points[neighbor].x - points[origin].x, points[neighbor].y - points[origin].y);
+				heap.push({distance, neighbor});
 			}
 		}
 	}
-	return resultado;
+	return nearest;
 }
 }  // namespace modelo::nucleo

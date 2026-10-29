@@ -4,12 +4,8 @@
 #include <string>
 #include <vector>
 
-namespace modelo
-{
-namespace nucleo
-{
-struct RhymeResult
-{
+namespace modelo::nucleo {
+struct RhymeResult {
 public:
 	std::string word;
 
@@ -21,6 +17,5 @@ public:
 
 };
 
-}  // namespace nucleo
-}  // namespace modelo
+}  // namespace modelo::nucleo
 #endif

@@ -6,12 +6,8 @@
 #include "modelo/nucleo/RhymeResult.hpp"
 #include "modelo/nucleo/RhymeCluster.hpp"
 
-namespace modelo
-{
-namespace nucleo
-{
-class IRhymeFinder
-{
+namespace modelo::nucleo {
+class IRhymeFinder {
 public:
 	virtual ~IRhymeFinder() = default;
 
@@ -21,6 +17,5 @@ public:
 
 };
 
-}  // namespace nucleo
-}  // namespace modelo
+}  // namespace modelo::nucleo
 #endif
