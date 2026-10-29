@@ -11,32 +11,36 @@
 #include "modelo/geometria/DelaunayGraph.hpp"
 
 namespace modelo::geometria {
-using EdgePair = std::pair<QuadEdge*, QuadEdge*>;
 
 class DivideConquerDelaunay : public ITriangulator {
 private:
-	std::vector<Point2D> pts;
+	std::vector<Point2D> sortedPoints;
 
-	std::vector<int> order;
+	std::vector<int> originalIndex;
 
-	std::deque<QuadEdge> pool;
+	std::deque<QuadEdge> edgeArena;
+
+	struct HullEdges {
+		QuadEdge* leftMost;
+		QuadEdge* rightMost;
+	};
 
 private:
-	EdgePair divide(int lo, int hi);
+	HullEdges divide(int begin, int end);
 
-	EdgePair merge(EdgePair left, EdgePair right);
+	HullEdges merge(HullEdges left, HullEdges right);
 
-	QuadEdge* lowerTangent(QuadEdge* ldi, QuadEdge* rdi);
+	QuadEdge* lowerTangent(QuadEdge* leftInner, QuadEdge* rightInner);
 
-	bool ccw(int a, int b, int c);
+	bool isCounterClockwise(int first, int second, int third);
 
-	bool inCircle(int a, int b, int c, int d);
+	bool isInsideCircle(int first, int second, int third, int point);
 
-	bool rightOf(int p, QuadEdge* e);
+	bool isRightOf(int point, QuadEdge* edge);
 
-	bool leftOf(int p, QuadEdge* e);
+	bool isLeftOf(int point, QuadEdge* edge);
 
-	bool valid(QuadEdge* e, QuadEdge* basel);
+	bool isAboveBase(QuadEdge* candidate, QuadEdge* base);
 
 	DelaunayGraph toGraph();
 

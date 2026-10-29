@@ -7,50 +7,50 @@
 
 namespace modelo::geometria {
 
-std::vector<int> KruskalClusterer::cluster(const std::vector<Point2D>& points, const DelaunayGraph& graph, int k) {
+std::vector<int> KruskalClusterer::cluster(const std::vector<Point2D>& points, const DelaunayGraph& graph, int clusterCount) {
 
-	int n = static_cast<int>(points.size());
+	int pointCount = static_cast<int>(points.size());
 
-	if (k < 1 || k > n) {
+	if (clusterCount < 1 || clusterCount > pointCount) {
 		throw std::invalid_argument("k precisa estar entre 1 e o número de pontos");
 	}
 
-	UnionFind unionFind(n);
+	UnionFind unionFind(pointCount);
 
-	std::vector<Edge> arestas = KruskalClusterer::sortedEdges(points, graph);
+	std::vector<Edge> edges = KruskalClusterer::sortedEdges(points, graph);
 
-	for (const Edge& e : arestas) {
-		if (unionFind.count() == k) {
+	for (const Edge& edge : edges) {
+		if (unionFind.componentCount() == clusterCount) {
 			break;
 		} else {
-			unionFind.unite(e.u, e.v);
+			unionFind.unite(edge.u, edge.v);
 		}
 	}
 
-	std::vector<int> rotuloDaRaiz(n, -1);
-	std::vector<int> rotulos(n, -1);
-	int proximo = 0;
+	std::vector<int> labelOfRoot(pointCount, -1);
+	std::vector<int> labels(pointCount, -1);
+	int nextLabel = 0;
 
-	for (int i = 0; i < n; i++) {
-		int r = unionFind.find(i);
-		if (rotuloDaRaiz[r] == -1) {
-			rotuloDaRaiz[r] = proximo;
-			proximo++;
+	for (int i = 0; i < pointCount; i++) {
+		int root = unionFind.find(i);
+		if (labelOfRoot[root] == -1) {
+			labelOfRoot[root] = nextLabel;
+			nextLabel++;
 		}
-		rotulos[i] = rotuloDaRaiz[r];
+		labels[i] = labelOfRoot[root];
 	}
-	return rotulos;
+	return labels;
 }
 
 std::vector<Edge> KruskalClusterer::sortedEdges(const std::vector<Point2D>& points, const DelaunayGraph& graph) {
 
 	std::vector<Edge> edges = graph.edges();
 
-	for (Edge& e : edges) {
-		double dx = points[e.u].x - points[e.v].x;
-		double dy = points[e.u].y - points[e.v].y;
+	for (Edge& edge : edges) {
+		double dx = points[edge.u].x - points[edge.v].x;
+		double dy = points[edge.u].y - points[edge.v].y;
 
-		e.length = std::hypot(dx, dy);
+		edge.length = std::hypot(dx, dy);
 	}
 
 	std::sort(edges.begin(), edges.end());

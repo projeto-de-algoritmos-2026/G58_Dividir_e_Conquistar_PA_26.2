@@ -4,33 +4,33 @@
 
 namespace modelo::geometria {
 
-const std::vector<int>& DelaunayGraph::neighbors(int v) const {
-	return adj.at(v);
+const std::vector<int>& DelaunayGraph::neighbors(int vertex) const {
+	return adjacency.at(vertex);
 }
 
 std::vector<Edge> DelaunayGraph::edges() const {
 
-	std::vector<Edge> resultado;
+	std::vector<Edge> result;
 
 	for (int u = 0; u < size(); u++) {
-		for (int v : adj[u]) {
+		for (int v : adjacency[u]) {
 			if (u < v) {
-				resultado.push_back(Edge{u, v, 0.0});
+				result.push_back(Edge{u, v, 0.0});
 			}
 		}
 	}
-	return resultado;
+	return result;
 }
 
 int DelaunayGraph::size() const {
-	return static_cast<int>(adj.size());
+	return static_cast<int>(adjacency.size());
 }
 
 void DelaunayGraph::addEdge(int u, int v) {
 	if (u != v) {
-		if (std::find(adj.at(u).begin(), adj.at(u).end(), v) == adj.at(u).end()) {
-			adj[v].push_back(u);
-			adj[u].push_back(v);
+		if (std::find(adjacency.at(u).begin(), adjacency.at(u).end(), v) == adjacency.at(u).end()) {
+			adjacency[v].push_back(u);
+			adjacency[u].push_back(v);
 		}
 	}
 

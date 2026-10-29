@@ -14,16 +14,16 @@ private:
 	int components;
 
 public:
-	UnionFind(int components)
-		: parent(components), rank(components, 0), components(components) {
+	UnionFind(int elementCount)
+		: parent(elementCount), rank(elementCount, 0), components(elementCount) {
 		std::iota(parent.begin(), parent.end(), 0);
 	}
 
-	int find(int x);
+	int find(int element);
 
-	bool unite(int a, int b);
+	bool unite(int first, int second);
 
-	int count();
+	int componentCount();
 
 };
 

@@ -9,202 +9,202 @@ namespace modelo::geometria{
 
 DelaunayGraph DivideConquerDelaunay::triangulate(const std::vector<Point2D>& points) {
 	exactinit();
-	pool.clear();
-	pts.clear();
+	edgeArena.clear();
+	sortedPoints.clear();
 
-	int n = static_cast<int>(points.size());
+	int pointCount = static_cast<int>(points.size());
 
-	if (n < 2) {
-		return DelaunayGraph(n);
+	if (pointCount < 2) {
+		return DelaunayGraph(pointCount);
 	}
 
-	order.assign(n, 0);
+	originalIndex.assign(pointCount, 0);
 
-	std::iota(order.begin(), order.end(), 0);
+	std::iota(originalIndex.begin(), originalIndex.end(), 0);
 
-	std::sort(order.begin(), order.end(), [&](int i, int j) { return points[i] < points[j]; });
+	std::sort(originalIndex.begin(), originalIndex.end(), [&](int i, int j) { return points[i] < points[j]; });
 
-	for (int k = 0; k < n; k++) {
-		pts.push_back(points[order[k]]);
+	for (int i = 0; i < pointCount; i++) {
+		sortedPoints.push_back(points[originalIndex[i]]);
 	}
 
-	for (int k = 1; k < n; k++) {
-		if (pts[k] == pts[k-1]) {
+	for (int i = 1; i < pointCount; i++) {
+		if (sortedPoints[i] == sortedPoints[i-1]) {
 			throw std::invalid_argument("Point already exists");
 		}
 	}
 
-	divide(0, n);
+	divide(0, pointCount);
 
 	return toGraph();
 }
 
-EdgePair DivideConquerDelaunay::divide(int lo, int hi) {
+DivideConquerDelaunay::HullEdges DivideConquerDelaunay::divide(int begin, int end) {
 
-	int n = hi - lo;
+	int pointCount = end - begin;
 
-	if (n == 2) {
+	if (pointCount == 2) {
 
-		QuadEdge* a = QuadEdge::makeEdge(pool);
+		QuadEdge* edge01 = QuadEdge::makeEdge(edgeArena);
 
-		a->org = lo;
-		a->sym()->org = lo + 1;
-		return {a, a->sym()};
+		edge01->origin = begin;
+		edge01->sym()->origin = begin + 1;
+		return {edge01, edge01->sym()};
 
-	} else if (n == 3) {
+	} else if (pointCount == 3) {
 
-		QuadEdge* a = QuadEdge::makeEdge(pool);
-		QuadEdge* b = QuadEdge::makeEdge(pool);
+		QuadEdge* edge01 = QuadEdge::makeEdge(edgeArena);
+		QuadEdge* edge12 = QuadEdge::makeEdge(edgeArena);
 
-		QuadEdge::splice(a->sym(), b);
+		QuadEdge::splice(edge01->sym(), edge12);
 
-		a->org = lo;
-		a->sym()->org = lo + 1;
+		edge01->origin = begin;
+		edge01->sym()->origin = begin + 1;
 
-		b->org = lo + 1;
-		b->sym()->org = lo + 2;
+		edge12->origin = begin + 1;
+		edge12->sym()->origin = begin + 2;
 
-		if (ccw(lo, lo + 1, lo + 2)) {
-			QuadEdge::connect(b, a, pool);
-			return {a, b->sym()};
-		} else if (ccw(lo, lo+2, lo+1)) {
-			QuadEdge* c = QuadEdge::connect(b ,a, pool);
-			return {c->sym(), c};
+		if (isCounterClockwise(begin, begin + 1, begin + 2)) {
+			QuadEdge::connect(edge12, edge01, edgeArena);
+			return {edge01, edge12->sym()};
+		} else if (isCounterClockwise(begin, begin+2, begin+1)) {
+			QuadEdge* edge20 = QuadEdge::connect(edge12 ,edge01, edgeArena);
+			return {edge20->sym(), edge20};
 		} else {
-			return {a, b->sym()};
+			return {edge01, edge12->sym()};
 		}
 
 	} else {
 
-		int mid = (lo + hi) / 2;
+		int middle = (begin + end) / 2;
 
-		return merge(divide(lo, mid), divide(mid, hi));
+		return merge(divide(begin, middle), divide(middle, end));
 
 	}
 }
 
-EdgePair DivideConquerDelaunay::merge(EdgePair left, EdgePair right) {
+DivideConquerDelaunay::HullEdges DivideConquerDelaunay::merge(HullEdges left, HullEdges right) {
 
-	QuadEdge* ldo = left.first;
-	QuadEdge* ldi = left.second;
-	QuadEdge* rdi = right.first;
-	QuadEdge* rdo = right.second;
+	QuadEdge* leftOuter = left.leftMost;
+	QuadEdge* leftInner = left.rightMost;
+	QuadEdge* rightInner = right.leftMost;
+	QuadEdge* rightOuter = right.rightMost;
 
-	QuadEdge* basel = lowerTangent(ldi, rdi);
+	QuadEdge* base = lowerTangent(leftInner, rightInner);
 
-	if (basel->dest() == ldo->org) {
-		ldo = basel->sym();
+	if (base->dest() == leftOuter->origin) {
+		leftOuter = base->sym();
 	}
 
-	if (basel->org == rdo->org) {
-		rdo = basel;
+	if (base->origin == rightOuter->origin) {
+		rightOuter = base;
 	}
 
 	while (true) {
 
-		QuadEdge* lcand = basel->sym()->onext();
+		QuadEdge* leftCandidate = base->sym()->onext();
 
-		if (valid(lcand, basel)) {
+		if (isAboveBase(leftCandidate, base)) {
 			while (true) {
-				if (!(inCircle(basel->dest(), basel->org, lcand->dest(), lcand->onext()->dest()))) {
+				if (!(isInsideCircle(base->dest(), base->origin, leftCandidate->dest(), leftCandidate->onext()->dest()))) {
 				break;
 				}
-				QuadEdge* t = lcand->onext();
-				QuadEdge::deleteEdge(lcand);
-				lcand = t;
+				QuadEdge* nextCandidate = leftCandidate->onext();
+				QuadEdge::deleteEdge(leftCandidate);
+				leftCandidate = nextCandidate;
 			}
 		}
 
-		QuadEdge* rcand = basel->oprev();
+		QuadEdge* rightCandidate = base->oprev();
 
-		if (valid(rcand, basel)) {
+		if (isAboveBase(rightCandidate, base)) {
 			while (true) {
-				if (!(inCircle(basel->dest(), basel->org, rcand->dest(), rcand->oprev()->dest()))) {
+				if (!(isInsideCircle(base->dest(), base->origin, rightCandidate->dest(), rightCandidate->oprev()->dest()))) {
 					break;
 				}
-				QuadEdge* t = rcand->oprev();
-				QuadEdge::deleteEdge(rcand);
-				rcand = t;
+				QuadEdge* nextCandidate = rightCandidate->oprev();
+				QuadEdge::deleteEdge(rightCandidate);
+				rightCandidate = nextCandidate;
 			}
 		}
 
-		bool lv = valid(lcand, basel);
-		bool rv = valid(rcand, basel);
+		bool leftValid = isAboveBase(leftCandidate, base);
+		bool rightValid = isAboveBase(rightCandidate, base);
 
-		if (!lv && !rv) {
+		if (!leftValid && !rightValid) {
 			break;
 		}
 
-		if (!lv || (rv && inCircle(lcand->dest(), lcand->org, rcand->org, rcand->dest()))) {
-			basel = QuadEdge::connect(rcand, basel->sym(), pool);
+		if (!leftValid || (rightValid && isInsideCircle(leftCandidate->dest(), leftCandidate->origin, rightCandidate->origin, rightCandidate->dest()))) {
+			base = QuadEdge::connect(rightCandidate, base->sym(), edgeArena);
 		} else {
-			basel = QuadEdge::connect(basel->sym(), lcand->sym(), pool);
+			base = QuadEdge::connect(base->sym(), leftCandidate->sym(), edgeArena);
 		}
 
 	}
 
-	return {ldo, rdo};
+	return {leftOuter, rightOuter};
 }
 
-QuadEdge* DivideConquerDelaunay::lowerTangent(QuadEdge* ldi, QuadEdge* rdi) {
+QuadEdge* DivideConquerDelaunay::lowerTangent(QuadEdge* leftInner, QuadEdge* rightInner) {
 
 	while (true) {
 
-		if (leftOf(rdi->org, ldi)) {
-			ldi = ldi->lnext();
-		} else if (rightOf(ldi->org, rdi)) {
-			rdi = rdi->rprev();
+		if (isLeftOf(rightInner->origin, leftInner)) {
+			leftInner = leftInner->lnext();
+		} else if (isRightOf(leftInner->origin, rightInner)) {
+			rightInner = rightInner->rprev();
 		} else {
 			break;
 		}
 	}
 
-	return QuadEdge::connect(rdi->sym(), ldi, pool);
+	return QuadEdge::connect(rightInner->sym(), leftInner, edgeArena);
 }
 
-bool DivideConquerDelaunay::ccw(int a, int b, int c) {
+bool DivideConquerDelaunay::isCounterClockwise(int first, int second, int third) {
 
-	double pa[2] = {pts[a].x, pts[a].y};
-	double pb[2] = {pts[b].x, pts[b].y};
-	double pc[2] = {pts[c].x, pts[c].y};
+	double pa[2] = {sortedPoints[first].x, sortedPoints[first].y};
+	double pb[2] = {sortedPoints[second].x, sortedPoints[second].y};
+	double pc[2] = {sortedPoints[third].x, sortedPoints[third].y};
 
 	return orient2d(pa, pb, pc) > 0.0;
 }
 
-bool DivideConquerDelaunay::inCircle(int a, int b, int c, int d) {
+bool DivideConquerDelaunay::isInsideCircle(int first, int second, int third, int point) {
 
-	double pa[2] = {pts[a].x, pts[a].y};
-	double pb[2] = {pts[b].x, pts[b].y};
-	double pc[2] = {pts[c].x, pts[c].y};
-	double pd[2] = {pts[d].x, pts[d].y};
+	double pa[2] = {sortedPoints[first].x, sortedPoints[first].y};
+	double pb[2] = {sortedPoints[second].x, sortedPoints[second].y};
+	double pc[2] = {sortedPoints[third].x, sortedPoints[third].y};
+	double pd[2] = {sortedPoints[point].x, sortedPoints[point].y};
 
 	return incircle(pa, pb, pc, pd) > 0.0;
 }
 
-bool DivideConquerDelaunay::rightOf(int p, QuadEdge* e) {
-	return ccw(p, e->dest(), e->org);
+bool DivideConquerDelaunay::isRightOf(int point, QuadEdge* edge) {
+	return isCounterClockwise(point, edge->dest(), edge->origin);
 }
 
-bool DivideConquerDelaunay::leftOf(int p, QuadEdge* e) {
-	return ccw(p, e->org, e->dest());
+bool DivideConquerDelaunay::isLeftOf(int point, QuadEdge* edge) {
+	return isCounterClockwise(point, edge->origin, edge->dest());
 }
 
-bool DivideConquerDelaunay::valid(QuadEdge* e, QuadEdge* basel) {
-	return rightOf(e->dest(), basel);
+bool DivideConquerDelaunay::isAboveBase(QuadEdge* candidate, QuadEdge* base) {
+	return isRightOf(candidate->dest(), base);
 }
 
 DelaunayGraph DivideConquerDelaunay::toGraph() {
 
-	DelaunayGraph graph(pts.size());
+	DelaunayGraph graph(sortedPoints.size());
 
-	for (int i = 0; i < static_cast<int>(pool.size()); i += 4) {
+	for (int i = 0; i < static_cast<int>(edgeArena.size()); i += 4) {
 
-		QuadEdge& e = pool[i];
+		QuadEdge& edge = edgeArena[i];
 
-		if (e.org == -1) {
+		if (edge.origin == -1) {
 			continue;
 		}
-		graph.addEdge(order[e.org], order[e.dest()]);
+		graph.addEdge(originalIndex[edge.origin], originalIndex[edge.dest()]);
 	}
 
 	return graph;

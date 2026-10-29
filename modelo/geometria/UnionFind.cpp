@@ -3,30 +3,30 @@
 namespace modelo::geometria {
 
 
-int UnionFind::find(int x) {
-	if (parent[x] != x) {
-		parent[x] = find(parent[x]);
+int UnionFind::find(int element) {
+	if (parent[element] != element) {
+		parent[element] = find(parent[element]);
 	}
-	return parent[x];
+	return parent[element];
 }
 
-bool UnionFind::unite(int a, int b) {
+bool UnionFind::unite(int first, int second) {
 
-	int ra = find(a);
-	int rb = find(b);
+	int firstRoot = find(first);
+	int secondRoot = find(second);
 
-	if (ra == rb) {
+	if (firstRoot == secondRoot) {
 		return false;
 	}
 
 	// O nó com maior rank vira pai do nó com menor rank
-	if (rank[ra] > rank[rb]) {
-		parent[rb] = ra;
-	} else if (rank[rb] > rank[ra]) {
-		parent[ra] = rb;
-	} else if (rank[ra] == rank[rb]) {
-		parent[rb] = ra;
-		rank[ra]++;
+	if (rank[firstRoot] > rank[secondRoot]) {
+		parent[secondRoot] = firstRoot;
+	} else if (rank[secondRoot] > rank[firstRoot]) {
+		parent[firstRoot] = secondRoot;
+	} else {
+		parent[secondRoot] = firstRoot;
+		rank[firstRoot]++;
 	}
 
 	components--;
@@ -35,6 +35,6 @@ bool UnionFind::unite(int a, int b) {
 
 }
 
-int UnionFind::count() { return components; }
+int UnionFind::componentCount() { return components; }
 
 }  // namespace modelo:::geometria

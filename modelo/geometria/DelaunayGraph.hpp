@@ -10,16 +10,16 @@ namespace modelo::geometria {
 class DelaunayGraph {
 
 private:
-	std::vector<std::vector<int>> adj;
+	std::vector<std::vector<int>> adjacency;
 
 public:
-	const std::vector<int>& neighbors(int v)const;
+	const std::vector<int>& neighbors(int vertex)const;
 
 	std::vector<Edge> edges() const;
 
 	int size() const;
 
-	DelaunayGraph(int n) : adj(n) {};
+	DelaunayGraph(int vertexCount) : adjacency(vertexCount) {};
 
 	void addEdge(int u, int v);
 

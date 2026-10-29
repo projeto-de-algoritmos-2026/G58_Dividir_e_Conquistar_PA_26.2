@@ -6,19 +6,14 @@
 #include "modelo/geometria/Point2D.hpp"
 #include "modelo/geometria/DelaunayGraph.hpp"
 
-namespace modelo
-{
-namespace geometria
-{
-class IClusterer
-{
+namespace modelo::geometria {
+class IClusterer {
 public:
 	virtual ~IClusterer() = default;
 
-	virtual std::vector<int> cluster(const std::vector<Point2D>& points, const DelaunayGraph& graph, int k) = 0;
+	virtual std::vector<int> cluster(const std::vector<Point2D>& points, const DelaunayGraph& graph, int clusterCount) = 0;
 
 };
 
-}  // namespace geometria
-}  // namespace modelo
+}  // namespace modelo::geometria
 #endif

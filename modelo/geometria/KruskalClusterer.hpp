@@ -16,7 +16,7 @@ private:
 	std::vector<Edge> sortedEdges(const std::vector<Point2D>& points, const DelaunayGraph& graph);
 
 public:
-	std::vector<int> cluster(const std::vector<Point2D>& points, const DelaunayGraph& graph, int k) override;
+	std::vector<int> cluster(const std::vector<Point2D>& points, const DelaunayGraph& graph, int clusterCount) override;
 
 };
 

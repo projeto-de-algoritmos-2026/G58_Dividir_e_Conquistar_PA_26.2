@@ -7,30 +7,30 @@ namespace modelo::geometria {
 struct QuadEdge {
 
 private:
-	QuadEdge* next = nullptr;
-	QuadEdge* r = nullptr;
+	QuadEdge* originNext = nullptr;
+	QuadEdge* rotated = nullptr;
 
 public:
-	int org = -1;
+	int origin = -1;
 
 public:
-	QuadEdge* rot() { return r; }
+	QuadEdge* rot() { return rotated; }
 
-	QuadEdge* sym() { return r->r; }
+	QuadEdge* sym() { return rotated->rotated; }
 
-	QuadEdge* onext() { return next; }
+	QuadEdge* onext() { return originNext; }
 
-	int dest() { return sym()->org; }
+	int dest() { return sym()->origin; }
 
-	static QuadEdge* makeEdge(std::deque<QuadEdge>& pool);
+	static QuadEdge* makeEdge(std::deque<QuadEdge>& arena);
 
-	static void splice(QuadEdge* a, QuadEdge* b);
+	static void splice(QuadEdge* first, QuadEdge* second);
 
-	static QuadEdge* connect(QuadEdge* a, QuadEdge* b, std::deque<QuadEdge>& pool);
+	static QuadEdge* connect(QuadEdge* previous, QuadEdge* next, std::deque<QuadEdge>& arena);
 
-	static void deleteEdge(QuadEdge* e);
+	static void deleteEdge(QuadEdge* edge);
 
-	QuadEdge* invRot() { return r->r->r; }
+	QuadEdge* invRot() { return rotated->rotated->rotated; }
 
 	QuadEdge* lnext() { return invRot()->onext()->rot(); }
 

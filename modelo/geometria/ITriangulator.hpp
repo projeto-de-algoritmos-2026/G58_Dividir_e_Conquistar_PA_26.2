@@ -6,12 +6,8 @@
 #include "modelo/geometria/DelaunayGraph.hpp"
 #include "modelo/geometria/Point2D.hpp"
 
-namespace modelo
-{
-namespace geometria
-{
-class ITriangulator
-{
+namespace modelo::geometria {
+class ITriangulator {
 public:
 	virtual ~ITriangulator() = default;
 
@@ -20,6 +16,5 @@ public:
 
 };
 
-}  // namespace geometria
-}  // namespace modelo
+}  // namespace modelo::geometria
 #endif
