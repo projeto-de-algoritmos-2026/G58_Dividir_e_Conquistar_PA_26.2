@@ -1,5 +1,7 @@
 #include "CmuDictionary.hpp"
 
+#include "../nucleo/WordNormalization.hpp"
+
 #include <stdexcept>
 #include <fstream>
 #include <sstream>
@@ -11,11 +13,6 @@ static modelo::nucleo::Phoneme parsePhoneme(const std::string& token) {
 	} else {
 		return {token, false, -1};
 	}
-}
-
-static std::string toLowerCase(std::string s) {
-	for (char& c : s) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
-	return s;
 }
 
 namespace modelo::adaptadores {
@@ -50,7 +47,7 @@ CmuDictionary::CmuDictionary(const std::string& path) {
 			phonemes.push_back(parsePhoneme(token));
 		}
 
-		std::string normalizedWord = toLowerCase(word);
+		std::string normalizedWord = nucleo::normalizedWord(word);
 
 		int entryIndex = static_cast<int>(allEntries.size());
 		allEntries.push_back({normalizedWord, phonemes});
@@ -61,7 +58,7 @@ CmuDictionary::CmuDictionary(const std::string& path) {
 }
 
 std::vector<modelo::nucleo::Phoneme> CmuDictionary::lookUp(const std::string& word) const {
-	auto found = entryByWord.find(toLowerCase(word));
+	auto found = entryByWord.find(nucleo::normalizedWord(word));
 
 	if (found == entryByWord.end()) {
 		return {};
