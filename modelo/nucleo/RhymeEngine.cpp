@@ -1,5 +1,7 @@
 #include "RhymeEngine.hpp"
 
+#include "WordNormalization.hpp"
+
 #include <queue>
 #include <functional>
 #include <cmath>
@@ -16,11 +18,6 @@ static int familyOfWord(const modelo::nucleo::IDictionaryLookUp& dictionary, con
 	if (rhymePartPhonemes.empty()) return -1;
 
 	return index.findFamily(RhymeIndex::rhymeKey(rhymePartPhonemes));
-}
-
-static std::string toLowerCase(std::string s) {
-	for (char& c : s) c = static_cast<char>(std::tolower(static_cast<unsigned char>(c)));
-	return s;
 }
 
 namespace modelo::nucleo {
@@ -48,7 +45,7 @@ void RhymeEngine::build(int clusterCount) {
 
 RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 
-	std::string normalizedWord = toLowerCase(word);
+	std::string normalizedWord = nucleo::normalizedWord(word);
 
 	RhymeResult result;
 	result.word = normalizedWord;
@@ -150,7 +147,7 @@ std::vector<int> RhymeEngine::nearestVertices(int origin, int count) {
 
 		for (int neighbor : graph.neighbors(current)) {
 			if (!visited[neighbor]) {
-				double distance = std::hypot(points[neighbor].x - points[origin].x, points[neighbor].y - points[origin].y);
+				const double distance = points[neighbor].distanceTo(points[origin]);
 				heap.push({distance, neighbor});
 			}
 		}
