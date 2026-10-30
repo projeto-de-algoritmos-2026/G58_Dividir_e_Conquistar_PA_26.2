@@ -107,7 +107,7 @@ DivideConquerDelaunay::HullEdges DivideConquerDelaunay::merge(HullEdges left, Hu
 
 		if (isAboveBase(leftCandidate, base)) {
 			while (true) {
-				if (!(isInsideCircle(base->dest(), base->origin, leftCandidate->dest(), leftCandidate->oNext()->dest()))) {
+				if (!isInsideCircle(base->dest(), base->origin, leftCandidate->dest(), leftCandidate->oNext()->dest())) {
 				break;
 				}
 				QuadEdge* nextCandidate = leftCandidate->oNext();
@@ -120,7 +120,7 @@ DivideConquerDelaunay::HullEdges DivideConquerDelaunay::merge(HullEdges left, Hu
 
 		if (isAboveBase(rightCandidate, base)) {
 			while (true) {
-				if (!(isInsideCircle(base->dest(), base->origin, rightCandidate->dest(), rightCandidate->oPrev()->dest()))) {
+				if (!isInsideCircle(base->dest(), base->origin, rightCandidate->dest(), rightCandidate->oPrev()->dest())) {
 					break;
 				}
 				QuadEdge* nextCandidate = rightCandidate->oPrev();

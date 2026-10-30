@@ -47,12 +47,12 @@ TEST(RhymeIndexTest, RhymePartTonicaSecundaria) {
 
 TEST(RhymeIndexTest, RhymePartSemTonica) {
     EXPECT_EQ(simbolos(RhymeIndex::rhymePart({consoante("DH"), vogal("AH", 0)})),
-        (std::vector<std::string>{"AH"}));
+        std::vector<std::string>{"AH"});
 }
 
 TEST(RhymeIndexTest, RhymePartDuasVogausAtonas) {
     EXPECT_EQ(simbolos(RhymeIndex::rhymePart({consoante("B"), vogal("AH", 0), consoante("N"), vogal("AH", 0)})),
-        (std::vector<std::string>{"AH"}));
+        std::vector<std::string>{"AH"});
 }
 
 TEST(RhymeIndexTest, RhymePartSemVogal) {
@@ -90,7 +90,7 @@ TEST(RhymeIndexTest, MesmaPalavraNaoRepete) {
     RhymeIndex index;
     index.add("dog", "AO G", {0.89, 0.375});
     index.add("dog", "AO G", {0.89, 0.375});
-    EXPECT_EQ(index.family(index.findFamily("AO G")).words,(std::vector<std::string>{"dog"}));
+    EXPECT_EQ(index.family(index.findFamily("AO G")).words,std::vector<std::string>{"dog"});
 }
 
 TEST(RhymeIndexTest, MesmoPontoMesmoVertice) {

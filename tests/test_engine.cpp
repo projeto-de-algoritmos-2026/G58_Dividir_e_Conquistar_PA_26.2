@@ -55,7 +55,7 @@ TEST_F(RhymeEngineTest, ClusterComKDois) {
     EXPECT_EQ(dog.keys.size(), 4u);
     EXPECT_NE(std::find(dog.keys.begin(), dog.keys.end(), "AO G"), dog.keys.end());
 
-    EXPECT_EQ(dartagnan.keys, (std::vector<std::string>{"AE NG Y AH N"}));
+    EXPECT_EQ(dartagnan.keys, std::vector<std::string>{"AE NG Y AH N"});
     EXPECT_NE(dog.id, dartagnan.id);
 }
 
@@ -138,7 +138,7 @@ TEST(RhymeEngineFakeTest, MesmoVerticeVemPrimeiro) {
 
     auto r = engine.findRhymes("dog", 10);
 
-    EXPECT_EQ(r.perfect, (std::vector<std::string>{"log"}));
+    EXPECT_EQ(r.perfect, std::vector<std::string>{"log"});
 
     EXPECT_EQ(r.near, (std::vector<std::string>{"fog", "the", "d'artagnan", "hello"}));
 }
