@@ -1,7 +1,6 @@
 #include "KruskalClusterer.hpp"
 #include "modelo/geometria/UnionFind.hpp"
 
-#include <cmath>
 #include <stdexcept>
 #include <algorithm>
 

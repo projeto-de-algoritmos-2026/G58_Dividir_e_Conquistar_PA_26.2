@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include <fstream>
 #include <sstream>
-#include <cctype>
 
 static modelo::nucleo::Phoneme parsePhoneme(const std::string& token) {
 	if (std::isdigit(static_cast<unsigned char>(token.back()))) {

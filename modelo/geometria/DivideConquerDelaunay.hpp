@@ -2,7 +2,6 @@
 #define MODELO_GEOMETRIA_DIVIDE_CONQUER_DELAUNAY_H
 
 #include <deque>
-#include <utility>
 #include <vector>
 
 #include "modelo/geometria/ITriangulator.hpp"
