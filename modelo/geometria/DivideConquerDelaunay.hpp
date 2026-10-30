@@ -32,15 +32,15 @@ private:
 
 	QuadEdge* lowerTangent(QuadEdge* leftInner, QuadEdge* rightInner);
 
-	bool isCounterClockwise(int first, int second, int third);
+	[[nodiscard]] bool isCounterClockwise(int first, int second, int third) const;
 
-	bool isInsideCircle(int first, int second, int third, int point);
+	[[nodiscard]] bool isInsideCircle(int first, int second, int third, int point) const;
 
-	bool isRightOf(int point, QuadEdge* edge);
+	bool isRightOf(int point, QuadEdge* edge) const { return isCounterClockwise(point, edge->dest(), edge->origin);  }
 
-	bool isLeftOf(int point, QuadEdge* edge);
+	bool isLeftOf(int point, QuadEdge* edge) const { return isCounterClockwise(point, edge->origin, edge->dest()); }
 
-	bool isAboveBase(QuadEdge* candidate, QuadEdge* base);
+	bool isAboveBase(QuadEdge* candidate, QuadEdge* base) const { return isRightOf(candidate->dest(), base); }
 
 	DelaunayGraph toGraph();
 

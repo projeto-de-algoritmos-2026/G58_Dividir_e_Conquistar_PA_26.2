@@ -11,10 +11,10 @@ using modelo::nucleo::Phoneme;
 
 static int familyOfWord(const modelo::nucleo::IDictionaryLookUp& dictionary, const RhymeIndex& index, const std::string& word) {
 
-	std::vector<Phoneme> phonemes = dictionary.lookUp(word);
+	const std::vector<Phoneme> phonemes = dictionary.lookUp(word);
 	if (phonemes.empty()) return -1;
 
-	std::vector<Phoneme> rhymePartPhonemes = RhymeIndex::rhymePart(phonemes);
+	const std::vector<Phoneme> rhymePartPhonemes = RhymeIndex::rhymePart(phonemes);
 	if (rhymePartPhonemes.empty()) return -1;
 
 	return index.findFamily(RhymeIndex::rhymeKey(rhymePartPhonemes));
@@ -45,13 +45,13 @@ void RhymeEngine::build(int clusterCount) {
 
 RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 
-	std::string normalizedWord = nucleo::normalizedWord(word);
+	const std::string normalizedWord = nucleo::normalizedWord(word);
 
 	RhymeResult result;
 	result.word = normalizedWord;
 	result.found = false;
 
-	int familyId = familyOfWord(dictionary, index, normalizedWord);
+	const int familyId = familyOfWord(dictionary, index, normalizedWord);
 
 	if (familyId == -1) return result;
 
@@ -81,12 +81,12 @@ RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 		}
 	};
 
-	for (int sameVertexFamily : index.familiesAtVertex(family.vertex)) {
+	for (const int sameVertexFamily : index.familiesAtVertex(family.vertex)) {
 		if (sameVertexFamily != familyId) addNearRhymesFrom(sameVertexFamily);
 	}
 
-	for (int nearbyVertex : nearestVertices(family.vertex, maxNear)) {
-		for (int nearbyFamily : index.familiesAtVertex(nearbyVertex)) {
+	for (const int nearbyVertex : nearestVertices(family.vertex, maxNear)) {
+		for (const int nearbyFamily : index.familiesAtVertex(nearbyVertex)) {
 			addNearRhymesFrom(nearbyFamily);
 		}
 	}
@@ -99,11 +99,11 @@ RhymeCluster RhymeEngine::clusterOf(const std::string& word) {
 	RhymeCluster cluster;
 	cluster.id = -1;
 
-	int familyId = familyOfWord(dictionary, index, word);
+	const int familyId = familyOfWord(dictionary, index, word);
 
 	if (familyId == -1) return cluster;
 
-	int vertex = index.family(familyId).vertex;
+	const int vertex = index.family(familyId).vertex;
 
 	cluster.id = clusterOfVertex[vertex];
 
@@ -111,7 +111,7 @@ RhymeCluster RhymeEngine::clusterOf(const std::string& word) {
 
 		if (clusterOfVertex[otherVertex] != cluster.id) continue;
 
-		for (int otherFamilyId: index.familiesAtVertex(otherVertex)) {
+		for (const int otherFamilyId: index.familiesAtVertex(otherVertex)) {
 			const RhymeFamily& family = index.family(otherFamilyId);
 			cluster.keys.push_back(family.key);
 

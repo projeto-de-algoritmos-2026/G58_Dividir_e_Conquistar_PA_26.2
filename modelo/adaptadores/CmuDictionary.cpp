@@ -67,7 +67,4 @@ std::vector<modelo::nucleo::Phoneme> CmuDictionary::lookUp(const std::string& wo
 	}
 }
 
-const std::vector<modelo::nucleo::DictionaryEntry>& CmuDictionary::entries() const {
-	return allEntries;
-}
 }  // namespace modelo::adaptadores

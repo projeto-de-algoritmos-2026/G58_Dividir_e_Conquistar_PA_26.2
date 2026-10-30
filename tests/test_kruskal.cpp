@@ -15,7 +15,7 @@ using modelo::geometria::IClusterer;
 
 TEST(KruskalTest, ExtremesTest) {
 
-    std::vector<Point2D> pontos = {{0,0}, {1, 0}, {2,0}, {3,0}};
+    const std::vector<Point2D> pontos = {{0,0}, {1, 0}, {2,0}, {3,0}};
 
     DelaunayGraph grafo(4);
     grafo.addEdge(0, 1);
@@ -49,7 +49,7 @@ TEST(KruskalTest, ExtremesTest) {
 // Com k = 2, o Kruskal tem que cortar justamente essa aresta (ligação simples).
 TEST(KruskalTest, DoisGruposSeparados) {
 
-    std::vector<Point2D> pontos = {
+    const std::vector<Point2D> pontos = {
         {0, 0}, {0, 1}, {1, 0},          // triângulo perto de (0,0): pontos 0, 1, 2
         {10, 10}, {10, 11}, {11, 10}     // triângulo perto de (10,10): pontos 3, 4, 5
     };
@@ -66,7 +66,7 @@ TEST(KruskalTest, DoisGruposSeparados) {
     KruskalClusterer kruskal;
     IClusterer& clusterer = kruskal;
 
-    std::vector<int> rotulos = clusterer.cluster(pontos, grafo, 2);
+    const std::vector<int> rotulos = clusterer.cluster(pontos, grafo, 2);
 
     ASSERT_EQ(rotulos.size(), 6u);
 
@@ -83,7 +83,7 @@ TEST(KruskalTest, DoisGruposSeparados) {
 // C6: para todo k de 1 até n, aparecem exatamente k rótulos, todos entre 0 e k - 1.
 TEST(KruskalTest, RotulosVaoDeZeroAteKMenosUm) {
 
-    std::vector<Point2D> pontos = {{0, 0}, {1, 0}, {3, 0}, {7, 0}, {8, 1}, {20, 5}};
+    const std::vector<Point2D> pontos = {{0, 0}, {1, 0}, {3, 0}, {7, 0}, {8, 1}, {20, 5}};
 
     // Um caminho 0-1-2-3-4-5 e mais duas arestas, para o grafo não ser só uma linha.
     DelaunayGraph grafo(6);

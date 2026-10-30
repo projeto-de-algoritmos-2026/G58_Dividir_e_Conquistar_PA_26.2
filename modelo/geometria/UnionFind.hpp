@@ -23,7 +23,7 @@ public:
 
 	bool unite(int first, int second);
 
-	int componentCount();
+	[[nodiscard]] int componentCount() const { return components; };
 
 };
 

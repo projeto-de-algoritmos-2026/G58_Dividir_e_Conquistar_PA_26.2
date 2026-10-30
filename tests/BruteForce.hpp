@@ -34,7 +34,7 @@ inline double distancia(const Point2D& a, const Point2D& b) {
 
 inline Arestas delaunay(const std::vector<Point2D>& p) {
     exactinit();
-    int n = static_cast<int>(p.size());
+    const int n = static_cast<int>(p.size());
     Arestas arestas;
 
     for (int i = 0; i < n; i++) {
@@ -44,7 +44,7 @@ inline Arestas delaunay(const std::vector<Point2D>& p) {
                 double b[2] = {p[j].x, p[j].y};
                 double c[2] = {p[k].x, p[k].y};
 
-                double orientacao = orient2d(a, b, c);
+                const double orientacao = orient2d(a, b, c);
                 if (orientacao == 0.0) {
                     continue;
                 }
@@ -78,7 +78,7 @@ inline Arestas delaunay(const std::vector<Point2D>& p) {
 }
 
 inline std::pair<int, int> parMaisProximo(const std::vector<Point2D>& p) {
-    int n = static_cast<int>(p.size());
+    const int n = static_cast<int>(p.size());
     double melhor = std::numeric_limits<double>::infinity();
     std::pair<int, int> par = {-1, -1};
 
@@ -95,7 +95,7 @@ inline std::pair<int, int> parMaisProximo(const std::vector<Point2D>& p) {
 }
 
 inline int vizinhoMaisProximo(const std::vector<Point2D>& p, int i) {
-    int n = static_cast<int>(p.size());
+    const int n = static_cast<int>(p.size());
     double melhor = std::numeric_limits<double>::infinity();
     int vizinho = -1;
 
@@ -113,7 +113,7 @@ inline int vizinhoMaisProximo(const std::vector<Point2D>& p, int i) {
 }
 
 inline double pesoArvorePrim(const std::vector<Point2D>& p) {
-    int n = static_cast<int>(p.size());
+    const int n = static_cast<int>(p.size());
     if (n == 0) {
         return 0.0;
     }

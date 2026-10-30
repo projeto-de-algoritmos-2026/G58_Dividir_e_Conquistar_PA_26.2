@@ -40,7 +40,7 @@ static DelaunayGraph triangular(const std::vector<Point2D>& pontos) {
 
 TEST(OraculoDelaunay, IgualForcaBrutaEmConjuntosAleatorios) {
     for (int t = 0; t < 200; t++) {
-        int n = 3 + t % 28;
+        const int n = 3 + t % 28;
         std::vector<Point2D> pontos = forca_bruta::pontosAleatorios(n, 100 + t);
 
         ASSERT_EQ(arestasDe(triangular(pontos)), forca_bruta::delaunay(pontos))
@@ -49,7 +49,7 @@ TEST(OraculoDelaunay, IgualForcaBrutaEmConjuntosAleatorios) {
 }
 
 TEST(OraculoDelaunay, MenorArestaEhParMaisProximo) {
-    std::vector<Point2D> pontos = forca_bruta::pontosAleatorios(2000, 7);
+    const std::vector<Point2D> pontos = forca_bruta::pontosAleatorios(2000, 7);
 
     double menor = std::numeric_limits<double>::infinity();
     std::pair<int, int> parDaTriangulacao = {-1, -1};
@@ -65,8 +65,8 @@ TEST(OraculoDelaunay, MenorArestaEhParMaisProximo) {
 }
 
 TEST(OraculoDelaunay, VizinhoMaisProximoEstaNoGrafo) {
-    std::vector<Point2D> pontos = forca_bruta::pontosAleatorios(500, 8);
-    DelaunayGraph grafo = triangular(pontos);
+    const std::vector<Point2D> pontos = forca_bruta::pontosAleatorios(500, 8);
+    const DelaunayGraph grafo = triangular(pontos);
 
     for (int i = 0; i < static_cast<int>(pontos.size()); i++) {
         int maisProximo = forca_bruta::vizinhoMaisProximo(pontos, i);
@@ -78,7 +78,7 @@ TEST(OraculoDelaunay, VizinhoMaisProximoEstaNoGrafo) {
 }
 
 TEST(OraculoKruskal, ArvoreSobreDelaunayTemOPesoDoPrim) {
-    std::vector<Point2D> pontos = forca_bruta::pontosAleatorios(200, 9);
+    const std::vector<Point2D> pontos = forca_bruta::pontosAleatorios(200, 9);
 
     std::vector<Edge> arestas = triangular(pontos).edges();
     for (Edge& e : arestas) {
@@ -94,13 +94,13 @@ TEST(OraculoKruskal, ArvoreSobreDelaunayTemOPesoDoPrim) {
         }
     }
 
-    EXPECT_EQ(uf.count(), 1);
+    EXPECT_EQ(uf.componentCount(), 1);
     EXPECT_NEAR(peso, forca_bruta::pesoArvorePrim(pontos), 1e-9);
 }
 
 TEST(OraculoKruskal, MesmosClustersQueNoGrafoCompleto) {
     const int n = 200;
-    std::vector<Point2D> pontos = forca_bruta::pontosAleatorios(n, 10);
+    const std::vector<Point2D> pontos = forca_bruta::pontosAleatorios(n, 10);
 
     DelaunayGraph completo(n);
     for (int i = 0; i < n; i++) {
@@ -110,8 +110,8 @@ TEST(OraculoKruskal, MesmosClustersQueNoGrafoCompleto) {
     }
 
     KruskalClusterer kruskal;
-    std::vector<int> naDelaunay = kruskal.cluster(pontos, triangular(pontos), 10);
-    std::vector<int> noCompleto = kruskal.cluster(pontos, completo, 10);
+    const std::vector<int> naDelaunay = kruskal.cluster(pontos, triangular(pontos), 10);
+    const std::vector<int> noCompleto = kruskal.cluster(pontos, completo, 10);
 
     for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
@@ -133,7 +133,7 @@ TEST(OraculoPredicados, QuaseColineares) {
             double p[2] = {0.5 + i * passo, 0.5 + j * passo};
             int esperado = (j > i) - (j < i);
 
-            double exato = orient2d(p, q, r);
+            const double exato = orient2d(p, q, r);
             EXPECT_EQ((exato > 0) - (exato < 0), esperado) << "i = " << i << ", j = " << j;
 
             double direto = (p[0] - r[0]) * (q[1] - r[1]) - (p[1] - r[1]) * (q[0] - r[0]);

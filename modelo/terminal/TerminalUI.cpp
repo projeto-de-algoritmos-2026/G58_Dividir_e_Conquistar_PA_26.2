@@ -7,7 +7,7 @@
 static const int MAX_WORDS_SHOWN = 20;
 
 static void printWorsList(const std::vector<std::string>& words) {
-	int total = static_cast<int>(words.size());
+	const int total = static_cast<int>(words.size());
 	for (int i = 0; i < total && i < MAX_WORDS_SHOWN; i++) {
 		std::cout << (i == 0 ? " " : ", ") << words[i];
 	}
@@ -18,10 +18,6 @@ static void printWorsList(const std::vector<std::string>& words) {
 }
 
 namespace modelo::terminal {
-
-TerminalUI::TerminalUI(modelo::nucleo::IRhymeFinder& finder)
-	: finder(finder) {
-}
 
 void TerminalUI::run() {
 	std::cout << "Digite 'ajuda' para ver os comandos.\n";

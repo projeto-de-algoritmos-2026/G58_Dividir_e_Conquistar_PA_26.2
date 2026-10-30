@@ -19,6 +19,7 @@ add_executable(rhyme_tests
         test_engine.cpp
         test_oraculos.cpp
         test_dados_reais.cpp
+        Fonemas.hpp
 )
 
 target_compile_definitions(rhyme_tests PRIVATE FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/fixtures")

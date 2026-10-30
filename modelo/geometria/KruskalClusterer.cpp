@@ -9,7 +9,7 @@ namespace modelo::geometria {
 
 std::vector<int> KruskalClusterer::cluster(const std::vector<Point2D>& points, const DelaunayGraph& graph, int clusterCount) {
 
-	int pointCount = static_cast<int>(points.size());
+	const int pointCount = static_cast<int>(points.size());
 
 	if (clusterCount < 1 || clusterCount > pointCount) {
 		throw std::invalid_argument("k precisa estar entre 1 e o número de pontos");
@@ -17,7 +17,7 @@ std::vector<int> KruskalClusterer::cluster(const std::vector<Point2D>& points, c
 
 	UnionFind unionFind(pointCount);
 
-	std::vector<Edge> edges = KruskalClusterer::sortedEdges(points, graph);
+	const std::vector<Edge> edges = KruskalClusterer::sortedEdges(points, graph);
 
 	for (const Edge& edge : edges) {
 		if (unionFind.componentCount() == clusterCount) {
@@ -32,7 +32,7 @@ std::vector<int> KruskalClusterer::cluster(const std::vector<Point2D>& points, c
 	int nextLabel = 0;
 
 	for (int i = 0; i < pointCount; i++) {
-		int root = unionFind.find(i);
+		const int root = unionFind.find(i);
 		if (labelOfRoot[root] == -1) {
 			labelOfRoot[root] = nextLabel;
 			nextLabel++;

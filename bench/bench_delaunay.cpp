@@ -58,7 +58,7 @@ static double medir(const std::function<void()>& tarefa) {
 }
 
 static std::vector<int> kruskalNoGrafoCompleto(const std::vector<Point2D>& p, int k) {
-    int n = static_cast<int>(p.size());
+    const int n = static_cast<int>(p.size());
     std::vector<Edge> arestas;
     arestas.reserve(static_cast<size_t>(n) * (n - 1) / 2);
     for (int i = 0; i < n; i++) {
@@ -70,7 +70,7 @@ static std::vector<int> kruskalNoGrafoCompleto(const std::vector<Point2D>& p, in
 
     UnionFind uf(n);
     for (const Edge& e : arestas) {
-        if (uf.count() == k) {
+        if (uf.componentCount() == k) {
             break;
         }
         uf.unite(e.u, e.v);
@@ -84,8 +84,8 @@ static std::vector<int> kruskalNoGrafoCompleto(const std::vector<Point2D>& p, in
 }
 
 static double distancia2(const Point2D& a, const Point2D& b) {
-    double dx = a.x - b.x;
-    double dy = a.y - b.y;
+    const double dx = a.x - b.x;
+    const double dy = a.y - b.y;
     return dx * dx + dy * dy;
 }
 
@@ -116,11 +116,11 @@ static void triangulacao() {
     for (int n = 1000; n <= 128000; n *= 2) {
         std::vector<Point2D> pontos = pontosAleatorios(n, n);
         size_t arestas = 0;
-        double ms = medir([&] {
+        const double ms = medir([&] {
             DivideConquerDelaunay dc;
             arestas = dc.triangulate(pontos).edges().size();
         });
-        double porNLogN = ms * 1e6 / (n * std::log2(static_cast<double>(n)));
+        const double porNLogN = ms * 1e6 / (n * std::log2(static_cast<double>(n)));
         std::printf("| %d | %zu | %.2f | %.1f |\n", n, arestas, ms, porNLogN);
     }
 }
@@ -131,18 +131,18 @@ static void kruskal() {
                 "| arestas (completo) | Kruskal no completo (ms) |\n");
     std::printf("|---:|---:|---:|---:|---:|---:|---:|\n");
 
-    for (int n : {500, 1000, 2000, 5000}) {
+    for (const int n : {500, 1000, 2000, 5000}) {
         std::vector<Point2D> pontos = pontosAleatorios(n, n + 1);
 
         DelaunayGraph grafo(0);
-        double msTriangulacao = medir([&] {
+        const double msTriangulacao = medir([&] {
             DivideConquerDelaunay dc;
             grafo = dc.triangulate(pontos);
         });
 
         KruskalClusterer clusterizador;
-        double msKruskalDelaunay = medir([&] { clusterizador.cluster(pontos, grafo, K); });
-        double msKruskalCompleto = medir([&] { kruskalNoGrafoCompleto(pontos, K); });
+        const double msKruskalDelaunay = medir([&] { clusterizador.cluster(pontos, grafo, K); });
+        const double msKruskalCompleto = medir([&] { kruskalNoGrafoCompleto(pontos, K); });
 
         std::printf("| %d | %zu | %.2f | %.2f | %.2f | %ld | %.2f |\n", n, grafo.edges().size(),
                     msTriangulacao, msKruskalDelaunay, msTriangulacao + msKruskalDelaunay,
@@ -159,8 +159,8 @@ static void parMaisProximo() {
         std::vector<Point2D> pontos = pontosAleatorios(n, n + 2);
         double dDelaunay = 0.0;
         double dForcaBruta = 0.0;
-        double msDelaunay = medir([&] { dDelaunay = parMaisProximoDelaunay(pontos); });
-        double msForcaBruta = medir([&] { dForcaBruta = parMaisProximoForcaBruta(pontos); });
+        const double msDelaunay = medir([&] { dDelaunay = parMaisProximoDelaunay(pontos); });
+        const double msForcaBruta = medir([&] { dForcaBruta = parMaisProximoForcaBruta(pontos); });
         std::printf("| %d | %.2f | %.2f | %s |\n", n, msDelaunay, msForcaBruta,
                     dDelaunay == dForcaBruta ? "sim" : "NÃO");
     }
@@ -193,7 +193,7 @@ static void dicionarioInteiro(const std::string& caminho) {
 int main(int argc, char** argv) {
 #ifndef NDEBUG
 #endif
-    std::string caminho = argc > 1 ? argv[1] : "data/cmudict.dict";
+    const std::string caminho = argc > 1 ? argv[1] : "data/cmudict.dict";
 
     triangulacao();
     kruskal();

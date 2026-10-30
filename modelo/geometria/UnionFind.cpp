@@ -12,8 +12,8 @@ int UnionFind::find(int element) {
 
 bool UnionFind::unite(int first, int second) {
 
-	int firstRoot = find(first);
-	int secondRoot = find(second);
+	const int firstRoot = find(first);
+	const int secondRoot = find(second);
 
 	if (firstRoot == secondRoot) {
 		return false;
@@ -34,7 +34,5 @@ bool UnionFind::unite(int first, int second) {
 	return true;
 
 }
-
-int UnionFind::componentCount() { return components; }
 
 }  // namespace modelo:::geometria

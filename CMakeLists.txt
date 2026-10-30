@@ -18,6 +18,7 @@ add_library(rhyme_core STATIC
         modelo/geometria/QuadEdge.cpp
         modelo/geometria/predicates.c
         modelo/geometria/predicates.h
+        modelo/nucleo/WordNormalization.hpp
 )
 
 target_include_directories(rhyme_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

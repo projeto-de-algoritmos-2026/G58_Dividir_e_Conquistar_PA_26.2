@@ -6,20 +6,15 @@
 #include "modelo/nucleo/Phoneme.hpp"
 #include "modelo/nucleo/IPhoneticConverter.hpp"
 
+#include "Fonemas.hpp"
+
 using modelo::geometria::Point2D;
 using modelo::adaptadores::AcousticTranslator;
 using modelo::nucleo::Phoneme;
 using modelo::nucleo::IPhoneticConverter;
 
-// Monta uma vogal
-static Phoneme vogal(const std::string& symbol, int stress) {
-    return {symbol, true, stress};
-}
-
-// Monta uma consoante. Consoante não tem tônica, stress = -1.
-static Phoneme consoante(const std::string& symbol) {
-    return {symbol, false, -1};
-}
+using fonemas::vogal;
+using fonemas::consoante;
 
 TEST(AcousticTranslatorTest, UmaVogal) {
     AcousticTranslator tradutor(0.9);

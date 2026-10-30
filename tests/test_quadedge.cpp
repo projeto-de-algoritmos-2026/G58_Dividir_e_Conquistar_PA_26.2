@@ -17,8 +17,8 @@ TEST(QuadEdgeTest, MakeEdgeTest) {
     EXPECT_EQ(e->onext(), e);
     EXPECT_EQ(e->sym()->onext(), e->sym());
 
-    e->org = 0;
-    e->sym()->org = 1;
+    e->origin = 0;
+    e->sym()->origin = 1;
     EXPECT_EQ(e->dest(), 1);
 
 }
@@ -48,16 +48,16 @@ TEST(QuadEdgeTest, ConnectTest) {
     std::deque<QuadEdge> pool;
 
     QuadEdge* x = QuadEdge::makeEdge(pool);
-    x->org = 0;
-    x->sym()->org = 1;
+    x->origin = 0;
+    x->sym()->origin = 1;
 
     QuadEdge* y = QuadEdge::makeEdge(pool);
-    y->org = 2;
-    y->sym()->org = 3;
+    y->origin = 2;
+    y->sym()->origin = 3;
 
     QuadEdge* c = QuadEdge::connect(x, y, pool);
 
-    EXPECT_EQ(c->org, 1);
+    EXPECT_EQ(c->origin, 1);
     EXPECT_EQ(c->dest(), 2);
     EXPECT_EQ(x->lnext(), c);
     EXPECT_EQ(c->lnext(), y);
@@ -69,19 +69,19 @@ TEST(QuadEdgeTest, TriangleTest) {
     std::deque<QuadEdge> pool;
 
     QuadEdge* p = QuadEdge::makeEdge(pool);
-    p->org = 0;
-    p->sym()->org = 1;
+    p->origin = 0;
+    p->sym()->origin = 1;
 
     QuadEdge* q = QuadEdge::makeEdge(pool);
-    q->org = 1;
-    q->sym()->org = 2;
+    q->origin = 1;
+    q->sym()->origin = 2;
 
     QuadEdge::splice(p->sym(), q);
 
     QuadEdge* t = QuadEdge::connect(q, p, pool);
 
-    EXPECT_EQ(t->org, 2);
-    EXPECT_EQ(t->sym()->org, 0);
+    EXPECT_EQ(t->origin, 2);
+    EXPECT_EQ(t->sym()->origin, 0);
 
     EXPECT_EQ(p->lnext(), q);
     EXPECT_EQ(q->lnext(), t);
@@ -94,16 +94,16 @@ TEST(QuadEdgeTest, DeleteTest) {
     std::deque<QuadEdge> pool;
 
     QuadEdge* x = QuadEdge::makeEdge(pool);
-    x->org = 0;
-    x->sym()->org = 1;
+    x->origin = 0;
+    x->sym()->origin = 1;
 
     QuadEdge* y = QuadEdge::makeEdge(pool);
-    y->org = 2;
-    y->sym()->org = 3;
+    y->origin = 2;
+    y->sym()->origin = 3;
 
     QuadEdge* c = QuadEdge::connect(x, y, pool);
 
-    EXPECT_EQ(c->org, 1);
+    EXPECT_EQ(c->origin, 1);
     EXPECT_EQ(c->dest(), 2);
     EXPECT_EQ(x->lnext(), c);
     EXPECT_EQ(c->lnext(), y);
@@ -112,7 +112,7 @@ TEST(QuadEdgeTest, DeleteTest) {
 
     EXPECT_EQ(x->lnext(), x->sym());
     EXPECT_EQ(y->lnext(), y->sym());
-    EXPECT_EQ(c->org, -1);
+    EXPECT_EQ(c->origin, -1);
 
 }
 

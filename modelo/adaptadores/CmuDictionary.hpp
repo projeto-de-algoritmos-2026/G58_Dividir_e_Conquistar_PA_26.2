@@ -21,7 +21,7 @@ public:
 
 	std::vector<nucleo::Phoneme> lookUp(const std::string& word) const override;
 
-	const std::vector<nucleo::DictionaryEntry>& entries() const override;
+	const std::vector<nucleo::DictionaryEntry>& entries() const override { return allEntries; }
 
 };
 

@@ -13,11 +13,11 @@ private:
 	std::vector<std::vector<int>> adjacency;
 
 public:
-	const std::vector<int>& neighbors(int vertex)const;
+	const std::vector<int>& neighbors(int vertex) const { return adjacency.at(vertex); }
 
 	std::vector<Edge> edges() const;
 
-	int size() const;
+	int size() const { return static_cast<int>(adjacency.size()); }
 
 	DelaunayGraph(int vertexCount) : adjacency(vertexCount) {};
 

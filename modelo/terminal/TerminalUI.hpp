@@ -16,7 +16,10 @@ private:
 	void printCluster(const modelo::nucleo::RhymeCluster& cluster);
 
 public:
-	TerminalUI(modelo::nucleo::IRhymeFinder& finder);
+
+	TerminalUI(modelo::nucleo::IRhymeFinder& finder)
+		: finder(finder) {
+	}
 
 	void run();
 

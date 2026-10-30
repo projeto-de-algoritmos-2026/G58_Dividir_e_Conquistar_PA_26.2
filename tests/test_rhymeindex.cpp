@@ -6,29 +6,14 @@
 #include "modelo/nucleo/Phoneme.hpp"
 #include "modelo/nucleo/RhymeIndex.hpp"
 
+#include "Fonemas.hpp"
+
 using modelo::nucleo::Phoneme;
 using modelo::nucleo::RhymeIndex;
 
-// Monta uma vogal
-static Phoneme vogal(const std::string& symbol, int stress) {
-    return {symbol, true, stress};
-}
-
-// Monta uma consoante. Consoante não tem tônica, stress = -1.
-static Phoneme consoante(const std::string& symbol) {
-    return {symbol, false, -1};
-}
-
-// Devolve só os símbolos
-static std::vector<std::string> simbolos(const std::vector<Phoneme>& fonemas) {
-    std::vector<std::string> resultado;
-
-    for (const Phoneme& fonema : fonemas) {
-        resultado.push_back(fonema.symbol);
-    }
-
-    return resultado;
-}
+using fonemas::vogal;
+using fonemas::consoante;
+using fonemas::simbolos;
 
 TEST(RhymeIndexTest, RhymeKeyVogalConsoante) {
     EXPECT_EQ(RhymeIndex::rhymeKey({vogal("AO", 1), consoante("G")}),
@@ -75,7 +60,7 @@ TEST(RhymeIndexTest, RhymePartSemVogal) {
 }
 
 TEST(RhymeIndexTest, ChaveDesconhecida) {
-    RhymeIndex index;
+    const RhymeIndex index;
     EXPECT_EQ(index.findFamily("AO G"), -1);
 }
 

@@ -10,7 +10,7 @@ modelo::geometria::Point2D AcousticTranslator::toPoint(const std::vector<modelo:
 	}
 
 	auto coordinatesOf = [&](const std::string& symbol) {
-		auto found = phonemeCoordinates.find(symbol);
+		const auto found = phonemeCoordinates.find(symbol);
 		if (found == phonemeCoordinates.end()) {
 			throw std::invalid_argument("fonema desconhecido: " + symbol);
 		}
@@ -30,8 +30,8 @@ modelo::geometria::Point2D AcousticTranslator::toPoint(const std::vector<modelo:
 		sumY += coordinates.second;
 	}
 
-	double meanX = sumX / static_cast<double>(rhymePart.size() - 1);
-	double meanY= sumY / static_cast<double>(rhymePart.size() - 1);
+	const double meanX = sumX / static_cast<double>(rhymePart.size() - 1);
+	const double meanY= sumY / static_cast<double>(rhymePart.size() - 1);
 
 	return {vowelWeight * vowel.first + (1 - vowelWeight) * meanX, vowelWeight * vowel.second + (1 - vowelWeight) * meanY};
 }

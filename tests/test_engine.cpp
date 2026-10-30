@@ -50,7 +50,7 @@ TEST_F(RhymeEngineTest, ClusterComKDois) {
     engine.build(2);
 
     auto dog = engine.clusterOf("dog");
-    auto dartagnan = engine.clusterOf("d'artagnan");
+    const auto dartagnan = engine.clusterOf("d'artagnan");
 
     EXPECT_EQ(dog.keys.size(), 4u);
     EXPECT_NE(std::find(dog.keys.begin(), dog.keys.end(), "AO G"), dog.keys.end());
@@ -73,7 +73,7 @@ TEST_F(RhymeEngineTest, RimasPalavraDesconhecida) {
 TEST_F(RhymeEngineTest, RimasPerfeitas) {
     engine.build(5);
 
-    auto r = engine.findRhymes("dog", 0);
+    const auto r = engine.findRhymes("dog", 0);
 
     EXPECT_TRUE(r.found);
     EXPECT_EQ(r.perfect, std::vector<std::string>{"log"});
@@ -84,7 +84,7 @@ TEST_F(RhymeEngineTest, RimasPerfeitas) {
 TEST_F(RhymeEngineTest, UmaRimaProxima) {
     engine.build(5);
 
-    auto r = engine.findRhymes("dog", 1);
+    const auto r = engine.findRhymes("dog", 1);
 
     EXPECT_EQ(r.near, std::vector<std::string>{"hello"});
 }
@@ -92,7 +92,7 @@ TEST_F(RhymeEngineTest, UmaRimaProxima) {
 TEST_F(RhymeEngineTest, RimasProximasEmOrdem) {
     engine.build(5);
 
-    auto r = engine.findRhymes("dog", 3);
+    const auto r = engine.findRhymes("dog", 3);
 
     EXPECT_EQ(r.near,
         std::vector<std::string>({"hello", "fog", "the"}));
@@ -101,12 +101,12 @@ TEST_F(RhymeEngineTest, RimasProximasEmOrdem) {
 TEST_F(RhymeEngineTest, MaisProximasQueExistem) {
     engine.build(5);
 
-    auto r = engine.findRhymes("dog", 10);
+    const auto r = engine.findRhymes("dog", 10);
 
     EXPECT_EQ(r.near,
     std::vector<std::string>({"hello", "fog", "the", "d'artagnan"}));
 
-    auto s = engine.findRhymes("dog", 2);
+    const auto s = engine.findRhymes("dog", 2);
 
     EXPECT_EQ(s.near,
 std::vector<std::string>({"hello", "fog"}));
@@ -115,7 +115,7 @@ std::vector<std::string>({"hello", "fog"}));
 TEST_F(RhymeEngineTest, PalavraEmMaiusculas) {
     engine.build(5);
 
-    auto r = engine.findRhymes("DOG", 0);
+    const auto r = engine.findRhymes("DOG", 0);
 
     EXPECT_EQ(r.perfect, std::vector<std::string>{"log"});
 }

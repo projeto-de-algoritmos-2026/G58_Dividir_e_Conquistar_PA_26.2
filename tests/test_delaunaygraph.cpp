@@ -38,7 +38,7 @@ TEST(DelaunayGraphTest, VerificacaoDeEdges)
 
     graph.addEdge(2, 3);
 
-    std::vector<Edge> arestas = graph.edges();
+    const std::vector<Edge> arestas = graph.edges();
 
     // 1. Quantidade: 4, e não 8. Cada aresta está na lista das duas pontas,
     //    mas edges() deve devolvê-la uma vez só. O "4u" é um 4 sem sinal,
@@ -62,6 +62,6 @@ TEST(DelaunayGraphTest, VerificacaoDeEdges)
     std::sort(pares.begin(), pares.end());
 
     // A lista esperada fica numa variável: assim as vírgulas não confundem a macro.
-    std::vector<std::pair<int, int>> esperado = {{0, 1}, {0, 2}, {1, 2}, {2, 3}};
+    const std::vector<std::pair<int, int>> esperado = {{0, 1}, {0, 2}, {1, 2}, {2, 3}};
     EXPECT_EQ(pares, esperado);
 }

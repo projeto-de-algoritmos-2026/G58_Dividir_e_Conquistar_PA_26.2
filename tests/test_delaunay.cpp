@@ -23,8 +23,8 @@ static Arestas arestasDe(const std::vector<Point2D>& pontos) {
     DivideConquerDelaunay dc;
     ITriangulator& triangulator = dc;
 
-    DelaunayGraph graph = triangulator.triangulate(pontos);
-    std::vector<Edge> edges = graph.edges();
+    const DelaunayGraph graph = triangulator.triangulate(pontos);
+    const std::vector<Edge> edges = graph.edges();
 
     Arestas resultado;
 
@@ -65,7 +65,7 @@ TEST(DivideConquerDelaunayTest, PontoDentro) {
 }
 
 TEST(DivideConquerDelaunayTest, Quadrado) {
-    Arestas a = arestasDe({{0, 0}, {1, 0}, {1, 1}, {0, 1}});
+    const Arestas a = arestasDe({{0, 0}, {1, 0}, {1, 1}, {0, 1}});
     EXPECT_EQ(a.size(), 5u);
     EXPECT_EQ(a.count({0, 1}), 1u);
     EXPECT_EQ(a.count({1, 2}), 1u);

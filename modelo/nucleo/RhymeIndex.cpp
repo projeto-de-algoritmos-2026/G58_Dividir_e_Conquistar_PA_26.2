@@ -30,7 +30,7 @@ void RhymeIndex::add(const std::string& word, const std::string& key, const mode
 		vertexByPoint[{point.x, point.y}] = vertex;
 	}
 
-	int familyId = static_cast<int>(families.size());
+	const int familyId = static_cast<int>(families.size());
 
 	families.push_back({key, {word}, vertex});
 
@@ -41,7 +41,7 @@ void RhymeIndex::add(const std::string& word, const std::string& key, const mode
 }
 
 int RhymeIndex::findFamily(const std::string& key) const {
-	auto found = familyByKey.find(key);
+	const auto found = familyByKey.find(key);
 	return found == familyByKey.end() ? -1 : found->second;
 }
 

@@ -12,7 +12,7 @@ DelaunayGraph DivideConquerDelaunay::triangulate(const std::vector<Point2D>& poi
 	edgeArena.clear();
 	sortedPoints.clear();
 
-	int pointCount = static_cast<int>(points.size());
+	const int pointCount = static_cast<int>(points.size());
 
 	if (pointCount < 2) {
 		return DelaunayGraph(pointCount);
@@ -76,7 +76,7 @@ DivideConquerDelaunay::HullEdges DivideConquerDelaunay::divide(int begin, int en
 
 	} else {
 
-		int middle = (begin + end) / 2;
+		const int middle = (begin + end) / 2;
 
 		return merge(divide(begin, middle), divide(middle, end));
 
@@ -128,12 +128,10 @@ DivideConquerDelaunay::HullEdges DivideConquerDelaunay::merge(HullEdges left, Hu
 			}
 		}
 
-		bool leftValid = isAboveBase(leftCandidate, base);
-		bool rightValid = isAboveBase(rightCandidate, base);
+		const bool leftValid = isAboveBase(leftCandidate, base);
+		const bool rightValid = isAboveBase(rightCandidate, base);
 
-		if (!leftValid && !rightValid) {
-			break;
-		}
+		if (!leftValid && !rightValid) break;
 
 		if (!leftValid || (rightValid && isInsideCircle(leftCandidate->dest(), leftCandidate->origin, rightCandidate->origin, rightCandidate->dest()))) {
 			base = QuadEdge::connect(rightCandidate, base->sym(), edgeArena);
@@ -162,7 +160,7 @@ QuadEdge* DivideConquerDelaunay::lowerTangent(QuadEdge* leftInner, QuadEdge* rig
 	return QuadEdge::connect(rightInner->sym(), leftInner, edgeArena);
 }
 
-bool DivideConquerDelaunay::isCounterClockwise(int first, int second, int third) {
+bool DivideConquerDelaunay::isCounterClockwise(int first, int second, int third) const {
 
 	double pa[2] = {sortedPoints[first].x, sortedPoints[first].y};
 	double pb[2] = {sortedPoints[second].x, sortedPoints[second].y};
@@ -171,7 +169,7 @@ bool DivideConquerDelaunay::isCounterClockwise(int first, int second, int third)
 	return orient2d(pa, pb, pc) > 0.0;
 }
 
-bool DivideConquerDelaunay::isInsideCircle(int first, int second, int third, int point) {
+bool DivideConquerDelaunay::isInsideCircle(int first, int second, int third, int point) const {
 
 	double pa[2] = {sortedPoints[first].x, sortedPoints[first].y};
 	double pb[2] = {sortedPoints[second].x, sortedPoints[second].y};
@@ -179,18 +177,6 @@ bool DivideConquerDelaunay::isInsideCircle(int first, int second, int third, int
 	double pd[2] = {sortedPoints[point].x, sortedPoints[point].y};
 
 	return incircle(pa, pb, pc, pd) > 0.0;
-}
-
-bool DivideConquerDelaunay::isRightOf(int point, QuadEdge* edge) {
-	return isCounterClockwise(point, edge->dest(), edge->origin);
-}
-
-bool DivideConquerDelaunay::isLeftOf(int point, QuadEdge* edge) {
-	return isCounterClockwise(point, edge->origin, edge->dest());
-}
-
-bool DivideConquerDelaunay::isAboveBase(QuadEdge* candidate, QuadEdge* base) {
-	return isRightOf(candidate->dest(), base);
 }
 
 DelaunayGraph DivideConquerDelaunay::toGraph() {

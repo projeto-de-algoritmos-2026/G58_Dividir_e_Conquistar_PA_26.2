@@ -17,7 +17,7 @@ TEST(UnionFindTest, NovoComecaComCadaElementoSozinho)
     }
 
     // ...e começam existindo 5 grupos.
-    EXPECT_EQ(uf.count(), 5);
+    EXPECT_EQ(uf.componentCount(), 5);
 }
 
 TEST(UnionFindTest, TestaFuncaoUnite) {
@@ -39,21 +39,21 @@ TEST(UnionFindTest, TestaContagemDeNos) {
 
     UnionFind uf(5);
 
-    EXPECT_EQ(uf.count(), 5);
+    EXPECT_EQ(uf.componentCount(), 5);
 
     uf.unite(0, 1);
-    EXPECT_EQ(uf.count(), 4);
+    EXPECT_EQ(uf.componentCount(), 4);
 
     uf.unite(0,1);
-    EXPECT_EQ(uf.count(), 4);
+    EXPECT_EQ(uf.componentCount(), 4);
 
     uf.unite(2, 3);
-    EXPECT_EQ(uf.count(), 3);
+    EXPECT_EQ(uf.componentCount(), 3);
 
     uf.unite(0, 3);
-    EXPECT_EQ(uf.count(), 2);
+    EXPECT_EQ(uf.componentCount(), 2);
 
     uf.unite(4, 0);
-    EXPECT_EQ(uf.count(), 1);
+    EXPECT_EQ(uf.componentCount(), 1);
 
 }
