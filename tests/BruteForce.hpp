@@ -84,8 +84,7 @@ inline std::pair<int, int> parMaisProximo(const std::vector<Point2D>& p) {
 
     for (int i = 0; i < n; i++) {
         for (int j = i + 1; j < n; j++) {
-            double d = distancia(p[i], p[j]);
-            if (d < melhor) {
+            if (const double d = distancia(p[i], p[j]); d < melhor) {
                 melhor = d;
                 par = {i, j};
             }
@@ -103,8 +102,7 @@ inline int vizinhoMaisProximo(const std::vector<Point2D>& p, int i) {
         if (j == i) {
             continue;
         }
-        double d = distancia(p[i], p[j]);
-        if (d < melhor) {
+        if (const double d = distancia(p[i], p[j]); d < melhor) {
             melhor = d;
             vizinho = j;
         }

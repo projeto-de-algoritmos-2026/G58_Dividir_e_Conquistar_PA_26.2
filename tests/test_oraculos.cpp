@@ -54,8 +54,7 @@ TEST(OraculoDelaunay, MenorArestaEhParMaisProximo) {
     double menor = std::numeric_limits<double>::infinity();
     std::pair<int, int> parDaTriangulacao = {-1, -1};
     for (const Edge& e : triangular(pontos).edges()) {
-        double d = forca_bruta::distancia(pontos[e.u], pontos[e.v]);
-        if (d < menor) {
+        if (const double d = forca_bruta::distancia(pontos[e.u], pontos[e.v]); d < menor) {
             menor = d;
             parDaTriangulacao = {e.u, e.v};
         }
@@ -99,7 +98,7 @@ TEST(OraculoKruskal, ArvoreSobreDelaunayTemOPesoDoPrim) {
 }
 
 TEST(OraculoKruskal, MesmosClustersQueNoGrafoCompleto) {
-    const int n = 200;
+    constexpr int n = 200;
     const std::vector<Point2D> pontos = forca_bruta::pontosAleatorios(n, 10);
 
     DelaunayGraph completo(n);

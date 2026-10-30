@@ -21,9 +21,8 @@ std::vector<int> KruskalClusterer::cluster(const std::vector<Point2D>& points, c
 	for (const Edge& edge : edges) {
 		if (unionFind.componentCount() == clusterCount) {
 			break;
-		} else {
-			unionFind.unite(edge.u, edge.v);
 		}
+		unionFind.unite(edge.u, edge.v);
 	}
 
 	std::vector<int> labelOfRoot(pointCount, -1);
@@ -45,7 +44,7 @@ std::vector<Edge> KruskalClusterer::sortedEdges(const std::vector<Point2D>& poin
 
 	std::vector<Edge> edges = graph.edges();
 
-	for (Edge& edge : edges) edge.length = points[edge.u].distanceTo(points[edge.v]);
+	for (auto&[u, v, length] : edges) length = points[u].distanceTo(points[v]);
 
 	std::sort(edges.begin(), edges.end());
 

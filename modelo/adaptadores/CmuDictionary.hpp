@@ -17,11 +17,11 @@ private:
 	std::unordered_map<std::string,int> entryByWord;
 
 public:
-	CmuDictionary(const std::string& path);
+	explicit CmuDictionary(const std::string& path);
 
-	std::vector<nucleo::Phoneme> lookUp(const std::string& word) const override;
+	[[nodiscard]] std::vector<nucleo::Phoneme> lookUp(const std::string& word) const override;
 
-	const std::vector<nucleo::DictionaryEntry>& entries() const override { return allEntries; }
+	[[nodiscard]] const std::vector<nucleo::DictionaryEntry>& entries() const override { return allEntries; }
 
 };
 

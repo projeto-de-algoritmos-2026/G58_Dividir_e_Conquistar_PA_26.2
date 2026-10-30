@@ -14,13 +14,13 @@ public:
 	int origin = -1;
 
 public:
-	QuadEdge* rot() { return rotated; }
+	[[nodiscard]] QuadEdge *rot() const { return rotated; }
 
-	QuadEdge* sym() { return rotated->rotated; }
+	[[nodiscard]] QuadEdge* sym() const { return rotated->rotated; }
 
-	QuadEdge* onext() { return originNext; }
+	[[nodiscard]] QuadEdge* oNext() const { return originNext; }
 
-	int dest() { return sym()->origin; }
+	[[nodiscard]] int dest() const { return sym()->origin; }
 
 	static QuadEdge* makeEdge(std::deque<QuadEdge>& arena);
 
@@ -30,13 +30,13 @@ public:
 
 	static void deleteEdge(QuadEdge* edge);
 
-	QuadEdge* invRot() { return rotated->rotated->rotated; }
+	[[nodiscard]] QuadEdge* invRot() const { return rotated->rotated->rotated; }
 
-	QuadEdge* lnext() { return invRot()->onext()->rot(); }
+	[[nodiscard]] QuadEdge* lNext() const { return invRot()->oNext()->rot(); }
 
-	QuadEdge* oprev() {return rot()->onext()->rot();  }
+	[[nodiscard]] QuadEdge* oPrev() const {return rot()->oNext()->rot();  }
 
-	QuadEdge* rprev() { return sym()->onext(); }
+	[[nodiscard]] QuadEdge* rPrev() const { return sym()->oNext(); }
 
 };
 

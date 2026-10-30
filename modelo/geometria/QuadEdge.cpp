@@ -22,13 +22,13 @@ namespace modelo::geometria {
     }
 
     void QuadEdge::splice(QuadEdge* first, QuadEdge* second) {
-        QuadEdge* firstDual = first->onext()->rot();
-        QuadEdge* secondDual = second->onext()->rot();
+        QuadEdge* firstDual = first->oNext()->rot();
+        QuadEdge* secondDual = second->oNext()->rot();
 
-        QuadEdge* firstNext = second->onext();
-        QuadEdge* secondNext = first->onext();
-        QuadEdge* firstDualNext = secondDual->onext();
-        QuadEdge* secondDualNext = firstDual->onext();
+        QuadEdge* firstNext = second->oNext();
+        QuadEdge* secondNext = first->oNext();
+        QuadEdge* firstDualNext = secondDual->oNext();
+        QuadEdge* secondDualNext = firstDual->oNext();
 
         first->originNext = firstNext;
         second->originNext = secondNext;
@@ -40,14 +40,14 @@ namespace modelo::geometria {
         QuadEdge* edge = makeEdge(arena);
         edge->origin = previous->dest();
         edge->sym()->origin = next->origin;
-        splice(edge, previous->lnext());
+        splice(edge, previous->lNext());
         splice(edge->sym(), next);
         return edge;
     }
 
     void QuadEdge::deleteEdge(QuadEdge* edge) {
-        splice(edge, edge->oprev());
-        splice(edge->sym(), edge->sym()->oprev());
+        splice(edge, edge->oPrev());
+        splice(edge->sym(), edge->sym()->oPrev());
         edge->origin = -1;
         edge->sym()->origin = -1;
     }

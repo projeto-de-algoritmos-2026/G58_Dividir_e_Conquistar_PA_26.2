@@ -10,10 +10,9 @@ using modelo::geometria::Edge;
 using modelo::geometria::Point2D;
 
 TEST(StructsTest, EdgeTest) {
-
-    const Edge eCurta{0, 1, 1.0};
-    const Edge eLonga{2, 3, 5.0};
-    const Edge eMuitoLonga{4, 5, 10.0};
+    constexpr Edge eCurta{0, 1, 1.0};
+    constexpr Edge eLonga{2, 3, 5.0};
+    constexpr Edge eMuitoLonga{4, 5, 10.0};
 
     EXPECT_TRUE(eCurta < eLonga);
     EXPECT_FALSE(eLonga < eCurta);
@@ -30,10 +29,9 @@ TEST(StructsTest, EdgeTest) {
 }
 
 TEST(StructsTest, Point2DTest) {
-
-    const Point2D p1{0.0,5.0};
-    const Point2D p2{1.0,0.0};
-    const Point2D p3{1.0, 5.0};
+    constexpr Point2D p1{0.0,5.0};
+    constexpr Point2D p2{1.0,0.0};
+    constexpr Point2D p3{1.0, 5.0};
 
     EXPECT_TRUE(p1 < p2);
     EXPECT_TRUE(p2 < p3);

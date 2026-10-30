@@ -4,7 +4,7 @@
 #include <sstream>
 #include <string>
 
-static const int MAX_WORDS_SHOWN = 20;
+static constexpr int MAX_WORDS_SHOWN = 20;
 
 static void printWorsList(const std::vector<std::string>& words) {
 	const int total = static_cast<int>(words.size());
@@ -19,7 +19,7 @@ static void printWorsList(const std::vector<std::string>& words) {
 
 namespace modelo::terminal {
 
-void TerminalUI::run() {
+void TerminalUI::run() const {
 	std::cout << "Digite 'ajuda' para ver os comandos.\n";
 	std::string input;
 
@@ -49,8 +49,7 @@ void TerminalUI::run() {
 			}
 
 			int nearCount = 10;
-			std::string nearCountText;
-			if (tokens >> nearCountText) {
+			if (std::string nearCountText; tokens >> nearCountText) {
 				try {
 					nearCount = std::stoi(nearCountText);
 				} catch (const std::exception&) {
@@ -81,12 +80,11 @@ void TerminalUI::printRhymes(const modelo::nucleo::RhymeResult& result) {
 	if (!result.found) {
 		std::cout << "Palavra não encontrada: " + result.word << '\n';
 		return;
-	} else {
-		std::cout << "Rimas perfeitas (" << result.perfect.size() << "): \n";
-		printWorsList(result.perfect);
-		std::cout << "Rimas próximas (" << result.near.size() << "): \n";
-		printWorsList(result.near);
 	}
+	std::cout << "Rimas perfeitas (" << result.perfect.size() << "): \n";
+	printWorsList(result.perfect);
+	std::cout << "Rimas próximas (" << result.near.size() << "): \n";
+	printWorsList(result.near);
 }
 
 void TerminalUI::printCluster(const modelo::nucleo::RhymeCluster& cluster) {

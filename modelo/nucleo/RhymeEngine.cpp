@@ -124,20 +124,19 @@ RhymeCluster RhymeEngine::clusterOf(const std::string& word) {
 	return cluster;
 }
 
-std::vector<int> RhymeEngine::nearestVertices(int origin, int count) {
+std::vector<int> RhymeEngine::nearestVertices(int origin, int count) const {
 
 	const auto& points =index.points();
 	std::vector<int> nearest;
 	std::vector<bool> visited(points.size(), false);
 
-	using Item = std::pair<double, int>;
-	std::priority_queue<Item, std::vector<Item>, std::greater<Item>> heap;
+	using Candidate = std::pair<double, int>;
+	std::priority_queue<Candidate, std::vector<Candidate>, std::greater<Candidate>> heap;
 	heap.push({0.0, origin});
 
 	while (!heap.empty() && static_cast<int>(nearest.size()) < count) {
-		Item candidate = heap.top();
+		auto [currentDistance, current] = heap.top();
 		heap.pop();
-		int current = candidate.second;
 
 		if (visited[current]) continue;
 

@@ -51,7 +51,9 @@ DivideConquerDelaunay::HullEdges DivideConquerDelaunay::divide(int begin, int en
 		edge01->sym()->origin = begin + 1;
 		return {edge01, edge01->sym()};
 
-	} else if (pointCount == 3) {
+	}
+
+	if (pointCount == 3) {
 
 		QuadEdge* edge01 = QuadEdge::makeEdge(edgeArena);
 		QuadEdge* edge12 = QuadEdge::makeEdge(edgeArena);
@@ -67,20 +69,19 @@ DivideConquerDelaunay::HullEdges DivideConquerDelaunay::divide(int begin, int en
 		if (isCounterClockwise(begin, begin + 1, begin + 2)) {
 			QuadEdge::connect(edge12, edge01, edgeArena);
 			return {edge01, edge12->sym()};
-		} else if (isCounterClockwise(begin, begin+2, begin+1)) {
-			QuadEdge* edge20 = QuadEdge::connect(edge12 ,edge01, edgeArena);
-			return {edge20->sym(), edge20};
-		} else {
-			return {edge01, edge12->sym()};
 		}
 
-	} else {
+		if (isCounterClockwise(begin, begin+2, begin+1)) {
+			QuadEdge* edge20 = QuadEdge::connect(edge12 ,edge01, edgeArena);
+			return {edge20->sym(), edge20};
+		}
+
+		return {edge01, edge12->sym()};
+	}
 
 		const int middle = (begin + end) / 2;
 
 		return merge(divide(begin, middle), divide(middle, end));
-
-	}
 }
 
 DivideConquerDelaunay::HullEdges DivideConquerDelaunay::merge(HullEdges left, HullEdges right) {
@@ -102,27 +103,27 @@ DivideConquerDelaunay::HullEdges DivideConquerDelaunay::merge(HullEdges left, Hu
 
 	while (true) {
 
-		QuadEdge* leftCandidate = base->sym()->onext();
+		QuadEdge* leftCandidate = base->sym()->oNext();
 
 		if (isAboveBase(leftCandidate, base)) {
 			while (true) {
-				if (!(isInsideCircle(base->dest(), base->origin, leftCandidate->dest(), leftCandidate->onext()->dest()))) {
+				if (!(isInsideCircle(base->dest(), base->origin, leftCandidate->dest(), leftCandidate->oNext()->dest()))) {
 				break;
 				}
-				QuadEdge* nextCandidate = leftCandidate->onext();
+				QuadEdge* nextCandidate = leftCandidate->oNext();
 				QuadEdge::deleteEdge(leftCandidate);
 				leftCandidate = nextCandidate;
 			}
 		}
 
-		QuadEdge* rightCandidate = base->oprev();
+		QuadEdge* rightCandidate = base->oPrev();
 
 		if (isAboveBase(rightCandidate, base)) {
 			while (true) {
-				if (!(isInsideCircle(base->dest(), base->origin, rightCandidate->dest(), rightCandidate->oprev()->dest()))) {
+				if (!(isInsideCircle(base->dest(), base->origin, rightCandidate->dest(), rightCandidate->oPrev()->dest()))) {
 					break;
 				}
-				QuadEdge* nextCandidate = rightCandidate->oprev();
+				QuadEdge* nextCandidate = rightCandidate->oPrev();
 				QuadEdge::deleteEdge(rightCandidate);
 				rightCandidate = nextCandidate;
 			}
@@ -149,9 +150,9 @@ QuadEdge* DivideConquerDelaunay::lowerTangent(QuadEdge* leftInner, QuadEdge* rig
 	while (true) {
 
 		if (isLeftOf(rightInner->origin, leftInner)) {
-			leftInner = leftInner->lnext();
+			leftInner = leftInner->lNext();
 		} else if (isRightOf(leftInner->origin, rightInner)) {
-			rightInner = rightInner->rprev();
+			rightInner = rightInner->rPrev();
 		} else {
 			break;
 		}

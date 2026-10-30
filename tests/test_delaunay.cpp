@@ -147,10 +147,10 @@ TEST(DivideConquerDelaunayTest, PontosEmbaralhados) {
 
     Arestas traduzidas;
 
-    for (const std::pair<int, int>& par :arestasDe(embaralhados)) {
-        int a = perm[par.first];
-        int b = perm[par.second];
-        traduzidas.insert({std::min(a, b), std::max(a, b)});
+    for (const auto&[u, v] :arestasDe(embaralhados)) {
+        int uOriginal = perm[u];
+        int vOriginal = perm[v];
+        traduzidas.insert({std::min(uOriginal, vOriginal), std::max(uOriginal, vOriginal)});
     }
 
     EXPECT_EQ(traduzidas, arestasDe(pontos));

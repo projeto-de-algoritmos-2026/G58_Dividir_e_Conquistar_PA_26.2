@@ -31,8 +31,7 @@ TEST(DadosReais, TriangulacaoDoDicionarioInteiro) {
     AcousticTranslator tradutor(0.9);
     RhymeIndex index;
     for (const DictionaryEntry& e : dicionario.entries()) {
-        std::vector<Phoneme> parte = RhymeIndex::rhymePart(e.phonemes);
-        if (!parte.empty()) {
+        if (std::vector<Phoneme> parte = RhymeIndex::rhymePart(e.phonemes); !parte.empty()) {
             index.add(e.word, RhymeIndex::rhymeKey(parte), tradutor.toPoint(parte));
         }
     }

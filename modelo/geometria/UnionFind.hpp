@@ -14,7 +14,7 @@ private:
 	int components;
 
 public:
-	UnionFind(int elementCount)
+	explicit UnionFind(int elementCount)
 		: parent(elementCount), rank(elementCount, 0), components(elementCount) {
 		std::iota(parent.begin(), parent.end(), 0);
 	}

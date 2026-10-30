@@ -5,10 +5,7 @@
 namespace modelo::nucleo {
 
 void RhymeIndex::add(const std::string& word, const std::string& key, const modelo::geometria::Point2D& point) {
-
-	auto existingFamily = familyByKey.find(key);
-
-	if (existingFamily != familyByKey.end()) {
+	if (const auto existingFamily = familyByKey.find(key); existingFamily != familyByKey.end()) {
 		std::vector<std::string>& words = families[existingFamily->second].words;
 
 		if (std::find(words.begin(), words.end(), word) == words.end()) {

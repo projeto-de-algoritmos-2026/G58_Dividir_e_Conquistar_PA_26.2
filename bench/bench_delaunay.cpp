@@ -28,8 +28,8 @@ using modelo::geometria::Point2D;
 using modelo::geometria::UnionFind;
 using modelo::nucleo::RhymeEngine;
 
-static const int REPETICOES = 5;
-static const int K = 10;
+static constexpr int REPETICOES = 5;
+static constexpr int K = 10;
 
 static std::vector<Point2D> pontosAleatorios(int n, unsigned semente) {
     std::mt19937 gerador(semente);

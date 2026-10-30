@@ -23,7 +23,7 @@ private:
 public:
 	geometria::Point2D toPoint(const std::vector<nucleo::Phoneme>& rhymePart) override;
 
-	AcousticTranslator(double vowelWeight);
+	explicit AcousticTranslator(double vowelWeight);
 
 };
 

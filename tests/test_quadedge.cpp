@@ -14,8 +14,8 @@ TEST(QuadEdgeTest, MakeEdgeTest) {
     EXPECT_EQ(e->sym()->sym(), e);
     EXPECT_EQ(e->rot()->rot()->rot()->rot(), e);
     EXPECT_EQ(e->invRot(), e->rot()->rot()->rot());
-    EXPECT_EQ(e->onext(), e);
-    EXPECT_EQ(e->sym()->onext(), e->sym());
+    EXPECT_EQ(e->oNext(), e);
+    EXPECT_EQ(e->sym()->oNext(), e->sym());
 
     e->origin = 0;
     e->sym()->origin = 1;
@@ -32,13 +32,13 @@ TEST(QuadEdgeTest, SpliceTest) {
 
     QuadEdge::splice(a, b);
 
-    EXPECT_EQ(a->onext(), b);
-    EXPECT_EQ(b->onext(), a);
+    EXPECT_EQ(a->oNext(), b);
+    EXPECT_EQ(b->oNext(), a);
 
     QuadEdge::splice(a, b);
 
-    EXPECT_EQ(a->onext(), a);
-    EXPECT_EQ(b->onext(), b);
+    EXPECT_EQ(a->oNext(), a);
+    EXPECT_EQ(b->oNext(), b);
 
 }
 
@@ -59,8 +59,8 @@ TEST(QuadEdgeTest, ConnectTest) {
 
     EXPECT_EQ(c->origin, 1);
     EXPECT_EQ(c->dest(), 2);
-    EXPECT_EQ(x->lnext(), c);
-    EXPECT_EQ(c->lnext(), y);
+    EXPECT_EQ(x->lNext(), c);
+    EXPECT_EQ(c->lNext(), y);
 
 }
 
@@ -83,9 +83,9 @@ TEST(QuadEdgeTest, TriangleTest) {
     EXPECT_EQ(t->origin, 2);
     EXPECT_EQ(t->sym()->origin, 0);
 
-    EXPECT_EQ(p->lnext(), q);
-    EXPECT_EQ(q->lnext(), t);
-    EXPECT_EQ(t->lnext(), p);
+    EXPECT_EQ(p->lNext(), q);
+    EXPECT_EQ(q->lNext(), t);
+    EXPECT_EQ(t->lNext(), p);
 
 }
 
@@ -105,13 +105,13 @@ TEST(QuadEdgeTest, DeleteTest) {
 
     EXPECT_EQ(c->origin, 1);
     EXPECT_EQ(c->dest(), 2);
-    EXPECT_EQ(x->lnext(), c);
-    EXPECT_EQ(c->lnext(), y);
+    EXPECT_EQ(x->lNext(), c);
+    EXPECT_EQ(c->lNext(), y);
 
     QuadEdge::deleteEdge(c);
 
-    EXPECT_EQ(x->lnext(), x->sym());
-    EXPECT_EQ(y->lnext(), y->sym());
+    EXPECT_EQ(x->lNext(), x->sym());
+    EXPECT_EQ(y->lNext(), y->sym());
     EXPECT_EQ(c->origin, -1);
 
 }

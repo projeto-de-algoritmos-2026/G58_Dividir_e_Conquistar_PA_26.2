@@ -32,7 +32,7 @@ private:
 	std::vector<int> clusterOfVertex;
 
 private:
-	std::vector<int> nearestVertices(int origin, int count);
+	std::vector<int> nearestVertices(int origin, int count) const;
 
 public:
 	RhymeEngine(IDictionaryLookUp& dictionary, IPhoneticConverter& converter, geometria::ITriangulator& triangulator, geometria::IClusterer& clusterer);

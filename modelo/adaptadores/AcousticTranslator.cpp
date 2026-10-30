@@ -17,23 +17,23 @@ modelo::geometria::Point2D AcousticTranslator::toPoint(const std::vector<modelo:
 		return found->second;
 	};
 
-	auto vowel = coordinatesOf(rhymePart[0].symbol);
+	auto [vowelX, vowelY] = coordinatesOf(rhymePart[0].symbol);
 
-	if (rhymePart.size() == 1) return {vowel.first, vowel.second};
+	if (rhymePart.size() == 1) return {vowelX, vowelY};
 
 	double sumX = 0.0;
 	double sumY = 0.0;
 
 	for (size_t i = 1; i < rhymePart.size(); i++) {
-		auto coordinates = coordinatesOf(rhymePart[i].symbol);
-		sumX += coordinates.first;
-		sumY += coordinates.second;
+		auto [coordinateX, coordinateY] = coordinatesOf(rhymePart[i].symbol);
+		sumX += coordinateX;
+		sumY += coordinateY;
 	}
 
 	const double meanX = sumX / static_cast<double>(rhymePart.size() - 1);
 	const double meanY= sumY / static_cast<double>(rhymePart.size() - 1);
 
-	return {vowelWeight * vowel.first + (1 - vowelWeight) * meanX, vowelWeight * vowel.second + (1 - vowelWeight) * meanY};
+	return {vowelWeight * vowelX + (1 - vowelWeight) * meanX, vowelWeight * vowelY + (1 - vowelWeight) * meanY};
 }
 
 AcousticTranslator::AcousticTranslator(double vowelWeight)
