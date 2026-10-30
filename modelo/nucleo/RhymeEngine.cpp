@@ -69,8 +69,8 @@ RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 		return std::find(lista.begin(), lista.end(), words) != lista.end();
 	};
 
-	auto addNearRhymesFrom = [&](int familyId) {
-		for (const std::string& candidate : index.family(familyId).words) {
+	auto addNearRhymesFrom = [&](const int otherFamilyId) {
+		for (const std::string& candidate : index.family(otherFamilyId).words) {
 			if (static_cast<int>(result.near.size()) >= maxNear) return;
 
 			if (candidate == normalizedWord) continue;
