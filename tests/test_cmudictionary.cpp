@@ -18,8 +18,6 @@ static const std::string MINI = std::string(FIXTURES_DIR) + "/mini.dict";
 
 TEST(CmuDictionaryTest, ArquivoInexistente) {
     CmuDictionary dicionario(MINI);
-    IDictionaryLookUp& dic = dicionario;
-
     EXPECT_THROW(CmuDictionary("nao/existe.dict"), std::runtime_error);
 }
 
