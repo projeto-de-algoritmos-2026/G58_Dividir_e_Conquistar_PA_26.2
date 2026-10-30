@@ -4,7 +4,7 @@
 
 namespace modelo::adaptadores {
 
-modelo::geometria::Point2D AcousticTranslator::toPoint(const std::vector<modelo::nucleo::Phoneme>& rhymePart) {
+geometria::Point2D AcousticTranslator::toPoint(const std::vector<nucleo::Phoneme>& rhymePart) {
 	if (rhymePart.empty()) {
 		throw std::invalid_argument("rima vazia");
 	}

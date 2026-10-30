@@ -8,15 +8,15 @@
 namespace modelo::terminal {
 class TerminalUI {
 private:
-	modelo::nucleo::IRhymeFinder& finder;
+	nucleo::IRhymeFinder& finder;
 
 private:
-	static void printRhymes(const modelo::nucleo::RhymeResult& result);
+	static void printRhymes(const nucleo::RhymeResult& result);
 
-	static void printCluster(const modelo::nucleo::RhymeCluster& cluster);
+	static void printCluster(const nucleo::RhymeCluster& cluster);
 
 public:
-	explicit TerminalUI(modelo::nucleo::IRhymeFinder& finder)
+	explicit TerminalUI(nucleo::IRhymeFinder& finder)
 		: finder(finder) {
 	}
 

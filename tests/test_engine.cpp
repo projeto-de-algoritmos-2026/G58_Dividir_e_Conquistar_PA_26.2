@@ -21,7 +21,7 @@ using modelo::nucleo::Phoneme;
 
 static const std::string MINI = std::string(FIXTURES_DIR) + "/mini.dict";
 
-class RhymeEngineTest : public ::testing::Test {
+class RhymeEngineTest : public testing::Test {
 protected:
     CmuDictionary dicionario{MINI};
     AcousticTranslator tradutor{0.9};

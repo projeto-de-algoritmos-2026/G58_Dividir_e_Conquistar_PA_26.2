@@ -4,7 +4,7 @@
 
 namespace modelo::nucleo {
 
-void RhymeIndex::add(const std::string& word, const std::string& key, const modelo::geometria::Point2D& point) {
+void RhymeIndex::add(const std::string& word, const std::string& key, const geometria::Point2D& point) {
 	if (const auto existingFamily = familyByKey.find(key); existingFamily != familyByKey.end()) {
 		std::vector<std::string>& words = families[existingFamily->second].words;
 
@@ -42,7 +42,7 @@ int RhymeIndex::findFamily(const std::string& key) const {
 	return found == familyByKey.end() ? -1 : found->second;
 }
 
-const std::vector<modelo::geometria::Point2D>& RhymeIndex::points() const {
+const std::vector<geometria::Point2D>& RhymeIndex::points() const {
 	return vertexPoints;
 }
 

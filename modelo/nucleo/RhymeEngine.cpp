@@ -22,7 +22,7 @@ static int familyOfWord(const modelo::nucleo::IDictionaryLookUp& dictionary, con
 
 namespace modelo::nucleo {
 
-RhymeEngine::RhymeEngine(IDictionaryLookUp& dictionary, IPhoneticConverter& converter, modelo::geometria::ITriangulator& triangulator, modelo::geometria::IClusterer& clusterer)
+RhymeEngine::RhymeEngine(IDictionaryLookUp& dictionary, IPhoneticConverter& converter, geometria::ITriangulator& triangulator, geometria::IClusterer& clusterer)
 	: dictionary(dictionary), converter(converter), triangulator(triangulator), clusterer(clusterer), graph(0)
 {
 }

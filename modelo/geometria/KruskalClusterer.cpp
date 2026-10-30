@@ -16,7 +16,7 @@ std::vector<int> KruskalClusterer::cluster(const std::vector<Point2D>& points, c
 
 	UnionFind unionFind(pointCount);
 
-	const std::vector<Edge> edges = KruskalClusterer::sortedEdges(points, graph);
+	const std::vector<Edge> edges = sortedEdges(points, graph);
 
 	for (const Edge& edge : edges) {
 		if (unionFind.componentCount() == clusterCount) {

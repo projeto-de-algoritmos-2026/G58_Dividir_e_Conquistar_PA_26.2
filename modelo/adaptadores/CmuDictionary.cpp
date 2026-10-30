@@ -35,7 +35,7 @@ CmuDictionary::CmuDictionary(const std::string& path) {
 
 		if (auto variantStart = word.find('('); variantStart != std::string::npos) word.erase(variantStart);
 
-		std::vector<modelo::nucleo::Phoneme> phonemes;
+		std::vector<nucleo::Phoneme> phonemes;
 		std::string token;
 
 		while (fields >> token) {
@@ -52,7 +52,7 @@ CmuDictionary::CmuDictionary(const std::string& path) {
 
 }
 
-std::vector<modelo::nucleo::Phoneme> CmuDictionary::lookUp(const std::string& word) const {
+std::vector<nucleo::Phoneme> CmuDictionary::lookUp(const std::string& word) const {
 	if (const auto found = entryByWord.find(nucleo::normalizedWord(word)); found == entryByWord.end()) {
 		return {};
 	} else {

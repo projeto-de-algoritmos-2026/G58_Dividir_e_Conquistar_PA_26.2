@@ -76,7 +76,7 @@ void TerminalUI::run() const {
 	}
 }
 
-void TerminalUI::printRhymes(const modelo::nucleo::RhymeResult& result) {
+void TerminalUI::printRhymes(const nucleo::RhymeResult& result) {
 	if (!result.found) {
 		std::cout << "Palavra não encontrada: " + result.word << '\n';
 		return;
@@ -87,7 +87,7 @@ void TerminalUI::printRhymes(const modelo::nucleo::RhymeResult& result) {
 	printWorsList(result.near);
 }
 
-void TerminalUI::printCluster(const modelo::nucleo::RhymeCluster& cluster) {
+void TerminalUI::printCluster(const nucleo::RhymeCluster& cluster) {
 	if (cluster.id == -1) {
 		std::cout << "Palavra não encontrada.\n";
 		return;
