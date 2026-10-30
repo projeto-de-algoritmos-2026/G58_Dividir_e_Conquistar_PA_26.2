@@ -36,7 +36,7 @@ geometria::Point2D AcousticTranslator::toPoint(const std::vector<nucleo::Phoneme
 	return {vowelWeight * vowelX + (1 - vowelWeight) * meanX, vowelWeight * vowelY + (1 - vowelWeight) * meanY};
 }
 
-AcousticTranslator::AcousticTranslator(double vowelWeight)
+AcousticTranslator::AcousticTranslator(const double vowelWeight)
 	: vowelWeight(vowelWeight) {
 	initializePhonemeCoordinates();
 }

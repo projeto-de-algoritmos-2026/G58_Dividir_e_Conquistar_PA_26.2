@@ -31,7 +31,7 @@ using modelo::nucleo::RhymeEngine;
 static constexpr int REPETICOES = 5;
 static constexpr int K = 10;
 
-static std::vector<Point2D> pontosAleatorios(int n, unsigned semente) {
+static std::vector<Point2D> pontosAleatorios(const int n, const unsigned semente) {
     std::mt19937 gerador(semente);
     std::uniform_real_distribution<double> dist(0.0, 1.0);
     std::vector<Point2D> pontos;
@@ -191,7 +191,7 @@ static void dicionarioInteiro(const std::string& caminho) {
     std::printf("| build(15): índice, triangulação e Kruskal | %.1f |\n", ms(lido, pronto));
 }
 
-int main(int argc, char** argv) {
+int main(const int argc, char** argv) {
 #ifndef NDEBUG
 #endif
     const std::string caminho = argc > 1 ? argv[1] : "data/cmudict.dict";

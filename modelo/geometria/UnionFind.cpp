@@ -3,14 +3,14 @@
 namespace modelo::geometria {
 
 
-int UnionFind::find(int element) {
+int UnionFind::find(const int element) {
 	if (parent[element] != element) {
 		parent[element] = find(parent[element]);
 	}
 	return parent[element];
 }
 
-bool UnionFind::unite(int first, int second) {
+bool UnionFind::unite(const int first, const int second) {
 
 	const int firstRoot = find(first);
 	const int secondRoot = find(second);

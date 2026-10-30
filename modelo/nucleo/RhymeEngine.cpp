@@ -27,7 +27,7 @@ RhymeEngine::RhymeEngine(IDictionaryLookUp& dictionary, IPhoneticConverter& conv
 {
 }
 
-void RhymeEngine::build(int clusterCount) {
+void RhymeEngine::build(const int clusterCount) {
 
 	for (const DictionaryEntry& entry : dictionary.entries()) {
 		auto rhyme = RhymeIndex::rhymePart(entry.phonemes);
@@ -43,7 +43,7 @@ void RhymeEngine::build(int clusterCount) {
 
 }
 
-RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
+RhymeResult RhymeEngine::findRhymes(const std::string& word, const int maxNear) {
 
 	const std::string normalizedWord = nucleo::normalizedWord(word);
 
@@ -122,7 +122,7 @@ RhymeCluster RhymeEngine::clusterOf(const std::string& word) {
 	return cluster;
 }
 
-std::vector<int> RhymeEngine::nearestVertices(int origin, int count) const {
+std::vector<int> RhymeEngine::nearestVertices(int origin, const int count) const {
 
 	const auto& points =index.points();
 	std::vector<int> nearest;

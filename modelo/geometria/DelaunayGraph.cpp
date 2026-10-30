@@ -18,7 +18,7 @@ std::vector<Edge> DelaunayGraph::edges() const {
 	return result;
 }
 
-void DelaunayGraph::addEdge(int u, int v) {
+void DelaunayGraph::addEdge(const int u, const int v) {
 	if (u != v) {
 		if (std::find(adjacency.at(u).begin(), adjacency.at(u).end(), v) == adjacency.at(u).end()) {
 			adjacency[v].push_back(u);

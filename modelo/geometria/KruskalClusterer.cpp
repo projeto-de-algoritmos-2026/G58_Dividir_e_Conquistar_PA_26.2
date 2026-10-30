@@ -6,7 +6,7 @@
 
 namespace modelo::geometria {
 
-std::vector<int> KruskalClusterer::cluster(const std::vector<Point2D>& points, const DelaunayGraph& graph, int clusterCount) {
+std::vector<int> KruskalClusterer::cluster(const std::vector<Point2D>& points, const DelaunayGraph& graph, const int clusterCount) {
 
 	const int pointCount = static_cast<int>(points.size());
 

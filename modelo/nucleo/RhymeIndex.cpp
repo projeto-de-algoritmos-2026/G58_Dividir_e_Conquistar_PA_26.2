@@ -60,12 +60,12 @@ std::string RhymeIndex::rhymeKey(const std::vector<Phoneme>& rhymePart) {
 	return key;
 }
 
-const RhymeFamily& RhymeIndex::family(int familyId) const
+const RhymeFamily& RhymeIndex::family(const int familyId) const
 {
 	return families.at(familyId);
 }
 
-const std::vector<int>& RhymeIndex::familiesAtVertex(int vertex) const
+const std::vector<int>& RhymeIndex::familiesAtVertex(const int vertex) const
 {
 	return familiesByVertex.at(vertex);
 }

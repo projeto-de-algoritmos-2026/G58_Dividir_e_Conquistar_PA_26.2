@@ -22,7 +22,7 @@ DelaunayGraph DivideConquerDelaunay::triangulate(const std::vector<Point2D>& poi
 
 	std::iota(originalIndex.begin(), originalIndex.end(), 0);
 
-	std::sort(originalIndex.begin(), originalIndex.end(), [&](int i, int j) { return points[i] < points[j]; });
+	std::sort(originalIndex.begin(), originalIndex.end(), [&](const int i, const int j) { return points[i] < points[j]; });
 
 	for (int i = 0; i < pointCount; i++) {
 		sortedPoints.push_back(points[originalIndex[i]]);
@@ -39,9 +39,9 @@ DelaunayGraph DivideConquerDelaunay::triangulate(const std::vector<Point2D>& poi
 	return toGraph();
 }
 
-DivideConquerDelaunay::HullEdges DivideConquerDelaunay::divide(int begin, int end) {
+DivideConquerDelaunay::HullEdges DivideConquerDelaunay::divide(const int begin, const int end) {
 
-	int pointCount = end - begin;
+	const int pointCount = end - begin;
 
 	if (pointCount == 2) {
 
@@ -84,7 +84,7 @@ DivideConquerDelaunay::HullEdges DivideConquerDelaunay::divide(int begin, int en
 		return merge(divide(begin, middle), divide(middle, end));
 }
 
-DivideConquerDelaunay::HullEdges DivideConquerDelaunay::merge(HullEdges left, HullEdges right) {
+DivideConquerDelaunay::HullEdges DivideConquerDelaunay::merge(const HullEdges left, const HullEdges right) {
 
 	QuadEdge* leftOuter = left.leftMost;
 	QuadEdge* leftInner = left.rightMost;
@@ -161,7 +161,7 @@ QuadEdge* DivideConquerDelaunay::lowerTangent(QuadEdge* leftInner, QuadEdge* rig
 	return QuadEdge::connect(rightInner->sym(), leftInner, edgeArena);
 }
 
-bool DivideConquerDelaunay::isCounterClockwise(int first, int second, int third) const {
+bool DivideConquerDelaunay::isCounterClockwise(const int first, const int second, const int third) const {
 
 	double pa[2] = {sortedPoints[first].x, sortedPoints[first].y};
 	double pb[2] = {sortedPoints[second].x, sortedPoints[second].y};
@@ -170,7 +170,7 @@ bool DivideConquerDelaunay::isCounterClockwise(int first, int second, int third)
 	return orient2d(pa, pb, pc) > 0.0;
 }
 
-bool DivideConquerDelaunay::isInsideCircle(int first, int second, int third, int point) const {
+bool DivideConquerDelaunay::isInsideCircle(const int first, const int second, const int third, const int point) const {
 
 	double pa[2] = {sortedPoints[first].x, sortedPoints[first].y};
 	double pb[2] = {sortedPoints[second].x, sortedPoints[second].y};
