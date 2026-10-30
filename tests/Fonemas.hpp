@@ -21,6 +21,7 @@ namespace fonemas {
     static std::vector<std::string> simbolos(const std::vector<Phoneme>& fonemas) {
         std::vector<std::string> resultado;
 
+        resultado.reserve(fonemas.size());
         for (const Phoneme& fonema : fonemas) {
             resultado.push_back(fonema.symbol);
         }

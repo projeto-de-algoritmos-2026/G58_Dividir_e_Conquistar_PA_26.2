@@ -12,11 +12,11 @@ class DelaunayGraph {
 	std::vector<std::vector<int>> adjacency;
 
 public:
-	const std::vector<int>& neighbors(int vertex) const { return adjacency.at(vertex); }
+	[[nodiscard]] const std::vector<int>& neighbors(int vertex) const { return adjacency.at(vertex); }
 
-	std::vector<Edge> edges() const;
+	[[nodiscard]] std::vector<Edge> edges() const;
 
-	int size() const { return static_cast<int>(adjacency.size()); }
+	[[nodiscard]] int size() const { return static_cast<int>(adjacency.size()); }
 
 	explicit DelaunayGraph(int vertexCount) : adjacency(vertexCount) {}
 

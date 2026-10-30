@@ -182,7 +182,7 @@ bool DivideConquerDelaunay::isInsideCircle(int first, int second, int third, int
 
 DelaunayGraph DivideConquerDelaunay::toGraph() {
 
-	DelaunayGraph graph(sortedPoints.size());
+	DelaunayGraph graph(static_cast<int>(sortedPoints.size()));
 
 	for (int i = 0; i < static_cast<int>(edgeArena.size()); i += 4) {
 

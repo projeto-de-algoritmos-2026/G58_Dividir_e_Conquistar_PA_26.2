@@ -16,7 +16,7 @@ struct Point2D {
 
 	bool operator==(const Point2D& other) const {return std::tie(x, y) == std::tie(other.x, other.y); }
 
-	double distanceTo(const Point2D& other) const { return std::hypot(x - other.x, y - other.y); }
+	[[nodiscard]] double distanceTo(const Point2D& other) const { return std::hypot(x - other.x, y - other.y); }
 
 };
 

@@ -55,9 +55,10 @@ TEST(DelaunayGraphTest, VerificacaoDeEdges)
     // 3. Os pares certos, sem depender da ordem em que edges() devolve:
     //    copia cada aresta para um par (u, v), ordena e compara com o esperado.
     std::vector<std::pair<int, int>> pares;
+    pares.reserve(arestas.size());
     for (const Edge& e : arestas)
     {
-        pares.push_back({e.u, e.v});
+        pares.emplace_back(e.u, e.v);
     }
     std::sort(pares.begin(), pares.end());
 

@@ -27,15 +27,15 @@ class RhymeIndex {
 public:
 	void add(const std::string& word, const std::string& key, const geometria::Point2D& point);
 
-	int findFamily(const std::string& key) const;
+	[[nodiscard]] int findFamily(const std::string& key) const;
 
-	const std::vector<geometria::Point2D>& points() const;
+	[[nodiscard]] const std::vector<geometria::Point2D>& points() const;
 
 	static std::string rhymeKey(const std::vector<Phoneme>& rhymePart);
 
-	const RhymeFamily& family(int familyId) const;
+	[[nodiscard]] const RhymeFamily& family(int familyId) const;
 
-	const std::vector<int>& familiesAtVertex(int vertex) const;
+	[[nodiscard]] const std::vector<int>& familiesAtVertex(int vertex) const;
 
 	static std::vector<Phoneme> rhymePart(const std::vector<Phoneme>& phonemes);
 

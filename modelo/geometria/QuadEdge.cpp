@@ -4,9 +4,9 @@ namespace modelo::geometria {
     QuadEdge* QuadEdge::makeEdge(std::deque<QuadEdge>& arena) {
         QuadEdge* versions[4];
 
-        for (int i = 0; i < 4; i++) {
+        for (QuadEdge*& version : versions) {
             arena.emplace_back();
-            versions[i] = &arena.back();
+            version = &arena.back();
         }
 
         for (int i = 0; i < 4; i++) {

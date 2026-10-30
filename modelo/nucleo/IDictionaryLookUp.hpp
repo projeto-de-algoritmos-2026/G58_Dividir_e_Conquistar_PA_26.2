@@ -12,9 +12,9 @@ class IDictionaryLookUp {
 public:
 	virtual ~IDictionaryLookUp() = default;
 
-	virtual std::vector<Phoneme> lookUp(const std::string& word) const = 0;
+	[[nodiscard]] virtual std::vector<Phoneme> lookUp(const std::string& word) const = 0;
 
-	virtual const std::vector<DictionaryEntry>& entries() const = 0;
+	[[nodiscard]] virtual const std::vector<DictionaryEntry>& entries() const = 0;
 
 };
 

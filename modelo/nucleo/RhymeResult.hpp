@@ -13,7 +13,7 @@ struct RhymeResult {
 
 	std::vector<std::string> near;
 
-	bool found;
+	bool found = false;
 
 };
 

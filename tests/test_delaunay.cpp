@@ -126,12 +126,13 @@ TEST(DivideConquerDelaunayTest, AlinhadosVertical) {
 }
 
 TEST(DivideConquerDelaunayTest, PontosEmbaralhados) {
-    std::mt19937 gerador(42);
+    std::mt19937 gerador(42); // NOLINT(*-msc51-cpp)
     std::uniform_real_distribution<double> dist(0.0, 1.0);
 
     std::vector<Point2D> pontos;
 
-    for (int i = 0; i < 50; i++) {
+    pontos.reserve(50);
+for (int i = 0; i < 50; i++) {
         pontos.push_back({dist(gerador), dist(gerador)});
     }
 
@@ -141,7 +142,8 @@ TEST(DivideConquerDelaunayTest, PontosEmbaralhados) {
 
     std::vector<Point2D> embaralhados;
 
-    for (int i = 0; i < 50; i++) {
+    embaralhados.reserve(50);
+for (int i = 0; i < 50; i++) {
         embaralhados.push_back(pontos[perm[i]]);
     }
 

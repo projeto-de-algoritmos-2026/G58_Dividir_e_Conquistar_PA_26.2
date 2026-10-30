@@ -7,7 +7,7 @@
 namespace modelo::nucleo {
 struct RhymeCluster {
 
-	int id;
+	int id = -1; // palavra não encontrada
 
 	std::vector<std::string> keys;
 

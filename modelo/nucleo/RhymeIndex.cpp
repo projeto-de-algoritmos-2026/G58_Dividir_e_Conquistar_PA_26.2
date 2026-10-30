@@ -23,7 +23,7 @@ void RhymeIndex::add(const std::string& word, const std::string& key, const geom
 	} else {
 		vertex = static_cast<int>(vertexPoints.size());
 		vertexPoints.push_back(point);
-		familiesByVertex.push_back({});
+		familiesByVertex.emplace_back();
 		vertexByPoint[{point.x, point.y}] = vertex;
 	}
 

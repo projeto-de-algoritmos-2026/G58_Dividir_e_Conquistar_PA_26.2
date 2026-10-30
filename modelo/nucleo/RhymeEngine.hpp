@@ -31,7 +31,7 @@ class RhymeEngine : public IRhymeFinder {
 
 	std::vector<int> clusterOfVertex;
 
-	std::vector<int> nearestVertices(int origin, int count) const;
+	[[nodiscard]] std::vector<int> nearestVertices(int origin, int count) const;
 
 public:
 	RhymeEngine(IDictionaryLookUp& dictionary, IPhoneticConverter& converter, geometria::ITriangulator& triangulator, geometria::IClusterer& clusterer);

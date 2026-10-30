@@ -22,6 +22,7 @@ inline std::vector<Point2D> pontosAleatorios(int n, unsigned semente) {
     std::uniform_real_distribution<double> dist(0.0, 1.0);
 
     std::vector<Point2D> pontos;
+    pontos.reserve(n);
     for (int i = 0; i < n; i++) {
         pontos.push_back({dist(gerador), dist(gerador)});
     }

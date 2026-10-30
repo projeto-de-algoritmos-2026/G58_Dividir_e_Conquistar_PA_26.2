@@ -49,7 +49,6 @@ RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 
 	RhymeResult result;
 	result.word = normalizedWord;
-	result.found = false;
 
 	const int familyId = familyOfWord(dictionary, index, normalizedWord);
 
@@ -97,7 +96,6 @@ RhymeResult RhymeEngine::findRhymes(const std::string& word, int maxNear) {
 RhymeCluster RhymeEngine::clusterOf(const std::string& word) {
 
 	RhymeCluster cluster;
-	cluster.id = -1;
 
 	const int familyId = familyOfWord(dictionary, index, word);
 
@@ -131,8 +129,8 @@ std::vector<int> RhymeEngine::nearestVertices(int origin, int count) const {
 	std::vector<bool> visited(points.size(), false);
 
 	using Candidate = std::pair<double, int>;
-	std::priority_queue<Candidate, std::vector<Candidate>, std::greater<Candidate>> heap;
-	heap.push({0.0, origin});
+	std::priority_queue<Candidate, std::vector<Candidate>, std::greater<>> heap;
+	heap.emplace(0.0, origin);
 
 	while (!heap.empty() && static_cast<int>(nearest.size()) < count) {
 		auto [currentDistance, current] = heap.top();
@@ -147,7 +145,7 @@ std::vector<int> RhymeEngine::nearestVertices(int origin, int count) const {
 		for (int neighbor : graph.neighbors(current)) {
 			if (!visited[neighbor]) {
 				const double distance = points[neighbor].distanceTo(points[origin]);
-				heap.push({distance, neighbor});
+				heap.emplace(distance, neighbor);
 			}
 		}
 	}
