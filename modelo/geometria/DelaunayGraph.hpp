@@ -19,7 +19,7 @@ public:
 
 	int size() const { return static_cast<int>(adjacency.size()); }
 
-	explicit DelaunayGraph(int vertexCount) : adjacency(vertexCount) {};
+	explicit DelaunayGraph(int vertexCount) : adjacency(vertexCount) {}
 
 	void addEdge(int u, int v);
 
