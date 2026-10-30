@@ -6,7 +6,7 @@
 
 namespace modelo::nucleo {
 struct RhymeResult {
-public:
+
 	std::string word;
 
 	std::vector<std::string> perfect;

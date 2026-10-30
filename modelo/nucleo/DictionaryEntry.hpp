@@ -8,7 +8,7 @@
 
 namespace modelo::nucleo {
 struct DictionaryEntry {
-public:
+
 	std::string word;
 
 	std::vector<Phoneme> phonemes;

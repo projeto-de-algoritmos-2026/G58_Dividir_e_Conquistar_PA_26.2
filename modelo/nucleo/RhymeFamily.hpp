@@ -6,7 +6,7 @@
 
 namespace modelo::nucleo {
 struct RhymeFamily {
-public:
+
 	std::string key;
 
 	std::vector<std::string> words;

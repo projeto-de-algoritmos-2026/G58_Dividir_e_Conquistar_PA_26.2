@@ -6,7 +6,7 @@
 
 namespace modelo::nucleo {
 struct RhymeCluster {
-public:
+
 	int id;
 
 	std::vector<std::string> keys;

@@ -5,14 +5,12 @@ namespace modelo::geometria {
 
 struct Edge {
 
-public:
 	int u;
 
 	int v;
 
 	double length;
 
-public:
 	bool operator<(const Edge& other) const { return length < other.length; }
 
 };

@@ -5,7 +5,7 @@
 
 namespace modelo::nucleo {
 struct Phoneme {
-public:
+
 	std::string symbol;
 
 	bool isVowel;

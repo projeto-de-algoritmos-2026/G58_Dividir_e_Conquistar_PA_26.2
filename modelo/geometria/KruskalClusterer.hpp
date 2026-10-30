@@ -12,7 +12,6 @@ namespace modelo::geometria {
 
 class KruskalClusterer : public IClusterer {
 
-private:
 	static std::vector<Edge> sortedEdges(const std::vector<Point2D>& points, const DelaunayGraph& graph);
 
 public:

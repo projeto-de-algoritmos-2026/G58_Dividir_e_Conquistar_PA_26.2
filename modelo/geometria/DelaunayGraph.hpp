@@ -9,7 +9,6 @@ namespace modelo::geometria {
 
 class DelaunayGraph {
 
-private:
 	std::vector<std::vector<int>> adjacency;
 
 public:

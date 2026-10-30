@@ -7,10 +7,9 @@
 
 namespace modelo::terminal {
 class TerminalUI {
-private:
+
 	nucleo::IRhymeFinder& finder;
 
-private:
 	static void printRhymes(const nucleo::RhymeResult& result);
 
 	static void printCluster(const nucleo::RhymeCluster& cluster);

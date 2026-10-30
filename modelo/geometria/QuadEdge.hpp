@@ -13,7 +13,6 @@ private:
 public:
 	int origin = -1;
 
-public:
 	[[nodiscard]] QuadEdge *rot() const { return rotated; }
 
 	[[nodiscard]] QuadEdge* sym() const { return rotated->rotated; }

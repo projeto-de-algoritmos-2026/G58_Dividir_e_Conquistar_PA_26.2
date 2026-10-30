@@ -11,7 +11,7 @@
 
 namespace modelo::adaptadores {
 class CmuDictionary : public nucleo::IDictionaryLookUp {
-private:
+
 	std::vector<nucleo::DictionaryEntry> allEntries;
 
 	std::unordered_map<std::string,int> entryByWord;

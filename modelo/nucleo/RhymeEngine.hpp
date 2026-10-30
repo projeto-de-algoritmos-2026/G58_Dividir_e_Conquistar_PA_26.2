@@ -16,7 +16,7 @@
 
 namespace modelo::nucleo {
 class RhymeEngine : public IRhymeFinder {
-private:
+
 	IDictionaryLookUp& dictionary;
 
 	IPhoneticConverter& converter;
@@ -31,7 +31,6 @@ private:
 
 	std::vector<int> clusterOfVertex;
 
-private:
 	std::vector<int> nearestVertices(int origin, int count) const;
 
 public:

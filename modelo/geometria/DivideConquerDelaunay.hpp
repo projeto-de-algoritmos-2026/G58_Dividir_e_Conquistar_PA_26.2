@@ -12,7 +12,7 @@
 namespace modelo::geometria {
 
 class DivideConquerDelaunay : public ITriangulator {
-private:
+
 	std::vector<Point2D> sortedPoints;
 
 	std::vector<int> originalIndex;
@@ -24,7 +24,6 @@ private:
 		QuadEdge* rightMost;
 	};
 
-private:
 	HullEdges divide(int begin, int end);
 
 	HullEdges merge(HullEdges left, HullEdges right);

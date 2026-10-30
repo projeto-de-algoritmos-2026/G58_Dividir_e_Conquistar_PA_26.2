@@ -12,12 +12,11 @@
 
 namespace modelo::adaptadores {
 class AcousticTranslator : public nucleo::IPhoneticConverter {
-private:
+
 	std::unordered_map<std::string,std::pair<double,double>> phonemeCoordinates;
 
 	double vowelWeight;
 
-private:
 	void initializePhonemeCoordinates();
 
 public:

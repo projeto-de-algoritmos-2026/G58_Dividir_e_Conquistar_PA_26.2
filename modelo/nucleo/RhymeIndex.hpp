@@ -13,7 +13,7 @@
 
 namespace modelo::nucleo {
 class RhymeIndex {
-private:
+
 	std::vector<RhymeFamily> families;
 
 	std::unordered_map<std::string,int> familyByKey;
