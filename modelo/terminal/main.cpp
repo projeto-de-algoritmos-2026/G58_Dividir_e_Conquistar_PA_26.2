@@ -28,7 +28,7 @@ constexpr int DEFAULT_CLUSTER_COUNT = 15;
 int main(int argc, char** argv) {
 	try {
 
-		std::string dictionaryPath = argc > 1 ? argv[1] : "../data/cmudict.dict";
+		std::string dictionaryPath = argc > 1 ? argv[1] : "data/cmudict.dict";
 
 		int clusterCount = argc > 2 ? std::stoi(argv[2]) : DEFAULT_CLUSTER_COUNT;
 

@@ -4,7 +4,6 @@ FetchContent_Declare(googletest
         DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
 FetchContent_MakeAvailable(googletest)
 
-# Acrescente aqui cada arquivo de teste novo (test_graph.cpp, test_kruskal.cpp, ...)
 add_executable(rhyme_tests
         test_unionfind.cpp
         test_delaunaygraph.cpp
@@ -23,7 +22,6 @@ add_executable(rhyme_tests
 )
 
 target_compile_definitions(rhyme_tests PRIVATE FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/fixtures")
-# Pasta do dicionário de verdade, usada pelo test_dados_reais.cpp
 target_compile_definitions(rhyme_tests PRIVATE DATA_DIR="${PROJECT_SOURCE_DIR}/data")
 
 

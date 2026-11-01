@@ -3,7 +3,6 @@
 **Número da Lista**: 58<br>
 **Conteúdo da Disciplina**: Dividir e Conquistar<br>
 **Nome da aplicação**: Buscador de rimas<br>
-**Status**: implementado em C++17, com programa de linha de comando e suíte de testes automáticos.
 
 ## Alunos
 
@@ -11,11 +10,15 @@
 | -- | -- |
 | 231011696 | Luiz Guilherme Morais da Costa Faria |
 
+## Apresentação
+
+https://youtu.be/ei_P-oSTYZI
+
 ## Sobre
 
-O programa encontra rimas para palavras em inglês. Para cada palavra, ele mostra as **rimas perfeitas** (palavras com a mesma terminação sonora, como *dog*, *blog* e *catalogue*) e as **rimas próximas** (terminações parecidas, como *chalk* e *catwalk*). Também mostra o **grupo de rimas** (cluster) ao qual a palavra pertence.
+O programa encontra rimas para palavras em inglês. Para cada palavra, ele mostra as rimas perfeitas (palavras com a mesma terminação sonora, como dog, blog e catalogue) e as rimas próximas (terminações parecidas, como chalk e catwalk). Também mostra o grupo de rimas (cluster) ao qual a palavra pertence.
 
-A pronúncia vem do CMU Pronouncing Dictionary, com 135.166 entradas. A terminação sonora de cada palavra vira um ponto no plano, e palavras que rimam parecido ficam perto umas das outras. O centro do trabalho é a **triangulação de Delaunay por dividir e conquistar** (Guibas e Stolfi), que liga cada ponto aos seus vizinhos naturais em Θ(n log n). Sobre essa triangulação, o programa:
+A pronúncia vem do CMU Pronouncing Dictionary, com 135.166 entradas. A terminação sonora de cada palavra vira um ponto no plano, e palavras que rimam parecido ficam perto umas das outras. O centro do trabalho é a triangulação de Delaunay por dividir e conquistar (Guibas e Stolfi), que liga cada ponto aos seus vizinhos naturais em Θ(n log n). Sobre essa triangulação, o programa:
 
 - busca as rimas próximas andando pelo grafo, sem comparar com todos os pontos;
 - forma os grupos de rimas com o algoritmo de Kruskal, usando só as ~3n arestas da triangulação em vez das n(n − 1)/2 do grafo completo.
@@ -71,8 +74,8 @@ Para rodar a sequência de comandos usada no teste manual:
 
 ### Da palavra ao ponto
 
-1. **Pronúncia.** O dicionário traz cada palavra com seus fonemas. As vogais carregam um dígito de tonicidade: 1 (primária), 2 (secundária) ou 0 (átona). Exemplo: `dog D AO1 G`.
-2. **Parte da rima.** É o trecho que precisa coincidir para duas palavras rimarem: da **última vogal tônica** (1 ou 2) até o fim. Se nenhuma vogal for tônica, usa a última vogal; palavras sem vogal são ignoradas (8 no dicionário inteiro).
+1. **Pronúncia.** O dicionário traz cada palavra com os seus fonemas. As vogais carregam um dígito de tonicidade: 1 (primária), 2 (secundária) ou 0 (átona). Exemplo: `dog D AO1 G`.
+2. **Parte da rima.** É o trecho que precisa coincidir para duas palavras rimarem: da última vogal tônica (1 ou 2) até o fim. Se nenhuma vogal for tônica, usa a última vogal; palavras sem vogal são ignoradas (8 no dicionário inteiro).
 
    | Palavra | Fonemas | Parte da rima |
    | -- | -- | -- |
@@ -81,19 +84,19 @@ Para rodar a sequência de comandos usada no teste manual:
    | notebook | N OW1 T B UH2 K | UH K |
    | the | DH AH0 | AH |
 
-3. **Família de rima.** A parte da rima vira uma chave de texto (`"AO G"`). Palavras com a mesma chave são **rimas perfeitas** entre si e formam uma família.
+3. **Família de rima.** A parte da rima vira uma chave de texto (`"AO G"`). Palavras com a mesma chave são rimas perfeitas entre si e formam uma família.
 4. **Ponto no plano.** Cada um dos 39 fonemas do CMU tem uma coordenada. As vogais estão dispostas como no trapézio vocálico (posição da língua: anterior ou posterior, alta ou baixa). As consoantes estão dispostas pelo ponto de articulação (eixo x) e pelo modo de articulação (eixo y), com as sonoras logo acima das surdas. O ponto da família é
 
    ```text
    ponto = 0,9 · (coordenada da vogal tônica) + 0,1 · (média das coordenadas do resto)
    ```
 
-   Exemplo: AO = (0,90, 0,40) e G = (0,80, 0,15), então "AO G" vira (0,89, 0,375). O peso 0,9 da vogal faz as rimas se agruparem pela vogal tônica, que é o que mais pesa para o ouvido.
+   Exemplo: AO = (0,90, 0,40) e G = (0,80, 0,15), então "AO G" vira (0,89, 0,375). O peso 0,9 da vogal faz as rimas se agruparem pela vogal tônica, o que mais pesa para o ouvido.
 5. **Vértices.** Famílias diferentes podem cair no mesmo ponto (por exemplo, os mesmos fonemas em ordem diferente). O índice junta essas famílias num único vértice: as 34.107 famílias viram 18.240 pontos distintos.
 
 ### Triangulação de Delaunay por dividir e conquistar
 
-Dado um conjunto de pontos no plano, queremos ligá-los em triângulos de modo que **nenhum ponto fique dentro do círculo que passa pelos três vértices de algum triângulo**. Essa triangulação contém o par de pontos mais próximo, liga cada ponto ao seu vizinho mais próximo e contém a árvore geradora mínima do grafo completo. Por isso ela serve de base para as rimas próximas e para os grupos.
+Dado um conjunto de pontos no plano, queremos ligá-los em triângulos de modo que nenhum ponto fique dentro do círculo que passa pelos três vértices de algum triângulo. Essa triangulação contém o par de pontos mais próximo, liga cada ponto ao seu vizinho mais próximo e contém a árvore geradora mínima do grafo completo. Por isso ela serve de base para as rimas próximas e para os grupos.
 
 ```text
 triangular(pontos):
@@ -123,6 +126,8 @@ merge(esquerda, direita):
 - **Conquistar.** Cada metade é triangulada recursivamente, até os casos base de 2 e 3 pontos.
 - **Combinar.** O merge costura as duas metades de baixo para cima, como um zíper: parte da tangente inferior, apaga as arestas que deixaram de ser Delaunay e acrescenta as novas, até a tangente superior.
 
+Os [diagramas de atividades](#diagramas-de-atividades) mostram o `divide`, o `merge` e a busca da tangente inferior passo a passo, com os nomes do código.
+
 **Complexidade.** O merge é linear no número de pontos das duas metades: cada passo do zíper cria uma aresta ou apaga uma, e uma triangulação de n pontos tem no máximo 3n − 6 arestas. A recorrência é
 
 ```text
@@ -143,7 +148,7 @@ A lista começa pelas outras famílias do mesmo vértice (distância zero) e seg
 
 ### Grupos de rimas: Kruskal sobre a triangulação
 
-Os grupos são formados por ligação simples: as arestas são ordenadas pelo comprimento, e o Kruskal une os pontos de cada aresta (com union-find, compressão de caminho e união por posto) até sobrarem `k` componentes. A árvore geradora mínima está sempre dentro da triangulação de Delaunay, então usar só as arestas dela dá **exatamente os mesmos grupos** que usar o grafo completo (há um teste que confere isso). O custo cai de O(n² log n) para **O(E log E) com E ≤ 3n − 6, ou seja, O(n log n)**.
+Os grupos são formados por ligação simples: as arestas são ordenadas pelo comprimento, e o Kruskal une os pontos de cada aresta (com union-find, compressão de caminho e união por posto) até sobrarem `k` componentes. A árvore geradora mínima está sempre dentro da triangulação de Delaunay, então usar só as arestas dela dá exatamente os mesmos grupos que usar o grafo completo (há um teste que confere isso). O custo cai de O(n² log n) para **O(E log E) com E ≤ 3n − 6, ou seja, O(n log n)**.
 
 ### Arquitetura: portas e adaptadores
 
@@ -157,7 +162,7 @@ O núcleo (`RhymeEngine` e `RhymeIndex`) só conhece interfaces:
 | `ITriangulator` | triangulação | `DivideConquerDelaunay` |
 | `IClusterer` | grupos | `KruskalClusterer` |
 
-O `main` é o único lugar que conhece as classes concretas: ele monta as peças e as entrega ao núcleo. Isso permite trocar qualquer peça sem mexer no resto. Os testes aproveitam isso, por exemplo, com um conversor falso que põe todas as rimas no mesmo ponto.
+O `main` é o único lugar que conhece as classes concretas: ele monta as peças e as entrega ao núcleo. Isso permite trocar qualquer peça sem mexer no resto. Os testes aproveitam isso, por exemplo, com um conversor falso que põe todas as rimas no mesmo ponto. O [diagrama de componentes](#diagrama-de-componentes) mostra essas ligações.
 
 ## Organização do código
 
@@ -169,9 +174,88 @@ O `main` é o único lugar que conhece as classes concretas: ele monta as peças
 | `modelo/adaptadores/` | `CmuDictionary` (leitura do dicionário) e `AcousticTranslator` (fonemas para ponto) |
 | `modelo/geometria/` | `DivideConquerDelaunay`, `QuadEdge`, `predicates.c` (Shewchuk), `DelaunayGraph`, `KruskalClusterer`, `UnionFind`, `Point2D`, `Edge`, `ITriangulator` e `IClusterer` |
 | `tests/` | Suíte de testes, oráculos de força bruta (`BruteForce.hpp`), dicionário de exemplo (`fixtures/mini.dict`) e roteiro do terminal |
-| `bench/` | `bench_delaunay.cpp`, o programa de benchmark |
+| `bench/` | `bench_delaunay.cpp`, o programa de benchmark, e `graficos.py`, que desenha os gráficos dos experimentos |
 | `data/` | `cmudict.dict`, o dicionário do CMU |
-| `docs/diagramas/` | Diagramas UML |
+| `docs/diagramas/` | Diagramas UML: o projeto do Astah (`trabalho-3-pa.asta`) e as imagens em PNG e SVG (`trabalho-3-pa/`) |
+| `docs/graficos/` | Gráficos dos experimentos |
+
+## Diagramas UML
+
+Os diagramas foram feitos no Astah. O projeto está em [`docs/diagramas/trabalho-3-pa.asta`](docs/diagramas/trabalho-3-pa.asta), e as imagens exportadas, em PNG e SVG, ficam em `docs/diagramas/trabalho-3-pa/`, separadas como no projeto: `modelo/` guarda os diagramas de estrutura (classes e componentes), e `comportamento/`, os de sequência e de atividades. Clique num diagrama para abrir a versão em SVG, que pode ser ampliada sem perder a nitidez.
+
+### Diagrama de classes
+
+As classes dos quatro pacotes (`terminal`, `nucleo`, `adaptadores` e `geometria`), com atributos, métodos e relações. As interfaces estão em cinza, as structs em verde e o utilitário `WordNormalization` em azul.
+
+[![Diagrama de classes](docs/diagramas/trabalho-3-pa/modelo/class.png)](docs/diagramas/trabalho-3-pa/modelo/class.svg)
+
+### Diagrama de componentes
+
+Os mesmos pacotes vistos como componentes da arquitetura de portas e adaptadores. Cada bolinha é uma interface que um componente oferece, e a meia-lua encaixada nela é a mesma interface pedida por outro componente. O `nucleo` oferece o `IRhymeFinder` ao `terminal` e pede as outras quatro: o `IDictionaryLookUp` e o `IPhoneticConverter`, oferecidos pelos `adaptadores`, e o `ITriangulator` e o `IClusterer`, oferecidos pela `geometria`. As setas tracejadas são as demais dependências: o `terminal` (o `main`) cria as peças concretas, e os `adaptadores` leem o dicionário e usam o `Point2D`.
+
+[![Diagrama de componentes](docs/diagramas/trabalho-3-pa/modelo/CMP%20-%20Arquitetura%20%28portas%20e%20adaptadores%29.png)](docs/diagramas/trabalho-3-pa/modelo/CMP%20-%20Arquitetura%20%28portas%20e%20adaptadores%29.svg)
+
+### Diagramas de sequência
+
+Os quadros `ref` apontam para outro diagrama de sequência, e os `break` saem do método (no SEQ6, do laço) quando a condição entre colchetes é verdadeira.
+
+#### SEQ1 – Inicialização
+
+O `main` cria o dicionário, o tradutor acústico, o triangulador e o clusterizador, entrega as quatro peças ao `RhymeEngine`, chama `build(k)` e passa o motor para a `TerminalUI`.
+
+[![SEQ1 – Inicialização](docs/diagramas/trabalho-3-pa/comportamento/SEQ1%20-%20Inicializa%C3%A7%C3%A3o.png)](docs/diagramas/trabalho-3-pa/comportamento/SEQ1%20-%20Inicializa%C3%A7%C3%A3o.svg)
+
+#### SEQ2 – familyOfWord(word)
+
+Da palavra à família de rima: busca os fonemas no dicionário, separa a parte da rima, monta a chave e procura a família no índice. Devolve −1 se a palavra não está no dicionário ou não tem vogal. O `familyOfWord` é uma função auxiliar do `RhymeEngine.cpp`, não um método, por isso não aparece no diagrama de classes. O SEQ4 e o SEQ5 a usam por meio de um quadro `ref`.
+
+[![SEQ2 – familyOfWord(word)](docs/diagramas/trabalho-3-pa/comportamento/SEQ2%20-%20familyOfWord%28word%29.png)](docs/diagramas/trabalho-3-pa/comportamento/SEQ2%20-%20familyOfWord%28word%29.svg)
+
+#### SEQ3 – RhymeEngine.build(clusterCount)
+
+Para cada entrada do dicionário, calcula a parte da rima, a chave e o ponto e acrescenta a palavra ao índice. Depois triangula os pontos e forma os `k` grupos com o Kruskal.
+
+[![SEQ3 – RhymeEngine.build(clusterCount)](docs/diagramas/trabalho-3-pa/comportamento/SEQ3%20-%20RhymeEngine.build%28clusterCount%29.png)](docs/diagramas/trabalho-3-pa/comportamento/SEQ3%20-%20RhymeEngine.build%28clusterCount%29.svg)
+
+#### SEQ4 – RhymeEngine.findRhymes(word, maxNear)
+
+Normaliza a palavra e acha a família dela (SEQ2). As rimas perfeitas são as outras palavras da família. As próximas vêm primeiro das outras famílias do mesmo vértice e depois das famílias dos vértices mais próximos, que o `nearestVertices` encontra andando pelo grafo da triangulação.
+
+[![SEQ4 – RhymeEngine.findRhymes(word, maxNear)](docs/diagramas/trabalho-3-pa/comportamento/SEQ4%20-%20RhymeEngine.findRhymes%28word%2C%20maxNear%29.png)](docs/diagramas/trabalho-3-pa/comportamento/SEQ4%20-%20RhymeEngine.findRhymes%28word%2C%20maxNear%29.svg)
+
+#### SEQ5 – RhymeEngine.clusterOf(word)
+
+Acha a família da palavra (SEQ2), descobre o grupo do vértice dela e percorre todos os vértices desse grupo, juntando as chaves e as palavras de cada família.
+
+[![SEQ5 – RhymeEngine.clusterOf(word)](docs/diagramas/trabalho-3-pa/comportamento/SEQ5%20-%20RhymeEngine.clusterOf%28word%29.png)](docs/diagramas/trabalho-3-pa/comportamento/SEQ5%20-%20RhymeEngine.clusterOf%28word%29.svg)
+
+#### SEQ6 – TerminalUI.run()
+
+O laço de comandos: lê uma linha, termina no `sair` e, conforme o comando, chama `findRhymes` ou `clusterOf` e imprime o resultado, mostra a ajuda ou avisa que o comando não existe.
+
+[![SEQ6 – TerminalUI.run()](docs/diagramas/trabalho-3-pa/comportamento/SEQ6%20-%20TerminalUI.run%28%29.png)](docs/diagramas/trabalho-3-pa/comportamento/SEQ6%20-%20TerminalUI.run%28%29.svg)
+
+### Diagramas de atividades
+
+Os três diagramas descrevem o dividir e conquistar da triangulação, com os mesmos nomes do código. As ações com o ícone de ancinho no canto chamam outro diagrama: o ATV1 chama a si mesmo nas duas metades, que é a recursão, e chama o ATV2 para combinar; o ATV2 chama o ATV3.
+
+#### ATV1 – DivideConquerDelaunay.divide(begin, end)
+
+Os casos base, com 2 pontos (uma aresta) e 3 pontos (um triângulo, ou duas arestas se os pontos estão alinhados), e o passo recursivo: corta o intervalo ao meio, triangula as duas metades e as combina com o `merge`.
+
+[![ATV1 – DivideConquerDelaunay.divide(begin, end)](docs/diagramas/trabalho-3-pa/comportamento/ATV1%20-%20DivideConquerDelaunay.divide%28begin%2C%20end%29.png)](docs/diagramas/trabalho-3-pa/comportamento/ATV1%20-%20DivideConquerDelaunay.divide%28begin%2C%20end%29.svg)
+
+#### ATV2 – DivideConquerDelaunay.merge(left, right)
+
+O zíper: começa pela tangente inferior (ATV3) e, a cada volta, apaga os candidatos cujo círculo contém o próximo vizinho, escolhe o vencedor pelo teste do círculo e liga a nova base, até nenhum candidato ser válido.
+
+[![ATV2 – DivideConquerDelaunay.merge(left, right)](docs/diagramas/trabalho-3-pa/comportamento/ATV2%20-%20DivideConquerDelaunay.merge%28left%2C%20right%29.png)](docs/diagramas/trabalho-3-pa/comportamento/ATV2%20-%20DivideConquerDelaunay.merge%28left%2C%20right%29.svg)
+
+#### ATV3 – DivideConquerDelaunay.lowerTangent(leftInner, rightInner)
+
+Anda pela borda das duas metades até achar a tangente inferior comum e cria essa aresta, que é a primeira base do `merge`.
+
+[![ATV3 – DivideConquerDelaunay.lowerTangent(leftInner, rightInner)](docs/diagramas/trabalho-3-pa/comportamento/ATV3%20-%20DivideConquerDelaunay.lowerTangent%28leftInner%2C%20rightInner%29.png)](docs/diagramas/trabalho-3-pa/comportamento/ATV3%20-%20DivideConquerDelaunay.lowerTangent%28leftInner%2C%20rightInner%29.svg)
 
 ## Experimentos e comparação
 
@@ -181,7 +265,7 @@ O `rhyme_bench` mede a triangulação, o Kruskal e o par mais próximo em conjun
 ./build-release/rhyme_bench [dicionário]
 ```
 
-Os resultados abaixo foram obtidos num Mac com Apple Silicon (arm64), compilados com AppleClang 21 em Release (`-O3 -DNDEBUG`). Cada tempo é a mediana de 5 execuções.
+Os resultados abaixo foram obtidos num Mac com Apple Silicon (arm64), compilados com AppleClang 21 em Release (`-O3 -DNDEBUG`). Cada tempo é a mediana de 5 execuções. Os gráficos são gerados a partir dessas tabelas pelo `bench/graficos.py` (Python com matplotlib) e ficam em `docs/graficos/`.
 
 ### Triangulação de Delaunay
 
@@ -198,6 +282,14 @@ Os resultados abaixo foram obtidos num Mac com Apple Silicon (arm64), compilados
 
 A última coluna fica em torno de 70 ns enquanto n cresce 128 vezes: é o comportamento Θ(n log n) previsto pela recorrência. A linha de 8.000 pontos destoa por ruído de medição, comum em tempos de poucos milissegundos.
 
+![Triangulação: tempos medidos sobre a curva c · n log₂ n, comparados com a melhor parábola c · n²](docs/graficos/triangulacao_curvas.png)
+
+Em escala normal, n log n é quase uma reta, porque o log n cresce devagar: de 1 mil a 128 mil pontos ele só vai de 10 para 17. Quem faz a curva para cima é o n². A melhor parábola c · n² que dá para traçar pelos pontos passa longe dos pontos do meio, enquanto a curva c · n log₂ n passa por todos.
+
+![Triangulação: tempo medido sobre a curva c · n log₂ n e razão t / (n log₂ n) constante](docs/graficos/triangulacao_nlogn.png)
+
+À esquerda, os tempos medidos caem sobre a curva c · n log₂ n, com c ajustado pelos próprios dados (≈ 71 ns). À direita, a mesma informação dividida por n log₂ n: se o algoritmo fosse Θ(n²), essa linha subiria junto com n; como ela fica plana, o crescimento é Θ(n log n).
+
 ### Kruskal sobre a Delaunay x sobre o grafo completo (k = 10)
 
 | n | Arestas (Delaunay) | Triangulação (ms) | Kruskal na Delaunay (ms) | Total (ms) | Arestas (completo) | Kruskal no completo (ms) |
@@ -208,6 +300,14 @@ A última coluna fica em torno de 70 ns enquanto n cresce 128 vezes: é o compor
 | 5.000 | 14.977 | 3,81 | 1,00 | 4,81 | 12.497.500 | 1.004,30 |
 
 Mesmo somando o tempo da triangulação, o caminho pela Delaunay é cerca de 200 vezes mais rápido com 5.000 pontos, e a diferença cresce com n: ao dobrar n, o grafo completo leva quatro vezes mais tempo, e a Delaunay, pouco mais que o dobro.
+
+![Kruskal na Delaunay x no grafo completo, em escala normal](docs/graficos/kruskal_curvas.png)
+
+Em escala normal, o grafo completo sobe em curva, como c · n² log n, e a Delaunay fica quase colada no zero.
+
+![Kruskal na Delaunay x no grafo completo, em escala logarítmica](docs/graficos/kruskal_delaunay_x_completo.png)
+
+Nos dois eixos em escala logarítmica, a inclinação de cada reta é o expoente do crescimento: a do grafo completo é cerca de 2, e a da Delaunay, cerca de 1.
 
 ### Par mais próximo: menor aresta da Delaunay x força bruta
 
@@ -221,6 +321,10 @@ Mesmo somando o tempo da triangulação, o caminho pela Delaunay é cerca de 200
 | 32.000 | 30,53 | 602,90 | sim |
 
 A força bruta, O(n²), só é mais rápida com 1.000 pontos. A partir de 2.000 a Delaunay vence, e com 32.000 pontos é 20 vezes mais rápida, sempre com a mesma distância.
+
+![Par mais próximo: Delaunay x força bruta, em escala normal](docs/graficos/par_mais_proximo_curvas.png)
+
+![Par mais próximo: Delaunay x força bruta, em escala logarítmica](docs/graficos/par_mais_proximo.png)
 
 ### Dicionário inteiro do CMU
 
@@ -259,9 +363,7 @@ Palavra não encontrada: xyzzy
 
 ### Diagramas
 
-![Diagrama de classes](docs/diagramas/class-v1.svg)
-
-<!-- Acrescente aqui os diagramas de sequência e o de atividades da recursão quando forem exportados para docs/diagramas/. -->
+Os diagramas UML (classes, componentes, sequência e atividades) estão na seção [Diagramas UML](#diagramas-uml).
 
 ## Validação
 
@@ -293,15 +395,10 @@ Os testes de oráculo comparam as versões rápidas com contas de força bruta q
 
 Limitações conhecidas:
 
-- **A projeção em 2D perde informação.** O ponto de uma rima é uma média ponderada, então a ordem dos fonemas se perde e terminações bem diferentes podem cair perto. As rimas perfeitas não são afetadas, mas algumas rimas próximas soam estranhas (para *love*, aparecem *grumpier* e *colombia*).
+- **A projeção em 2D perde informação.** O ponto de uma rima é uma média ponderada, então a ordem dos fonemas se perde e terminações bem diferentes podem cair perto. As rimas perfeitas não são afetadas, mas algumas rimas próximas soam estranhas (para love, aparecem grumpier e colombia).
 - **Os grupos ficam desbalanceados.** A ligação simples do Kruskal tende a encadear pontos; sem o peso 0,9 da vogal, quase todos os pontos caem num grupo só. Mesmo com o peso, com k = 15 surgem grupos de milhares de palavras ao lado de grupos com um único ponto isolado.
 - **Só palavras do dicionário.** Uma palavra fora do CMU não é encontrada, porque o programa não deduz a pronúncia pela escrita. Para palavras com mais de uma pronúncia, a consulta usa a primeira, mas todas entram no índice.
 - **As rimas próximas não têm distância máxima.** O programa sempre completa `n` palavras, mesmo que as últimas já estejam longe.
-
-Trabalhos futuros:
-
-- **Paralelizar o dividir e conquistar.** As duas chamadas recursivas são independentes e podem rodar em paralelo, mas o merge é sequencial e linear: o caminho crítico custa O(n), então o ganho máximo é da ordem de log n. Com o dicionário real, a triangulação leva poucos milissegundos, e o tempo total é dominado pela leitura do arquivo.
-- **Usar a engine num aplicativo de escrita de poemas.** Pela arquitetura de portas e adaptadores, um aplicativo seria só mais um adaptador de entrada sobre o `IRhymeFinder`.
 
 Créditos e licenças:
 
