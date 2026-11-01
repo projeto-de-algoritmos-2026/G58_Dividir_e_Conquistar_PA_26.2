@@ -58,7 +58,7 @@ static double medir(const std::function<void()>& tarefa) {
     return tempos[tempos.size() / 2];
 }
 
-static std::vector<int> kruskalNoGrafoCompleto(const std::vector<Point2D>& p, int k) {
+static std::vector<int> kruskalNoGrafoCompleto(const std::vector<Point2D>& p) {
     const int n = static_cast<int>(p.size());
     std::vector<Edge> arestas;
     arestas.reserve(static_cast<size_t>(n) * (n - 1) / 2);

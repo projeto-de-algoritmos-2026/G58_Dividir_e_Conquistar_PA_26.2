@@ -34,6 +34,7 @@ class DivideConquerDelaunay : public ITriangulator {
 
 	[[nodiscard]] bool isInsideCircle(int first, int second, int third, int point) const;
 
+	//noinspection CppDFAUnreachableFunctionCall
 	bool isRightOf(int point, QuadEdge* edge) const { return isCounterClockwise(point, edge->dest(), edge->origin);  }
 
 	bool isLeftOf(int point, QuadEdge* edge) const { return isCounterClockwise(point, edge->origin, edge->dest()); }
