@@ -71,7 +71,7 @@ static std::vector<int> kruskalNoGrafoCompleto(const std::vector<Point2D>& p) {
 
     UnionFind uf(n);
     for (const Edge& e : arestas) {
-        if (uf.componentCount() == k) {
+        if (uf.componentCount()) {
             break;
         }
         uf.unite(e.u, e.v);
@@ -143,7 +143,7 @@ static void kruskal() {
 
         KruskalClusterer clusterizador;
         const double msKruskalDelaunay = medir([&] { clusterizador.cluster(pontos, grafo, K); });
-        const double msKruskalCompleto = medir([&] { kruskalNoGrafoCompleto(pontos, K); });
+        const double msKruskalCompleto = medir([&] { kruskalNoGrafoCompleto(pontos); });
 
         std::printf("| %d | %zu | %.2f | %.2f | %.2f | %ld | %.2f |\n", n, grafo.edges().size(),
                     msTriangulacao, msKruskalDelaunay, msTriangulacao + msKruskalDelaunay,
