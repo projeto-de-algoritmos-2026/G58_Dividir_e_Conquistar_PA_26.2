@@ -4,7 +4,6 @@
 
 #include <queue>
 #include <functional>
-#include <cmath>
 
 using modelo::nucleo::RhymeIndex;
 using modelo::nucleo::Phoneme;
